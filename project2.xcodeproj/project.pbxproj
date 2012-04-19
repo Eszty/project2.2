@@ -39,23 +39,23 @@
 		C93FE8831540019600A61683 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		C93FE8851540019600A61683 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		C93FE8871540019600A61683 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		C93FE88B1540019600A61683 /* project2-Info.plist */ = {isa = PBXFileReference; path = "project2-Info.plist"; sourceTree = "<group>"; };
+		C93FE88B1540019600A61683 /* project2-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "project2-Info.plist"; sourceTree = "<group>"; };
 		C93FE88D1540019600A61683 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		C93FE88F1540019600A61683 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		C93FE8911540019600A61683 /* project2-Prefix.pch */ = {isa = PBXFileReference; path = "project2-Prefix.pch"; sourceTree = "<group>"; };
-		C93FE8921540019600A61683 /* AppDelegate.h */ = {isa = PBXFileReference; path = AppDelegate.h; sourceTree = "<group>"; };
+		C93FE8911540019600A61683 /* project2-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "project2-Prefix.pch"; sourceTree = "<group>"; };
+		C93FE8921540019600A61683 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		C93FE8931540019600A61683 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		C93FE8951540019600A61683 /* MainViewController.h */ = {isa = PBXFileReference; path = MainViewController.h; sourceTree = "<group>"; };
+		C93FE8951540019600A61683 /* MainViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
 		C93FE8961540019600A61683 /* MainViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
-		C93FE8981540019600A61683 /* FlipsideViewController.h */ = {isa = PBXFileReference; path = FlipsideViewController.h; sourceTree = "<group>"; };
+		C93FE8981540019600A61683 /* FlipsideViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FlipsideViewController.h; sourceTree = "<group>"; };
 		C93FE8991540019600A61683 /* FlipsideViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FlipsideViewController.m; sourceTree = "<group>"; };
 		C93FE89C1540019600A61683 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainViewController.xib; sourceTree = "<group>"; };
 		C93FE89F1540019600A61683 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/FlipsideViewController.xib; sourceTree = "<group>"; };
 		C93FE8A61540019600A61683 /* project2Tests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = project2Tests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C93FE8A71540019600A61683 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
-		C93FE8AF1540019600A61683 /* project2Tests-Info.plist */ = {isa = PBXFileReference; path = "project2Tests-Info.plist"; sourceTree = "<group>"; };
+		C93FE8AF1540019600A61683 /* project2Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "project2Tests-Info.plist"; sourceTree = "<group>"; };
 		C93FE8B11540019600A61683 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		C93FE8B31540019600A61683 /* project2Tests.h */ = {isa = PBXFileReference; path = project2Tests.h; sourceTree = "<group>"; };
+		C93FE8B31540019600A61683 /* project2Tests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = project2Tests.h; sourceTree = "<group>"; };
 		C93FE8B41540019600A61683 /* project2Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = project2Tests.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
