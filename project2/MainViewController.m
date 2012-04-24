@@ -14,7 +14,13 @@
 
 @implementation MainViewController
 
-@synthesize label = _label;
+@synthesize labelone = _labelone;
+@synthesize labeltwo = _labeltwo;
+@synthesize labelthree = _labelthree;
+@synthesize labelfour = _labelfour;
+@synthesize labelfive = _labelfive;
+@synthesize labelsix = _labelsix;
+
 @synthesize textField = _textField;
 @synthesize button = _button;
 
@@ -64,5 +70,7 @@
     //self.label.text = [NSString stringWithFormat: @"%i",count];
     
 }
+
+
 
 @end
