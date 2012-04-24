@@ -51,8 +51,18 @@
 }
 
 - (void)buttonPressed:(id)sender {
-    self.label.text = self.textField.text;
+    //self.label.text = self.textField.text;
+    
+    //NSString *string =[[self textField] text];
+    NSInteger count = [[[self textField] text] length];
+    self.label.text = [NSString stringWithFormat:@"%i",count];
+    
+    
+    
     self.textField.text = @"";
+    //NSInteger count = [string length];
+    //self.label.text = [NSString stringWithFormat: @"%i",count];
+    
 }
 
 @end
