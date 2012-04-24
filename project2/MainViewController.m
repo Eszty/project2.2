@@ -14,7 +14,13 @@
 
 @implementation MainViewController
 
-@synthesize label = _label;
+@synthesize labelone = _labelone;
+@synthesize labeltwo = _labeltwo;
+@synthesize labelthree = _labelthree;
+@synthesize labelfour = _labelfour;
+@synthesize labelfive = _labelfive;
+@synthesize labelsix = _labelsix;
+
 @synthesize textField = _textField;
 @synthesize button = _button;
 
@@ -51,8 +57,32 @@
 }
 
 - (void)buttonPressed:(id)sender {
-    self.label.text = self.textField.text;
-    self.textField.text = @"";
+    if ([self.textField.text isEqualToString:@"s"])	 {
+        self.labelone.text = @"s";
+        self.textField.text = @"";
+    }
+    else if ([self.textField.text isEqualToString:@"c"]) {
+        self.labeltwo.text = @"c";
+        self.textField.text = @"";
+    }
+    else if ([self.textField.text isEqualToString:@"h"]) {
+        self.labelthree.text = @"h";
+        self.textField.text = @"";
+    }
+    else if ([self.textField.text isEqualToString:@"a"]) {
+        self.labelfour.text = @"a";
+        self.labelfive.text = @"a";
+        self.textField.text = @"";
+    }
+    else if ([self.textField.text isEqualToString:@"p"]) {
+        self.labelsix.text = @"p";
+        self.textField.text = @"";
+    }
+    else {
+        self.textField.text = @"";
+    }
 }
+
+
 
 @end
