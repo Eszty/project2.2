@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A58768141546BC780040A48D /* words.plist in Resources */ = {isa = PBXBuildFile; fileRef = A58768131546BC780040A48D /* words.plist */; };
 		C93FE8841540019600A61683 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C93FE8831540019600A61683 /* UIKit.framework */; };
 		C93FE8861540019600A61683 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C93FE8851540019600A61683 /* Foundation.framework */; };
 		C93FE8881540019600A61683 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C93FE8871540019600A61683 /* CoreGraphics.framework */; };
@@ -35,6 +36,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A58768131546BC780040A48D /* words.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = words.plist; sourceTree = SOURCE_ROOT; };
 		C93FE87F1540019600A61683 /* project2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = project2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C93FE8831540019600A61683 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		C93FE8851540019600A61683 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -132,6 +134,7 @@
 		C93FE88A1540019600A61683 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				A58768131546BC780040A48D /* words.plist */,
 				C93FE88B1540019600A61683 /* project2-Info.plist */,
 				C93FE88C1540019600A61683 /* InfoPlist.strings */,
 				C93FE88F1540019600A61683 /* main.m */,
@@ -232,6 +235,7 @@
 				C93FE88E1540019600A61683 /* InfoPlist.strings in Resources */,
 				C93FE89D1540019600A61683 /* MainViewController.xib in Resources */,
 				C93FE8A01540019600A61683 /* FlipsideViewController.xib in Resources */,
+				A58768141546BC780040A48D /* words.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
