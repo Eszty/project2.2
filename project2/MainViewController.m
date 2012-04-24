@@ -28,6 +28,23 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
+    NSMutableDictionary *wordsArray = [[NSMutableDictionary alloc] initWithContentsOfFile:
+                                  [[NSBundle mainBundle] pathForResource:@"words" ofType:@"plist"]];
+    
+    //Get item10 with value 'aardvark'
+    NSString *randomWord = [wordsArray objectForKey:@"item 6"];
+    /*
+    for (NSString * in [staff valueForKey:@"staff"]) {
+        // create a label to display staff info
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(30, y, 300, 20)];
+        label.text = tf;
+        
+        // add the staff label to the view
+        [self.view addSubview:label];
+        
+        // the next label should be displayed below this one
+        y += 30;
+    }*/
 }
 
 - (void)viewDidUnload
