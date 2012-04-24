@@ -375,6 +375,7 @@
 		C93FE8B91540019600A61683 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "project2/project2-Prefix.pch";
 				INFOPLIST_FILE = "project2/project2-Info.plist";
@@ -386,6 +387,7 @@
 		C93FE8BA1540019600A61683 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "project2/project2-Prefix.pch";
 				INFOPLIST_FILE = "project2/project2-Info.plist";
@@ -447,6 +449,7 @@
 				C93FE8BA1540019600A61683 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		C93FE8BB1540019600A61683 /* Build configuration list for PBXNativeTarget "project2Tests" */ = {
 			isa = XCConfigurationList;
@@ -455,6 +458,7 @@
 				C93FE8BD1540019600A61683 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

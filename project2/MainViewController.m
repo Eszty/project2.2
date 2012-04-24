@@ -23,6 +23,7 @@
 
 @synthesize textField = _textField;
 @synthesize button = _button;
+@synthesize label = _label;
 
 - (void)viewDidLoad
 {
@@ -57,6 +58,21 @@
 }
 
 - (void)buttonPressed:(id)sender {
+    
+    UILabel *label =  [[UILabel alloc] initWithFrame: CGRectMake(10, 250, 50, 50)];
+
+    for(int i = 0; i < 5; i++){
+        //UILabel *labeltwo =  [[UILabel alloc] initWithFrame: CGRectMake(60, 250, 50, 50)];
+
+        label.text = [NSString stringWithFormat:@"bla"];
+        //label.text = [NSString stringWithFormat:@"lala"];
+        [self.view addSubview:label];
+        //[self.view addSubview:labeltwo];
+        //[label release];
+
+    }
+    
+    /*
     if ([self.textField.text isEqualToString:@"s"])	 {
         self.labelone.text = @"s";
         self.textField.text = @"";
@@ -80,7 +96,7 @@
     }
     else {
         self.textField.text = @"";
-    }
+    }*/
 }
 
 
