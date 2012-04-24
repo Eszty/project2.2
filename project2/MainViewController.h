@@ -7,7 +7,7 @@
 //
 
 #import "FlipsideViewController.h"
-#import <UIKit/UIKit.h>
+
 
 @interface MainViewController : UIViewController <FlipsideViewControllerDelegate>
 
@@ -18,6 +18,8 @@
 @property (nonatomic, strong) IBOutlet UILabel* labelfive;
 @property (nonatomic, strong) IBOutlet UILabel* labelsix;
 
+
+@property (nonatomic, strong) IBOutlet UIView* label;
 @property (nonatomic, strong) IBOutlet UITextField* textField;
 @property (nonatomic, strong) IBOutlet UIButton* button;	
 
