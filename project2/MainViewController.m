@@ -14,6 +14,9 @@
 
 @implementation MainViewController
 
+@synthesize label = _label;
+@synthesize textField = _textField;
+@synthesize button = _button;
 
 - (void)viewDidLoad
 {
@@ -45,6 +48,11 @@
     controller.delegate = self;
     controller.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
     [self presentModalViewController:controller animated:YES];
+}
+
+- (void)buttonPressed:(id)sender {
+    self.label.text = self.textField.text;
+    self.textField.text = @"";
 }
 
 @end
