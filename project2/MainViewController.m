@@ -57,18 +57,30 @@
 }
 
 - (void)buttonPressed:(id)sender {
-    //self.label.text = self.textField.text;
-    
-    //NSString *string =[[self textField] text];
-    NSInteger count = [[[self textField] text] length];
-    self.label.text = [NSString stringWithFormat:@"%i",count];
-    
-    
-    
-    self.textField.text = @"";
-    //NSInteger count = [string length];
-    //self.label.text = [NSString stringWithFormat: @"%i",count];
-    
+    if ([self.textField.text isEqualToString:@"s"])	 {
+        self.labelone.text = @"s";
+        self.textField.text = @"";
+    }
+    else if ([self.textField.text isEqualToString:@"c"]) {
+        self.labeltwo.text = @"c";
+        self.textField.text = @"";
+    }
+    else if ([self.textField.text isEqualToString:@"h"]) {
+        self.labelthree.text = @"h";
+        self.textField.text = @"";
+    }
+    else if ([self.textField.text isEqualToString:@"a"]) {
+        self.labelfour.text = @"a";
+        self.labelfive.text = @"a";
+        self.textField.text = @"";
+    }
+    else if ([self.textField.text isEqualToString:@"p"]) {
+        self.labelsix.text = @"p";
+        self.textField.text = @"";
+    }
+    else {
+        self.textField.text = @"";
+    }
 }
 
 

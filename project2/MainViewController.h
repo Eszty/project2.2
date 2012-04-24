@@ -7,7 +7,7 @@
 //
 
 #import "FlipsideViewController.h"
-#import <UIKit/UIKit.h>
+
 
 @interface MainViewController : UIViewController <FlipsideViewControllerDelegate>
 
