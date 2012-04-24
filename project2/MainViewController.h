@@ -25,4 +25,6 @@
 
 - (IBAction)showInfo:(id)sender;
 
+- (NSString*)getRandom;
+
 @end
