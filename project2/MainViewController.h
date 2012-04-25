@@ -16,12 +16,14 @@
 @property (nonatomic, strong) IBOutlet UIButton* button;
 @property (nonatomic, strong) IBOutlet UILabel* placeholder;
 @property (nonatomic, strong) IBOutlet UIButton* newgame;
+@property (nonatomic, strong) IBOutlet UIButton* guess;
 
-- (IBAction)buttonPressed:(id)sender;
 
+- (NSString*)buttonPressed:(id)sender;
 - (IBAction)newGame:(id)sender;
-
 - (IBAction)showInfo:(id)sender;
+//- (NSString*)guess:(id)sender;
+//- (void)guessTest:first:(NSString *)ltr second:(NSString *)wrd;
 
 - (NSString*)getRandom;
 

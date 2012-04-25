@@ -18,6 +18,8 @@
 @synthesize textField = _textField;
 @synthesize button = _button;
 @synthesize placeholder = _placeholder;
+@synthesize guess = _guess;
+@synthesize newgame = _newgame;
 
 - (void)viewDidLoad
 {
@@ -59,7 +61,7 @@
 }
 
 //Creates placeholders for the input word
-- (void)buttonPressed:(id)sender {
+- (NSString*)buttonPressed:(id)sender {
     
     NSString *word = self.textField.text;
     int count = [word length];
@@ -78,20 +80,30 @@
 
     }
     
-    
-    
-    
-    /*
-    if ([self.textField.text isEqualToString:@"s"])	 {
-        self.labelone.text = @"s";
-        self.textField.text = @"";
-    }*/
+    return word;
 }
 
+- (NSString*)guess:(id)sender {
+    NSString *letter = self.textField.text;
+    return letter;
+}
+
+- (void)guessTest:(id)first :(NSString *)letter second:(NSString *)word {
+    NSString* ltr = letter;
+    NSString* wrd = word;
+    
+    for (int i = 0; i<=[word length]; i++) {
+        if ([ltr isEqualToString:[wrd substringFromIndex:i]]) {
+            //TODO replace label with letter
+        }
+    }
+}
+
+/*
 - (void)newGame:(id)sender {
     //TODO: clear placeholders, load new random word, create new placeholders
 }
-
+*/
 
 
 @end
