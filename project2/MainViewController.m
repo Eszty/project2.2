@@ -75,18 +75,21 @@
 
 - (void)buttonPressed:(id)sender {
     
-    UILabel *label =  [[UILabel alloc] initWithFrame: CGRectMake(10, 250, 50, 50)];
+    UILabel *label =  [[UILabel alloc] initWithFrame: CGRectMake(10, 250, 100, 50)];
+    
 
     for(int i = 0; i < 5; i++){
-        //UILabel *labeltwo =  [[UILabel alloc] initWithFrame: CGRectMake(60, 250, 50, 50)];
-
-        label.text = [NSString stringWithFormat:@"bla"];
-        //label.text = [NSString stringWithFormat:@"lala"];
-        [self.view addSubview:label];
+        
+        //TODO voor iedere letter maak een label aan met text _
+        //add ze allemaal in een frame
+        //UILabel *one = [[UILabel alloc] ini
+        label.text = [NSString stringWithFormat:@"bla "];
+        
         //[self.view addSubview:labeltwo];
         //[label release];
 
     }
+    [self.view addSubview:label];
     
     /*
     if ([self.textField.text isEqualToString:@"s"])	 {
