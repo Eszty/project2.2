@@ -15,8 +15,11 @@
 @property (nonatomic, strong) IBOutlet UITextField* textField;
 @property (nonatomic, strong) IBOutlet UIButton* button;
 @property (nonatomic, strong) IBOutlet UILabel* placeholder;
+@property (nonatomic, strong) IBOutlet UIButton* newgame;
 
 - (IBAction)buttonPressed:(id)sender;
+
+- (IBAction)newGame:(id)sender;
 
 - (IBAction)showInfo:(id)sender;
 

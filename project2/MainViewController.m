@@ -58,6 +58,7 @@
     [self presentModalViewController:controller animated:YES];
 }
 
+//Creates placeholders for the input word
 - (void)buttonPressed:(id)sender {
     
     NSString *word = self.textField.text;
@@ -72,8 +73,12 @@
         placeholder.font = [UIFont systemFontOfSize:30];
         
         [self.view addSubview:placeholder];
+        
+        [self.textField resignFirstResponder]; //close keyboard
 
     }
+    
+    
     
     
     /*
@@ -81,6 +86,10 @@
         self.labelone.text = @"s";
         self.textField.text = @"";
     }*/
+}
+
+- (void)newGame:(id)sender {
+    //TODO: clear placeholders, load new random word, create new placeholders
 }
 
 
