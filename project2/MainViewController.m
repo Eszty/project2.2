@@ -60,10 +60,12 @@
 
 - (void)buttonPressed:(id)sender {
     
-    for(int i = 0; i < 5; i++){
-        UILabel *placeholder = [[UILabel alloc] initWithFrame: CGRectMake((10+30*i), 250, 100, 50)];
+    NSString *word = self.textField.text;
+    int count = [word length];
+    
+    for(int i = 0; i < count; i++){
+        UILabel *placeholder = [[UILabel alloc] initWithFrame: CGRectMake((10+30*i), 100, 100, 50)];
 
-        
         placeholder.text = [NSString stringWithFormat:@"_"];
         placeholder.backgroundColor = [UIColor clearColor];
         placeholder.textColor = [UIColor redColor];
