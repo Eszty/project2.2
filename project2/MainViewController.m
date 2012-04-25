@@ -14,15 +14,10 @@
 
 @implementation MainViewController
 
-@synthesize labelone = _labelone;
-@synthesize labeltwo = _labeltwo;
-@synthesize labelthree = _labelthree;
-@synthesize labelfour = _labelfour;
-@synthesize labelfive = _labelfive;
-@synthesize labelsix = _labelsix;
 
 @synthesize textField = _textField;
 @synthesize button = _button;
+@synthesize placeholder = _placeholder;
 
 - (void)viewDidLoad
 {
@@ -65,45 +60,23 @@
 
 - (void)buttonPressed:(id)sender {
     
-    UILabel *label =  [[UILabel alloc] initWithFrame: CGRectMake(10, 250, 100, 50)];
-    
-
     for(int i = 0; i < 5; i++){
+        UILabel *placeholder = [[UILabel alloc] initWithFrame: CGRectMake((10+30*i), 250, 100, 50)];
+
         
-        //TODO voor iedere letter maak een label aan met text _
-        //add ze allemaal in een frame
-        //UILabel *one = [[UILabel alloc] ini
-        label.text = [NSString stringWithFormat:@"bla "];
+        placeholder.text = [NSString stringWithFormat:@"_"];
+        placeholder.backgroundColor = [UIColor clearColor];
+        placeholder.textColor = [UIColor redColor];
+        placeholder.font = [UIFont systemFontOfSize:30];
         
-        //[self.view addSubview:labeltwo];
-        //[label release];
+        [self.view addSubview:placeholder];
 
     }
-    [self.view addSubview:label];
+    
     
     /*
     if ([self.textField.text isEqualToString:@"s"])	 {
         self.labelone.text = @"s";
-        self.textField.text = @"";
-    }
-    else if ([self.textField.text isEqualToString:@"c"]) {
-        self.labeltwo.text = @"c";
-        self.textField.text = @"";
-    }
-    else if ([self.textField.text isEqualToString:@"h"]) {
-        self.labelthree.text = @"h";
-        self.textField.text = @"";
-    }
-    else if ([self.textField.text isEqualToString:@"a"]) {
-        self.labelfour.text = @"a";
-        self.labelfive.text = @"a";
-        self.textField.text = @"";
-    }
-    else if ([self.textField.text isEqualToString:@"p"]) {
-        self.labelsix.text = @"p";
-        self.textField.text = @"";
-    }
-    else {
         self.textField.text = @"";
     }*/
 }
