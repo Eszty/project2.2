@@ -14,15 +14,12 @@
 
 @implementation MainViewController
 
-@synthesize labelone = _labelone;
-@synthesize labeltwo = _labeltwo;
-@synthesize labelthree = _labelthree;
-@synthesize labelfour = _labelfour;
-@synthesize labelfive = _labelfive;
-@synthesize labelsix = _labelsix;
 
 @synthesize textField = _textField;
 @synthesize button = _button;
+@synthesize placeholder = _placeholder;
+@synthesize guess = _guess;
+@synthesize newgame = _newgame;
 
 - (void)viewDidLoad
 {
@@ -63,48 +60,50 @@
     [self presentModalViewController:controller animated:YES];
 }
 
-- (void)buttonPressed:(id)sender {
+//Creates placeholders for the input word
+- (NSString*)buttonPressed:(id)sender {
     
-    UILabel *label =  [[UILabel alloc] initWithFrame: CGRectMake(10, 250, 50, 50)];
+    NSString *word = self.textField.text;
+    int count = [word length];
+    
+    for(int i = 0; i < count; i++){
+        UILabel *placeholder = [[UILabel alloc] initWithFrame: CGRectMake((10+30*i), 100, 100, 50)];
 
-    for(int i = 0; i < 5; i++){
-        //UILabel *labeltwo =  [[UILabel alloc] initWithFrame: CGRectMake(60, 250, 50, 50)];
-
-        label.text = [NSString stringWithFormat:@"bla"];
-        //label.text = [NSString stringWithFormat:@"lala"];
-        [self.view addSubview:label];
-        //[self.view addSubview:labeltwo];
-        //[label release];
+        placeholder.text = [NSString stringWithFormat:@"_"];
+        placeholder.backgroundColor = [UIColor clearColor];
+        placeholder.textColor = [UIColor redColor];
+        placeholder.font = [UIFont systemFontOfSize:30];
+        
+        [self.view addSubview:placeholder];
+        
+        [self.textField resignFirstResponder]; //close keyboard
 
     }
     
-    /*
-    if ([self.textField.text isEqualToString:@"s"])	 {
-        self.labelone.text = @"s";
-        self.textField.text = @"";
-    }
-    else if ([self.textField.text isEqualToString:@"c"]) {
-        self.labeltwo.text = @"c";
-        self.textField.text = @"";
-    }
-    else if ([self.textField.text isEqualToString:@"h"]) {
-        self.labelthree.text = @"h";
-        self.textField.text = @"";
-    }
-    else if ([self.textField.text isEqualToString:@"a"]) {
-        self.labelfour.text = @"a";
-        self.labelfive.text = @"a";
-        self.textField.text = @"";
-    }
-    else if ([self.textField.text isEqualToString:@"p"]) {
-        self.labelsix.text = @"p";
-        self.textField.text = @"";
-    }
-    else {
-        self.textField.text = @"";
-    }*/
+    return word;
 }
 
+- (NSString*)guess:(id)sender {
+    NSString *letter = self.textField.text;
+    return letter;
+}
+
+- (void)guessTest:(id)first :(NSString *)letter second:(NSString *)word {
+    NSString* ltr = letter;
+    NSString* wrd = word;
+    
+    for (int i = 0; i<=[word length]; i++) {
+        if ([ltr isEqualToString:[wrd substringFromIndex:i]]) {
+            //TODO replace label with letter
+        }
+    }
+}
+
+/*
+- (void)newGame:(id)sender {
+    //TODO: clear placeholders, load new random word, create new placeholders
+}
+*/
 
 
 @end

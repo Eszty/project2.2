@@ -11,21 +11,19 @@
 
 @interface MainViewController : UIViewController <FlipsideViewControllerDelegate>
 
-@property (nonatomic, strong) IBOutlet UILabel* labelone;
-@property (nonatomic, strong) IBOutlet UILabel* labeltwo;
-@property (nonatomic, strong) IBOutlet UILabel* labelthree;
-@property (nonatomic, strong) IBOutlet UILabel* labelfour;
-@property (nonatomic, strong) IBOutlet UILabel* labelfive;
-@property (nonatomic, strong) IBOutlet UILabel* labelsix;
 
-
-@property (nonatomic, strong) IBOutlet UIView* label;
 @property (nonatomic, strong) IBOutlet UITextField* textField;
-@property (nonatomic, strong) IBOutlet UIButton* button;	
+@property (nonatomic, strong) IBOutlet UIButton* button;
+@property (nonatomic, strong) IBOutlet UILabel* placeholder;
+@property (nonatomic, strong) IBOutlet UIButton* newgame;
+@property (nonatomic, strong) IBOutlet UIButton* guess;
 
-- (IBAction)buttonPressed:(id)sender;
 
+- (NSString*)buttonPressed:(id)sender;
+- (IBAction)newGame:(id)sender;
 - (IBAction)showInfo:(id)sender;
+//- (NSString*)guess:(id)sender;
+//- (void)guessTest:first:(NSString *)ltr second:(NSString *)wrd;
 
 - (NSString*)getRandom;
 
