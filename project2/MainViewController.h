@@ -22,8 +22,8 @@
 - (NSString*)buttonPressed:(id)sender;
 - (IBAction)newGame:(id)sender;
 - (IBAction)showInfo:(id)sender;
-//- (NSString*)guess:(id)sender;
-//- (void)guessTest:first:(NSString *)ltr second:(NSString *)wrd;
+- (NSString*)guess:(id)sender;
+- (void)guessTest:first:(NSString *)ltr second:(NSString *)wrd;
 
 - (NSString*)getRandom;
 

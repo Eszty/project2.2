@@ -25,14 +25,21 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
-    NSMutableDictionary *wordsArray = [[NSMutableDictionary alloc] initWithContentsOfFile:
-                                  [[NSBundle mainBundle] pathForResource:@"words" ofType:@"plist"]];
+    /*NSString* test = [[NSBundle mainBundle] pathForResource:@"words" ofType:@"plist"];
+    NSMutableDictionary *wordsArray = [[NSMutableDictionary alloc] init];
+    wordsArray = [[NSMutableDictionary alloc] initWithContentsOfFile: test]; */
     
-    //Get item10 with value 'aardvark'
-    NSObject *randomWord = [wordsArray objectForKey:@"item 6"];
+    NSString *myFile = [[NSBundle mainBundle] pathForResource:@"words" ofType:@"plist"];
+    NSMutableDictionary* myDict = [[NSMutableDictionary alloc]initWithContentsOfFile:myFile];
+    NSObject *randomWord = [myDict objectForKey:@"Item 6"];
     NSLog(@"%@", randomWord);
 
-} 
+    
+    //Get item10 with value 'aardvark'
+    //NSObject *randomWord = [wordsArray objectForKey:@"Item 6"];
+    //NSLog(@"%@", randomWord);
+
+}       
 
 - (void)viewDidUnload
 {
