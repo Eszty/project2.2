@@ -21,6 +21,8 @@
 @synthesize guess = _guess;
 @synthesize newgame = _newgame;
 
+extern NSMutableArray *PArray; 
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -66,6 +68,8 @@
     NSString *word = self.textField.text;
     int count = [word length];
     
+
+    
     for(int i = 0; i < count; i++){
         UILabel *placeholder = [[UILabel alloc] initWithFrame: CGRectMake((10+30*i), 100, 100, 50)];
 
@@ -73,6 +77,8 @@
         placeholder.backgroundColor = [UIColor clearColor];
         placeholder.textColor = [UIColor redColor];
         placeholder.font = [UIFont systemFontOfSize:30];
+        
+        [PArray addObject: placeholder.text];
         
         [self.view addSubview:placeholder];
         
@@ -92,11 +98,31 @@
     NSString* ltr = letter;
     NSString* wrd = word;
     
+    int cnt = [word length];
+    
     for (int i = 0; i<=[word length]; i++) {
         if ([ltr isEqualToString:[wrd substringFromIndex:i]]) {
-            //TODO replace label with letter
+            [PArray replaceObjectAtIndex:i withObject:ltr];
         }
     }
+    
+    for(int i = 0; i < cnt; i++){
+        UILabel *placeholderNew = [[UILabel alloc] initWithFrame: CGRectMake((10+30*i), 100, 100, 50)];
+        
+        placeholderNew.text = [PArray objectAtIndex:i];
+        placeholderNew.backgroundColor = [UIColor clearColor];
+        placeholderNew.textColor = [UIColor redColor];
+        placeholderNew.font = [UIFont systemFontOfSize:30];
+        
+                
+        [self.view addSubview:placeholderNew];
+        
+        [self.textField resignFirstResponder]; //close keyboard
+        
+    }
+
+    
+    
 }
 
 /*
