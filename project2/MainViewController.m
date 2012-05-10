@@ -23,6 +23,7 @@ NSMutableArray *retArr;
 @synthesize placeholder = _placeholder;
 @synthesize guess = _guess;
 @synthesize newgame = _newgame;
+@synthesize nrguesses = _nrguesses;
 
 //extern NSMutableArray *PArray; 
 
@@ -61,7 +62,6 @@ NSMutableArray *retArr;
         [self.textField resignFirstResponder]; //close keyboard
         
     }
-    
 }       
 
 - (void)viewDidUnload
@@ -137,13 +137,34 @@ NSMutableArray *retArr;
         
     }
     
+    //Update number of guesses
+    int temp = [self.nrguesses.text intValue];
+    temp++;
+    if (temp == 10) {
+        [self gameOver];
+    }
+    else  {
+        self.nrguesses.text = [NSString stringWithFormat:@"%d", temp];
+    }
+    
 }
 
-/*
- - (void)newGame:(id)sender {
- //TODO: clear placeholders, load new random word, create new placeholders
+- (void) gameOver {
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Game over" 
+                                                    message:@"You lost the game. Click OK to start a new game" 
+                                                   delegate:nil 
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil];
+    [alert show];
+}
+
+
+- (void)newGame:(id)sender {
+    //reset nr guesses, load a new random word
+    self.nrguesses.text = @"0";
+    
  }
- */
+
 
 
 @end

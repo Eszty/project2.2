@@ -17,6 +17,7 @@
 @property (nonatomic, strong) IBOutlet UILabel* placeholder;
 @property (nonatomic, strong) IBOutlet UIButton* newgame;
 @property (nonatomic, strong) IBOutlet UIButton* guess;
+@property (nonatomic, strong) IBOutlet UILabel* nrguesses;
 
 
 - (IBAction)buttonPressed:(id)sender;
@@ -24,6 +25,7 @@
 - (IBAction)showInfo:(id)sender;
 - (IBAction)guess:(id)sender;
 - (void)guessTest:first:(NSString *)ltr second:(NSString *)wrd third:(NSMutableArray *)pArr;
+- (void) gameOver:(id)sender;
 
 - (NSString*)getRandom;
 
