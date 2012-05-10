@@ -118,9 +118,10 @@ NSMutableArray *retArr;
     
     int cnt = [retWord length];
     
-    for (int i = 0; i<=[retWord length]; i++) {
-        NSString *subTest = [retWord substringFromIndex:i];
-        if ([letter isEqualToString:subTest]) {
+    for (int i = 0; i<[retWord length]; i++) {
+        char subTest = [retWord characterAtIndex:i];
+        NSString *temp = [[NSString alloc] initWithFormat:@"%c",subTest]; 
+        if ([letter isEqualToString:temp]) {
             [pArray replaceObjectAtIndex:i withObject:letter];
         }
     }
