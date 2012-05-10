@@ -31,8 +31,8 @@ NSMutableArray *retArr;
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
     /*NSString* test = [[NSBundle mainBundle] pathForResource:@"words" ofType:@"plist"];
-    NSMutableDictionary *wordsArray = [[NSMutableDictionary alloc] init];
-    wordsArray = [[NSMutableDictionary alloc] initWithContentsOfFile: test]; */
+     NSMutableDictionary *wordsArray = [[NSMutableDictionary alloc] init];
+     wordsArray = [[NSMutableDictionary alloc] initWithContentsOfFile: test]; */
     
     NSString *myFile = [[NSBundle mainBundle] pathForResource:@"words" ofType:@"plist"];
     NSMutableDictionary* myDict = [[NSMutableDictionary alloc] initWithContentsOfFile:myFile];
@@ -47,11 +47,11 @@ NSMutableArray *retArr;
     NSLog(@"%c", char_array[0]);
     NSLog(@"%c", char_array[1]);
     
-        
+    
     //Get item10 with value 'aardvark'
     //NSObject *randomWord = [wordsArray objectForKey:@"Item 6"];
     //NSLog(@"%@", randomWord);
-
+    
 }       
 
 - (void)viewDidUnload
@@ -89,7 +89,7 @@ NSMutableArray *retArr;
     
     for(int i = 0; i < count; i++){
         UILabel *placeholder = [[UILabel alloc] initWithFrame: CGRectMake((10+30*i), 100, 100, 50)];
-
+        
         placeholder.text = [NSString stringWithFormat:@"_"];
         placeholder.backgroundColor = [UIColor clearColor];
         placeholder.textColor = [UIColor redColor];
@@ -100,7 +100,7 @@ NSMutableArray *retArr;
         [self.view addSubview:placeholder];
         
         [self.textField resignFirstResponder]; //close keyboard
-
+        
     }
     
     retWord = [self returnWord:word];
@@ -140,7 +140,7 @@ NSMutableArray *retArr;
         placeholderNew.textColor = [UIColor redColor];
         placeholderNew.font = [UIFont systemFontOfSize:30];
         
-                
+        
         [self.view addSubview:placeholderNew];
         
         [self.textField resignFirstResponder]; //close keyboard
@@ -150,10 +150,10 @@ NSMutableArray *retArr;
 }
 
 /*
-- (void)newGame:(id)sender {
-    //TODO: clear placeholders, load new random word, create new placeholders
-}
-*/
+ - (void)newGame:(id)sender {
+ //TODO: clear placeholders, load new random word, create new placeholders
+ }
+ */
 
 
 @end
