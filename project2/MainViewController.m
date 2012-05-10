@@ -14,6 +14,9 @@
 
 @implementation MainViewController
 
+NSString *retWord;
+NSMutableArray *retArr;
+
 
 @synthesize textField = _textField;
 @synthesize button = _button;
@@ -21,48 +24,45 @@
 @synthesize guess = _guess;
 @synthesize newgame = _newgame;
 
-
-extern NSMutableArray *PArray; 
-
+//extern NSMutableArray *PArray; 
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
     /*NSString* test = [[NSBundle mainBundle] pathForResource:@"words" ofType:@"plist"];
-    NSMutableDictionary *wordsArray = [[NSMutableDictionary alloc] init];
-    wordsArray = [[NSMutableDictionary alloc] initWithContentsOfFile: test]; */
+     NSMutableDictionary *wordsArray = [[NSMutableDictionary alloc] init];
+     wordsArray = [[NSMutableDictionary alloc] initWithContentsOfFile: test]; 
     
-    /*NSString *myFile = [[NSBundle mainBundle] pathForResource:@"words" ofType:@"plist"];
+    NSString *myFile = [[NSBundle mainBundle] pathForResource:@"words" ofType:@"plist"];
     NSMutableDictionary* myDict = [[NSMutableDictionary alloc] initWithContentsOfFile:myFile];
     NSLog(@"%@", myDict);
-    //NSArray *allkeys = [myDict allKeys];
+    NSArray *allkeys = [myDict allKeys];
     NSArray *allvalues = [myDict allValues];
     NSLog(@"%@", [allvalues objectAtIndex:1]);*/
     
     
-
-    /*NSMutableArray *char_array = [NSMutableArray arrayWithCapacity: [temp length]];
-    for (int i = 0; i < [char_array count]; i++) {
-        NSString s = [temp characterAtIndex:1];
-        [char_array addObject:s];        
-    }
-    const char *char_array = [temp UTF8String];
-    NSLog(@"%lu", sizeof(char_array));
-    NSLog(@"%c", char_array[1]);
-     */
-        
     NSString *temp = @"hazelnoot";
     
+    NSMutableArray *pArray = [[NSMutableArray alloc] init];
+    
+    for(int i = 0; i < [temp length]; i++){
+        UILabel *placeholder = [[UILabel alloc] initWithFrame: CGRectMake((10+30*i), 100, 100, 50)];
+        
+        placeholder.text = [NSString stringWithFormat:@"_"];
+        placeholder.backgroundColor = [UIColor clearColor];
+        placeholder.textColor = [UIColor redColor];
+        placeholder.font = [UIFont systemFontOfSize:30];
+        
+        [pArray addObject: placeholder.text];
+        
+        [self.view addSubview:placeholder];
+        
+        [self.textField resignFirstResponder]; //close keyboard
+        
+    }
 
     
-    
-
-    
-    //Get item10 with value 'aardvark'
-    //NSObject *randomWord = [wordsArray objectForKey:@"Item 6"];
-    //NSLog(@"%@", randomWord);
-
 }       
 
 - (void)viewDidUnload
@@ -95,25 +95,7 @@ extern NSMutableArray *PArray;
 - (IBAction)buttonPressed:(id)sender {
     
     NSString *word = self.textField.text;
-    int count = [word length];
-    NSMutableArray *pArray = [[NSMutableArray alloc] init];
     
-
-        placeholder.text = [NSString stringWithFormat:@"_"];
-        placeholder.backgroundColor = [UIColor clearColor];
-        placeholder.textColor = [UIColor redColor];
-        placeholder.font = [UIFont systemFontOfSize:30];
-        
-        [pArray addObject: placeholder.text];
-        
-        [self.view addSubview:placeholder];
-        
-        [self.textField resignFirstResponder]; //close keyboard
-
-    }
-    
-    NSString *retWord = [self returnWord:word];
-    NSMutableArray *retArr = [self returnArray:pArray];
 }
 
 - (NSString*)returnWord:word{
@@ -128,15 +110,10 @@ extern NSMutableArray *PArray;
 
 - (IBAction)guess:(id)sender {
     NSString *letter = self.textField.text;
-    //[self guessTest: letter retWord retArr];
+    [self guessTestWithFirst:letter second:retWord third:retArr];
 }
 
-- (void)guessTest:(id)first :(NSString *)letter second:(NSString *)word {
-    
-    NSString* ltr = letter;
-    NSString* wrd = word;
-}
-- (void)guessTest:(id)first :(NSString *)letter second:(NSString *)word third:(NSMutableArray *)pArray {
+- (void)guessTestWithFirst:(NSString *)letter second:(NSString *)word third:(NSMutableArray *)pArray {
     
     int cnt = [word length];
     
@@ -154,22 +131,20 @@ extern NSMutableArray *PArray;
         placeholderNew.textColor = [UIColor redColor];
         placeholderNew.font = [UIFont systemFontOfSize:30];
         
-                
+        
         [self.view addSubview:placeholderNew];
         
         [self.textField resignFirstResponder]; //close keyboard
         
     }
-
-    
     
 }
 
 /*
-- (void)newGame:(id)sender {
-    //TODO: clear placeholders, load new random word, create new placeholders
-}
-*/
+ - (void)newGame:(id)sender {
+ //TODO: clear placeholders, load new random word, create new placeholders
+ }
+ */
 
 
 @end
