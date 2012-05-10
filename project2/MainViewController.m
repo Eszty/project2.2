@@ -192,7 +192,8 @@ NSMutableArray *wrongGuessArray;
         
     }
     retArr = [self returnArray:pArray];
-    
+    //TODO
+    //Empty/remove placeholders that hold letters
  }
 
 
