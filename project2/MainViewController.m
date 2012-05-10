@@ -22,6 +22,9 @@
 @synthesize newgame = _newgame;
 
 
+extern NSMutableArray *PArray; 
+
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -89,40 +92,64 @@
 }
 
 //Creates placeholders for the input word
-- (NSString*)buttonPressed:(id)sender:(id)nr_of_letters {
+- (IBAction)buttonPressed:(id)sender {
     
     NSString *word = self.textField.text;
     int count = [word length];
+    NSMutableArray *pArray = [[NSMutableArray alloc] init];
     
 
-    
+        placeholder.text = [NSString stringWithFormat:@"_"];
+        placeholder.backgroundColor = [UIColor clearColor];
+        placeholder.textColor = [UIColor redColor];
+        placeholder.font = [UIFont systemFontOfSize:30];
+        
+        [pArray addObject: placeholder.text];
+        
+        [self.view addSubview:placeholder];
+        
+        [self.textField resignFirstResponder]; //close keyboard
 
+    }
     
-    return word;
+    NSString *retWord = [self returnWord:word];
+    NSMutableArray *retArr = [self returnArray:pArray];
 }
 
-- (NSString*)guess:(id)sender {
+- (NSString*)returnWord:word{
+    NSString *wrd = word;
+    return wrd;
+}
+
+- (NSMutableArray*)returnArray:array{
+    NSMutableArray *arr = array;
+    return arr;
+}
+
+- (IBAction)guess:(id)sender {
     NSString *letter = self.textField.text;
-    return letter;
+    //[self guessTest: letter retWord retArr];
 }
 
 - (void)guessTest:(id)first :(NSString *)letter second:(NSString *)word {
-    /*
+    
     NSString* ltr = letter;
     NSString* wrd = word;
+}
+- (void)guessTest:(id)first :(NSString *)letter second:(NSString *)word third:(NSMutableArray *)pArray {
     
     int cnt = [word length];
     
     for (int i = 0; i<=[word length]; i++) {
-        if ([ltr isEqualToString:[wrd substringFromIndex:i]]) {
-            [PArray replaceObjectAtIndex:i withObject:ltr];
+        if ([letter isEqualToString:[word substringFromIndex:i]]) {
+            [pArray replaceObjectAtIndex:i withObject:letter];
         }
     }
     
     for(int i = 0; i < cnt; i++){
         UILabel *placeholderNew = [[UILabel alloc] initWithFrame: CGRectMake((10+30*i), 100, 100, 50)];
         
-        placeholderNew.text = [PArray objectAtIndex:i];
+        placeholderNew.text = [pArray objectAtIndex:i];
         placeholderNew.backgroundColor = [UIColor clearColor];
         placeholderNew.textColor = [UIColor redColor];
         placeholderNew.font = [UIFont systemFontOfSize:30];
@@ -134,7 +161,7 @@
         
     }
 
-    */
+    
     
 }
 

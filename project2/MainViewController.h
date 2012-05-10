@@ -19,11 +19,11 @@
 @property (nonatomic, strong) IBOutlet UIButton* guess;
 
 
-- (NSString*)buttonPressed:(id)sender;
+- (IBAction)buttonPressed:(id)sender;
 - (IBAction)newGame:(id)sender;
 - (IBAction)showInfo:(id)sender;
-- (NSString*)guess:(id)sender;
-- (void)guessTest:first:(NSString *)ltr second:(NSString *)wrd;
+- (IBAction)guess:(id)sender;
+- (void)guessTest:first:(NSString *)ltr second:(NSString *)wrd third:(NSMutableArray *)pArr;
 
 - (NSString*)getRandom;
 
