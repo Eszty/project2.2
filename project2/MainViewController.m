@@ -42,7 +42,7 @@ NSMutableArray *retArr;
     NSLog(@"%@", [allvalues objectAtIndex:1]);*/
     
     
-    NSString *retWord = @"hazelnoot";
+    retWord = @"hazelnoot";
     
     NSMutableArray *pArray = [[NSMutableArray alloc] init];
     
@@ -61,6 +61,8 @@ NSMutableArray *retArr;
         [self.textField resignFirstResponder]; //close keyboard
         
     }
+    
+    retArr = [self returnArray:pArray];
     
 }       
 
@@ -93,14 +95,14 @@ NSMutableArray *retArr;
 //Creates placeholders for the input word
 - (IBAction)buttonPressed:(id)sender {
     
-    NSString *word = self.textField.text;
+    //NSString *word = self.textField.text;
 
 }
 
-- (NSString*)returnWord:word{
+/*- (NSString*)returnWord:word{
     NSString *wrd = word;
     return wrd;
-}
+}*/
 
 - (NSMutableArray*)returnArray:array{
     NSMutableArray *arr = array;
@@ -109,15 +111,16 @@ NSMutableArray *retArr;
 
 - (IBAction)guess:(id)sender {
     NSString *letter = self.textField.text;
-    [self guessTestWithFirst:letter second:retWord third:retArr];
+    [self guessTestWithFirst:letter second:retArr];
 }
 
-- (void)guessTestWithFirst:(NSString *)letter second:(NSString *)word third:(NSMutableArray *)pArray {
+- (void)guessTestWithFirst:(NSString *)letter second:(NSMutableArray *)pArray {
     
-    int cnt = [word length];
+    int cnt = [retWord length];
     
-    for (int i = 0; i<=[word length]; i++) {
-        if ([letter isEqualToString:[word substringFromIndex:i]]) {
+    for (int i = 0; i<=[retWord length]; i++) {
+        NSString *subTest = [retWord substringFromIndex:i];
+        if ([letter isEqualToString:subTest]) {
             [pArray replaceObjectAtIndex:i withObject:letter];
         }
     }
