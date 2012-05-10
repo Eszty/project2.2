@@ -14,6 +14,9 @@
 
 @implementation MainViewController
 
+NSString *retWord;
+NSMutableArray *retArr;
+
 
 @synthesize textField = _textField;
 @synthesize button = _button;
@@ -44,9 +47,7 @@
     NSLog(@"%c", char_array[0]);
     NSLog(@"%c", char_array[1]);
     
-    
-
-    
+        
     //Get item10 with value 'aardvark'
     //NSObject *randomWord = [wordsArray objectForKey:@"Item 6"];
     //NSLog(@"%@", randomWord);
@@ -102,8 +103,8 @@
 
     }
     
-    NSString *retWord = [self returnWord:word];
-    NSMutableArray *retArr = [self returnArray:pArray];
+    retWord = [self returnWord:word];
+    retArr = [self returnArray:pArray];
 }
 
 - (NSString*)returnWord:word{
@@ -118,10 +119,10 @@
 
 - (IBAction)guess:(id)sender {
     NSString *letter = self.textField.text;
-    //[self guessTest: letter retWord retArr];
+    [self guessTestWithFirst:letter second:retWord third:retArr];
 }
 
-- (void)guessTest:(id)first :(NSString *)letter second:(NSString *)word third:(NSMutableArray *)pArray {
+- (void)guessTestWithFirst:(NSString *)letter second:(NSString *)word third:(NSMutableArray *)pArray {
     
     int cnt = [word length];
     
@@ -145,8 +146,6 @@
         [self.textField resignFirstResponder]; //close keyboard
         
     }
-
-    
     
 }
 
