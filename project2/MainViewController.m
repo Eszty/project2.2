@@ -32,11 +32,7 @@ NSMutableArray *retArr;
 	// Do any additional setup after loading the view, typically from a nib.
     /*NSString* test = [[NSBundle mainBundle] pathForResource:@"words" ofType:@"plist"];
      NSMutableDictionary *wordsArray = [[NSMutableDictionary alloc] init];
-<<<<<<< HEAD
      wordsArray = [[NSMutableDictionary alloc] initWithContentsOfFile: test]; */
-=======
-     wordsArray = [[NSMutableDictionary alloc] initWithContentsOfFile: test]; 
->>>>>>> 380ffa8c7b0913fa9cf41182008136195c745f17
     
     NSString *myFile = [[NSBundle mainBundle] pathForResource:@"words" ofType:@"plist"];
     NSMutableDictionary* myDict = [[NSMutableDictionary alloc] initWithContentsOfFile:myFile];
@@ -47,7 +43,6 @@ NSMutableArray *retArr;
     
     
     NSString *temp = @"hazelnoot";
-<<<<<<< HEAD
     const char *char_array = [temp UTF8String];
     NSLog(@"%c", char_array[0]);
     NSLog(@"%c", char_array[1]);
@@ -57,28 +52,6 @@ NSMutableArray *retArr;
     //NSObject *randomWord = [wordsArray objectForKey:@"Item 6"];
     //NSLog(@"%@", randomWord);
     
-=======
-    
-    NSMutableArray *pArray = [[NSMutableArray alloc] init];
-    
-    for(int i = 0; i < [temp length]; i++){
-        UILabel *placeholder = [[UILabel alloc] initWithFrame: CGRectMake((10+30*i), 100, 100, 50)];
-        
-        placeholder.text = [NSString stringWithFormat:@"_"];
-        placeholder.backgroundColor = [UIColor clearColor];
-        placeholder.textColor = [UIColor redColor];
-        placeholder.font = [UIFont systemFontOfSize:30];
-        
-        [pArray addObject: placeholder.text];
-        
-        [self.view addSubview:placeholder];
-        
-        [self.textField resignFirstResponder]; //close keyboard
-        
-    }
-
-    
->>>>>>> 380ffa8c7b0913fa9cf41182008136195c745f17
 }       
 
 - (void)viewDidUnload
@@ -111,7 +84,6 @@ NSMutableArray *retArr;
 - (IBAction)buttonPressed:(id)sender {
     
     NSString *word = self.textField.text;
-<<<<<<< HEAD
     int count = [word length];
     NSMutableArray *pArray = [[NSMutableArray alloc] init];
     
@@ -133,9 +105,6 @@ NSMutableArray *retArr;
     
     retWord = [self returnWord:word];
     retArr = [self returnArray:pArray];
-=======
-    
->>>>>>> 380ffa8c7b0913fa9cf41182008136195c745f17
 }
 
 - (NSString*)returnWord:word{
