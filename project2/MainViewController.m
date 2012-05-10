@@ -16,6 +16,7 @@
 
 NSString *retWord;
 NSMutableArray *retArr;
+NSMutableArray *wrongGuessArray;
 
 
 @synthesize textField = _textField;
@@ -116,6 +117,7 @@ NSMutableArray *retArr;
 
 - (void)guessTestWithFirst:(NSString *)letter second:(NSMutableArray *)pArray {
     
+    NSMutableArray *guessArray;
     int cnt = [retWord length];
     
     for (int i = 0; i<[retWord length]; i++) {
@@ -123,6 +125,9 @@ NSMutableArray *retArr;
         NSString *temp = [[NSString alloc] initWithFormat:@"%c",subTest]; 
         if ([letter isEqualToString:temp]) {
             [pArray replaceObjectAtIndex:i withObject:letter];
+        }
+        else {
+            [guessArray addObject:temp];
         }
     }
     
@@ -140,6 +145,8 @@ NSMutableArray *retArr;
         [self.textField resignFirstResponder]; //close keyboard
         
     }
+    
+    wrongGuessArray = [self returnArray:guessArray];
     
 }
 
