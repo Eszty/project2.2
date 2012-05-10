@@ -30,9 +30,19 @@
     wordsArray = [[NSMutableDictionary alloc] initWithContentsOfFile: test]; */
     
     NSString *myFile = [[NSBundle mainBundle] pathForResource:@"words" ofType:@"plist"];
-    NSMutableDictionary* myDict = [[NSMutableDictionary alloc]initWithContentsOfFile:myFile];
-    NSObject *randomWord = [myDict objectForKey:@"Item 6"];
-    NSLog(@"%@", randomWord);
+    NSMutableDictionary* myDict = [[NSMutableDictionary alloc] initWithContentsOfFile:myFile];
+    NSLog(@"%@", myDict);
+    NSArray *allkeys = [myDict allKeys];
+    NSArray *allvalues = [myDict allValues];
+    NSLog(@"%@", [allvalues objectAtIndex:1]);
+    
+    
+    NSString *temp = @"hazelnoot";
+    const char *char_array = [temp UTF8String];
+    NSLog(@"%c", char_array[0]);
+    NSLog(@"%c", char_array[1]);
+    
+    
 
     
     //Get item10 with value 'aardvark'
@@ -68,7 +78,7 @@
 }
 
 //Creates placeholders for the input word
-- (NSString*)buttonPressed:(id)sender {
+- (NSString*)buttonPressed:(id)sender:(id)nr_of_letters {
     
     NSString *word = self.textField.text;
     int count = [word length];
