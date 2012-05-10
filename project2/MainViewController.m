@@ -196,5 +196,13 @@ NSMutableArray *wrongGuessArray;
  }
 
 
+//TODO:
+// - Display guessed letters
+// - Only alphabetical + only 1 letter
+// - Congratulate winner
+// - Evil hangman
+// - Settings
+// - Read words.plist
+
 
 @end
