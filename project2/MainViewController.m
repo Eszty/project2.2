@@ -169,8 +169,29 @@ NSMutableArray *wrongGuessArray;
 
 
 - (void)newGame:(id)sender {
+    NSLog(@"Hallo");
     //reset nr guesses, load a new random word
     self.nrguesses.text = @"0";
+    retWord = @"hazelnoot";
+    
+    NSMutableArray *pArray = [[NSMutableArray alloc] init];
+    
+    for(int i = 0; i < [retWord length]; i++){
+        UILabel *placeholder = [[UILabel alloc] initWithFrame: CGRectMake((10+30*i), 100, 100, 50)];
+        
+        placeholder.text = [NSString stringWithFormat:@"_"];
+        placeholder.backgroundColor = [UIColor clearColor];
+        placeholder.textColor = [UIColor redColor];
+        placeholder.font = [UIFont systemFontOfSize:30];
+        
+        [pArray addObject: placeholder.text];
+        
+        [self.view addSubview:placeholder];
+        
+        [self.textField resignFirstResponder]; //close keyboard
+        
+    }
+    retArr = [self returnArray:pArray];
     
  }
 
