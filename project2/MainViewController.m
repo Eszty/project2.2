@@ -32,25 +32,35 @@ NSMutableArray *retArr;
 	// Do any additional setup after loading the view, typically from a nib.
     /*NSString* test = [[NSBundle mainBundle] pathForResource:@"words" ofType:@"plist"];
      NSMutableDictionary *wordsArray = [[NSMutableDictionary alloc] init];
-     wordsArray = [[NSMutableDictionary alloc] initWithContentsOfFile: test]; */
+     wordsArray = [[NSMutableDictionary alloc] initWithContentsOfFile: test]; 
     
     NSString *myFile = [[NSBundle mainBundle] pathForResource:@"words" ofType:@"plist"];
     NSMutableDictionary* myDict = [[NSMutableDictionary alloc] initWithContentsOfFile:myFile];
     NSLog(@"%@", myDict);
     NSArray *allkeys = [myDict allKeys];
     NSArray *allvalues = [myDict allValues];
-    NSLog(@"%@", [allvalues objectAtIndex:1]);
+    NSLog(@"%@", [allvalues objectAtIndex:1]);*/
     
     
-    NSString *temp = @"hazelnoot";
-    const char *char_array = [temp UTF8String];
-    NSLog(@"%c", char_array[0]);
-    NSLog(@"%c", char_array[1]);
+    NSString *retWord = @"hazelnoot";
     
+    NSMutableArray *pArray = [[NSMutableArray alloc] init];
     
-    //Get item10 with value 'aardvark'
-    //NSObject *randomWord = [wordsArray objectForKey:@"Item 6"];
-    //NSLog(@"%@", randomWord);
+    for(int i = 0; i < [retWord length]; i++){
+        UILabel *placeholder = [[UILabel alloc] initWithFrame: CGRectMake((10+30*i), 100, 100, 50)];
+        
+        placeholder.text = [NSString stringWithFormat:@"_"];
+        placeholder.backgroundColor = [UIColor clearColor];
+        placeholder.textColor = [UIColor redColor];
+        placeholder.font = [UIFont systemFontOfSize:30];
+        
+        [pArray addObject: placeholder.text];
+        
+        [self.view addSubview:placeholder];
+        
+        [self.textField resignFirstResponder]; //close keyboard
+        
+    }
     
 }       
 
@@ -84,27 +94,7 @@ NSMutableArray *retArr;
 - (IBAction)buttonPressed:(id)sender {
     
     NSString *word = self.textField.text;
-    int count = [word length];
-    NSMutableArray *pArray = [[NSMutableArray alloc] init];
-    
-    for(int i = 0; i < count; i++){
-        UILabel *placeholder = [[UILabel alloc] initWithFrame: CGRectMake((10+30*i), 100, 100, 50)];
-        
-        placeholder.text = [NSString stringWithFormat:@"_"];
-        placeholder.backgroundColor = [UIColor clearColor];
-        placeholder.textColor = [UIColor redColor];
-        placeholder.font = [UIFont systemFontOfSize:30];
-        
-        [pArray addObject: placeholder.text];
-        
-        [self.view addSubview:placeholder];
-        
-        [self.textField resignFirstResponder]; //close keyboard
-        
-    }
-    
-    retWord = [self returnWord:word];
-    retArr = [self returnArray:pArray];
+
 }
 
 - (NSString*)returnWord:word{
