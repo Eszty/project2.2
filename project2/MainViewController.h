@@ -11,7 +11,6 @@
 
 @interface MainViewController : UIViewController <FlipsideViewControllerDelegate>
 
-
 @property (nonatomic, strong) IBOutlet UITextField* textField;
 @property (nonatomic, strong) IBOutlet UIButton* button;
 @property (nonatomic, strong) IBOutlet UILabel* placeholder;

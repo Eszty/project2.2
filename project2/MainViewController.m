@@ -32,20 +32,12 @@ NSMutableArray *wrongGuessArray;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
-    /*NSString* test = [[NSBundle mainBundle] pathForResource:@"words" ofType:@"plist"];
-     NSMutableDictionary *wordsArray = [[NSMutableDictionary alloc] init];
-     wordsArray = [[NSMutableDictionary alloc] initWithContentsOfFile: test]; 
+    NSString *myFile = [[NSBundle mainBundle] pathForResource:@"words" ofType:@"plist"];    
+    NSArray *thisArray = [[NSArray alloc] initWithContentsOfFile:myFile];
+    int randomIndex = (arc4random()%[thisArray count]);
+    retWord = [thisArray objectAtIndex:randomIndex];
+    NSLog(@"The random word: %@", retWord);
     
-    NSString *myFile = [[NSBundle mainBundle] pathForResource:@"words" ofType:@"plist"];
-    NSMutableDictionary* myDict = [[NSMutableDictionary alloc] initWithContentsOfFile:myFile];
-    NSLog(@"%@", myDict);
-    NSArray *allkeys = [myDict allKeys];
-    NSArray *allvalues = [myDict allValues];
-    NSLog(@"%@", [allvalues objectAtIndex:1]);*/
-    
-    
-    retWord = @"hazelnoot";
     
     NSMutableArray *pArray = [[NSMutableArray alloc] init];
     
@@ -162,16 +154,30 @@ NSMutableArray *wrongGuessArray;
 }
 
 - (void) gameOver {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Game over" 
+    UIAlertView *gameover = [[UIAlertView alloc] initWithTitle:@"Game over" 
                                                     message:@"You lost the game. Click OK to start a new game" 
-                                                   delegate:nil 
-                                          cancelButtonTitle:@"OK"
-                                          otherButtonTitles:nil];
-    [alert show];
+                                                   delegate:self 
+                                          cancelButtonTitle:@"Quit game"
+                                             otherButtonTitles:@"OK", nil];
+    [gameover show];
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    NSString *title = [alertView buttonTitleAtIndex:buttonIndex];
+    
+    if([title isEqualToString:@"OK"])
+    {
+        [self newGame];
+    }
+    else if([title isEqualToString:@"Quit game"])
+    {
+        exit(0);
+    }
 }
 
 
-- (void)newGame:(id)sender {
+- (void)newGame {
     NSLog(@"Hallo");
     //reset nr guesses, load a new random word
     self.nrguesses.text = @"0";
