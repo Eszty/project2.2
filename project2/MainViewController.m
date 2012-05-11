@@ -25,6 +25,7 @@ NSMutableArray *wrongGuessArray;
 @synthesize guess = _guess;
 @synthesize newgame = _newgame;
 @synthesize nrguesses = _nrguesses;
+@synthesize wrongLetters = _wrongLetters;
 
 //extern NSMutableArray *PArray; 
 
@@ -117,7 +118,7 @@ NSMutableArray *wrongGuessArray;
 
 - (void)guessTestWithFirst:(NSString *)letter second:(NSMutableArray *)pArray {
     
-    NSMutableArray *guessArray;
+    //NSMutableArray *guessArray;
     int cnt = [retWord length];
     
     for (int i = 0; i<[retWord length]; i++) {
@@ -127,8 +128,10 @@ NSMutableArray *wrongGuessArray;
             [pArray replaceObjectAtIndex:i withObject:letter];
         }
         else {
-            [guessArray addObject:temp];
+            [wrongGuessArray addObject:temp];
         }
+        
+        
     }
     
     for(int i = 0; i < cnt; i++){
@@ -154,7 +157,7 @@ NSMutableArray *wrongGuessArray;
     else  {
         self.nrguesses.text = [NSString stringWithFormat:@"%d", temp];
     }
-    wrongGuessArray = [self returnArray:guessArray];
+    //wrongGuessArray = [self returnArray:guessArray];
   
 }
 
