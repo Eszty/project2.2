@@ -31,20 +31,12 @@ NSMutableArray *wrongGuessArray;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
-    /*NSString* test = [[NSBundle mainBundle] pathForResource:@"words" ofType:@"plist"];
-     NSMutableDictionary *wordsArray = [[NSMutableDictionary alloc] init];
-     wordsArray = [[NSMutableDictionary alloc] initWithContentsOfFile: test]; 
+    NSString *myFile = [[NSBundle mainBundle] pathForResource:@"words" ofType:@"plist"];    
+    NSArray *thisArray = [[NSArray alloc] initWithContentsOfFile:myFile];
+    int randomIndex = (arc4random()%[thisArray count]);
+    retWord = [thisArray objectAtIndex:randomIndex];
+    NSLog(@"The random word: %@", retWord);
     
-    NSString *myFile = [[NSBundle mainBundle] pathForResource:@"words" ofType:@"plist"];
-    NSMutableDictionary* myDict = [[NSMutableDictionary alloc] initWithContentsOfFile:myFile];
-    NSLog(@"%@", myDict);
-    NSArray *allkeys = [myDict allKeys];
-    NSArray *allvalues = [myDict allValues];
-    NSLog(@"%@", [allvalues objectAtIndex:1]);*/
-    
-    
-    retWord = @"hazelnoot";
     
     NSMutableArray *pArray = [[NSMutableArray alloc] init];
     
