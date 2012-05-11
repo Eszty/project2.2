@@ -159,16 +159,30 @@ NSMutableArray *wrongGuessArray;
 }
 
 - (void) gameOver {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Game over" 
+    UIAlertView *gameover = [[UIAlertView alloc] initWithTitle:@"Game over" 
                                                     message:@"You lost the game. Click OK to start a new game" 
-                                                   delegate:nil 
-                                          cancelButtonTitle:@"OK"
-                                          otherButtonTitles:nil];
-    [alert show];
+                                                   delegate:self 
+                                          cancelButtonTitle:@"Quit game"
+                                             otherButtonTitles:@"OK", nil];
+    [gameover show];
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    NSString *title = [alertView buttonTitleAtIndex:buttonIndex];
+    
+    if([title isEqualToString:@"OK"])
+    {
+        [self newGame];
+    }
+    else if([title isEqualToString:@"Quit game"])
+    {
+        exit(0);
+    }
 }
 
 
-- (void)newGame:(id)sender {
+- (void)newGame {
     NSLog(@"Hallo");
     //reset nr guesses, load a new random word
     self.nrguesses.text = @"0";
