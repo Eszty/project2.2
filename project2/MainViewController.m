@@ -122,8 +122,7 @@ NSMutableArray *wrongGuessArray;
         else {
             [wrongGuessArray addObject:temp];
         }
-        
-        
+        self.wrongLetters.text = [wrongGuessArray];
     }
     
     for(int i = 0; i < cnt; i++){
