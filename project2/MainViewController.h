@@ -17,10 +17,13 @@
 @property (nonatomic, strong) IBOutlet UIButton* newgame;
 @property (nonatomic, strong) IBOutlet UIButton* guess;
 @property (nonatomic, strong) IBOutlet UILabel* nrguesses;
+@property (nonatomic, strong) IBOutlet UILabel* currentGame;
 
 
+- (IBAction)startEvilHangman:(id)sender;
+- (IBAction)startNormalHangman:(id)sender;
 - (IBAction)buttonPressed:(id)sender;
-- (IBAction)newGame:(id)sender;
+- (IBAction)newGame:(int)type;
 - (IBAction)showInfo:(id)sender;
 - (IBAction)guess:(id)sender;
 - (void)guessTest:first:(NSString *)ltr second:(NSString *)wrd third:(NSMutableArray *)pArr;

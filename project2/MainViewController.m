@@ -15,8 +15,10 @@
 @implementation MainViewController
 
 NSString *retWord;
+int currentGameType = 0;
 NSMutableArray *retArr;
 NSMutableArray *wrongGuessArray;
+NSArray *allWords; 
 
 
 @synthesize textField = _textField;
@@ -31,13 +33,25 @@ NSMutableArray *wrongGuessArray;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    //Load plist into array and choose random word
     NSString *myFile = [[NSBundle mainBundle] pathForResource:@"words" ofType:@"plist"];    
-    NSArray *thisArray = [[NSArray alloc] initWithContentsOfFile:myFile];
-    int randomIndex = (arc4random()%[thisArray count]);
-    retWord = [thisArray objectAtIndex:randomIndex];
+    allWords = [[NSArray alloc] initWithContentsOfFile:myFile];
+    int randomIndex = (arc4random()%[allWords count]);
+    retWord = [allWords objectAtIndex:randomIndex];
     NSLog(@"The random word: %@", retWord);
     
+    //Set the game title to current game type
+    if (currentGameType == 1) {
+        self.currentGame.text = @"Evil";        
+    }
+    //If currentGameType != 0 || 1, set to 0.
+    else {
+        currentGameType = 0;
+        self.currentGame.text = @"Normal";
+    }
     
+    //Place placeholders
     NSMutableArray *pArray = [[NSMutableArray alloc] init];
     
     for(int i = 0; i < [retWord length]; i++){
@@ -88,7 +102,6 @@ NSMutableArray *wrongGuessArray;
 //Creates placeholders for the input word
 - (IBAction)buttonPressed:(id)sender {
     
-    //NSString *word = self.textField.text;
 
 }
 
@@ -109,44 +122,51 @@ NSMutableArray *wrongGuessArray;
 
 - (void)guessTestWithFirst:(NSString *)letter second:(NSMutableArray *)pArray {
     
-    NSMutableArray *guessArray;
-    int cnt = [retWord length];
-    
-    for (int i = 0; i<[retWord length]; i++) {
-        char subTest = [retWord characterAtIndex:i];
-        NSString *temp = [[NSString alloc] initWithFormat:@"%c",subTest]; 
-        if ([letter isEqualToString:temp]) {
-            [pArray replaceObjectAtIndex:i withObject:letter];
+    // Evil hangman algorithm
+    if (currentGameType == 1) {
+        
+    }
+    //Normal hangman algorithm
+    else {
+        NSMutableArray *guessArray;
+        
+        for (int i = 0; i<[retWord length]; i++) {
+            char subTest = [retWord characterAtIndex:i];
+            NSString *temp = [[NSString alloc] initWithFormat:@"%c",subTest]; 
+            if ([letter isEqualToString:temp]) {
+                [pArray replaceObjectAtIndex:i withObject:letter];
+            }
+            else {
+                [guessArray addObject:temp];
+            }
         }
-        else {
-            [guessArray addObject:temp];
+        
+        for(int i = 0; i < [retWord length]; i++){
+            UILabel *placeholderNew = [[UILabel alloc] initWithFrame: CGRectMake((10+30*i), 100, 100, 50)];
+            
+            placeholderNew.text = [pArray objectAtIndex:i];
+            placeholderNew.backgroundColor = [UIColor clearColor];
+            placeholderNew.textColor = [UIColor redColor];
+            placeholderNew.font = [UIFont systemFontOfSize:30];
+            
+            
+            [self.view addSubview:placeholderNew];
+            
+            [self.textField resignFirstResponder]; //close keyboard
+            
         }
+        //Update number of guesses
+        int temp = [self.nrguesses.text intValue];
+        temp++;
+        if (temp == 10) {
+            [self gameOver];
+        }
+        else  {
+            self.nrguesses.text = [NSString stringWithFormat:@"%d", temp];
+        }
+        wrongGuessArray = [self returnArray:guessArray];
     }
     
-    for(int i = 0; i < cnt; i++){
-        UILabel *placeholderNew = [[UILabel alloc] initWithFrame: CGRectMake((10+30*i), 100, 100, 50)];
-        
-        placeholderNew.text = [pArray objectAtIndex:i];
-        placeholderNew.backgroundColor = [UIColor clearColor];
-        placeholderNew.textColor = [UIColor redColor];
-        placeholderNew.font = [UIFont systemFontOfSize:30];
-        
-        
-        [self.view addSubview:placeholderNew];
-        
-        [self.textField resignFirstResponder]; //close keyboard
-        
-    }
-    //Update number of guesses
-    int temp = [self.nrguesses.text intValue];
-    temp++;
-    if (temp == 10) {
-        [self gameOver];
-    }
-    else  {
-        self.nrguesses.text = [NSString stringWithFormat:@"%d", temp];
-    }
-    wrongGuessArray = [self returnArray:guessArray];
   
 }
 
@@ -165,25 +185,41 @@ NSMutableArray *wrongGuessArray;
     
     if([title isEqualToString:@"OK"])
     {
-        [self newGame];
+        [self newGame:currentGameType];
     }
     else if([title isEqualToString:@"Quit game"])
     {
         exit(0);
     }
 }
+// Start a new normal hangman game
+- (IBAction)startNormalHangman:(id)sender {
+    [self newGame:0];    
+}
+
+//Start a new evil hangman game
+- (IBAction)startEvilHangman:(id)sender {
+    [self newGame:1];    
+}
 
 
-- (void)newGame {
-    NSLog(@"Hallo");
+//Type = 0: normal hangman
+//Type = 1: evil hangman
+
+- (void)newGame:(int)type {
     //reset nr guesses, load a new random word
+    NSString *myFile = [[NSBundle mainBundle] pathForResource:@"words" ofType:@"plist"];    
+    NSArray *thisArray = [[NSArray alloc] initWithContentsOfFile:myFile];
+    int randomIndex = (arc4random()%[thisArray count]);
+    retWord = [thisArray objectAtIndex:randomIndex];
+    
+    //Reset number of guesses
     self.nrguesses.text = @"0";
-    retWord = @"hazelnoot";
     
     NSMutableArray *pArray = [[NSMutableArray alloc] init];
     
     for(int i = 0; i < [retWord length]; i++){
-        UILabel *placeholder = [[UILabel alloc] initWithFrame: CGRectMake((10+30*i), 100, 100, 50)];
+        UILabel *placeholder = [[UILabel alloc] initWithFrame: CGRectMake((10+30*i), 100, 100, 50)  ];
         
         placeholder.text = [NSString stringWithFormat:@"_"];
         placeholder.backgroundColor = [UIColor clearColor];
@@ -200,6 +236,16 @@ NSMutableArray *wrongGuessArray;
     retArr = [self returnArray:pArray];
     //TODO
     //Empty/remove placeholders that hold letters
+    //New Game = evil
+    if (type == 1){
+        currentGameType = 1;
+    }
+    
+    //New game = normal, or if currentGameType != 0 || 1.
+    else {
+        currentGameType = 1;        
+    }
+
  }
 
 
@@ -207,9 +253,10 @@ NSMutableArray *wrongGuessArray;
 // - Display guessed letters
 // - Only alphabetical + only 1 letter
 // - Congratulate winner
-// - Evil hangman
+// - Evil hangman - BUSY ON
+// - Put an array of placeholders and right guessed letters. Must be emptied with new game.
 // - Settings
-// - Read words.plist
+// - Read words.plist - DONE
 
 
 @end
