@@ -69,7 +69,7 @@ UILabel *placeholderNew;
         //NSLog(@"length %d", [temp length]);
         if ([temp length] == sizeOfSecretWord) {
             //NSLog(@"==");
-            NSLog(@"%@", temp);
+            //NSLog(@"%@", temp);
             [setWith addObject:temp];
         }
     }
@@ -78,7 +78,7 @@ UILabel *placeholderNew;
     //Place placeholders
     NSMutableArray *pArray = [[NSMutableArray alloc] init];
     
-    for(int i = 0; i < sizeOfSecretWord; i++){
+    for(int i = 0; i < [retWord length]; i++){
         UILabel *placeholder = [[UILabel alloc] initWithFrame: CGRectMake((10+30*i), 100, 100, 50)];
 
         
@@ -93,8 +93,7 @@ UILabel *placeholderNew;
         
         [self.view addSubview:placeholder];
         
-        [self.textField resignFirstResponder]; //close keyboard
-        
+        [self.textField resignFirstResponder]; //close keyboard        
     }
     retArr = [self returnArray:pArray];
     
@@ -172,7 +171,9 @@ UILabel *placeholderNew;
         
         //Loop through all the words
         for (int i = 0; i < [allWords count]; i++) {
+            NSLog(@"temp1");
             NSString *temp = [allWords objectAtIndex:i];
+            NSLog(@"temp2");
             
             //Size of secret word must be the same as current word from plist
             if ([temp length] == sizeOfSecretWord) {
@@ -319,7 +320,7 @@ UILabel *placeholderNew;
     //TODO
     //Empty/remove placeholders that hold letters
     //New Game = evil
-    if (type == 1){
+    /*if (type == 1){
         currentGameType = 1;
         self.currentGame.text = @"Evil";   
         
@@ -330,7 +331,7 @@ UILabel *placeholderNew;
         
         //TODO: MAKE WORD LENGTH RANDOM INSTEAD OF 5
         
-        for(int i = 0; i < 5; i++){
+        for(int i = 0; i < sizeOfSecretWord; i++){
             UILabel *placeholder = [[UILabel alloc] initWithFrame: CGRectMake((10+30*i), 100, 100, 50)  ];
             
             placeholder.text = [NSString stringWithFormat:@"_"];
@@ -382,7 +383,7 @@ UILabel *placeholderNew;
         }
         retArr = [self returnArray:pArray];
 
-    }
+    }*/
     
 }
 
