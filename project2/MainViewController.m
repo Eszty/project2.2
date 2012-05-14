@@ -61,19 +61,18 @@ UILabel *placeholderNew;
         self.currentGame.text = @"Normal";
     }
     
-    sizeOfSecretWord = 9;
+    self.nrguesses.text = @"0";
     
+    sizeOfSecretWord = 9;
+    setWith = [[NSMutableArray alloc] init];
     //Put all words from plist with the same size as sizeOfSecretWord in setWith array
     for (int i = 0; i < [allWords count]; i++) {
         NSString *temp = [allWords objectAtIndex:i];
-        //NSLog(@"length %d", [temp length]);
         if ([temp length] == sizeOfSecretWord) {
-            //NSLog(@"==");
-            //NSLog(@"%@", temp);
             [setWith addObject:temp];
         }
     }
-    NSLog(@"length setWith: %i", [setWith count]);
+    //NSLog(@"length setWith: %i", [setWith count]);
     
     //Place placeholders
     NSMutableArray *pArray = [[NSMutableArray alloc] init];
@@ -171,12 +170,11 @@ UILabel *placeholderNew;
         
         //Loop through all the words
         for (int i = 0; i < [allWords count]; i++) {
-            NSLog(@"temp1");
             NSString *temp = [allWords objectAtIndex:i];
-            NSLog(@"temp2");
             
             //Size of secret word must be the same as current word from plist
             if ([temp length] == sizeOfSecretWord) {
+                NSLog(@"same size");
                 for (int j = 0; j < sizeOfSecretWord; j++) {
                     char subTest = [retWord characterAtIndex:i];
                     NSString *temp2 = [[NSString alloc] initWithFormat:@"%c",subTest]; 
@@ -184,6 +182,7 @@ UILabel *placeholderNew;
                     //Choosen letter fits into word from plist
                     //Add to subset with.
                     if ([letter isEqualToString:temp2]) {
+                        NSLog(@"is equal");
                         [setWith addObject:temp];
                     }
                     else {
@@ -195,7 +194,10 @@ UILabel *placeholderNew;
         }
         //Which set is bigger?
         if ([setWith count] >= [setWithout count]) {
-            //
+            NSLog(@"setWith is bigger");
+        }
+        else {
+            NSLog(@"setWithout is bigger");
         }
         
     }
@@ -282,22 +284,9 @@ UILabel *placeholderNew;
 
 - (void)newGame:(int)type {
     
-    //reset nr guesses, load a new random word
-    //TODO
-    NSString *myFile = [[NSBundle mainBundle] pathForResource:@"words" ofType:@"plist"];    
-    NSArray *thisArray = [[NSArray alloc] initWithContentsOfFile:myFile];
-    int randomIndex = (arc4random()%[thisArray count]);
-    //retWord = [thisArray objectAtIndex:randomIndex];
-    for (UIView *subview in [self.view subviews]) {
-        if (subview.tag == 6) {
-            [subview removeFromSuperview];
-        }
-    }
-    NSLog(@"The random word: %@", retWord);
+    currentGameType = type;
     [self viewDidLoad];
-    
-    //Reset number of guesses
-    self.nrguesses.text = @"0";
+
     /*
     NSMutableArray *pArray = [[NSMutableArray alloc] init];
     
