@@ -234,22 +234,23 @@ UILabel *placeholderNew;
 //Type = 1: evil hangman
 
 - (void)newGame:(int)type {
+    
     //reset nr guesses, load a new random word
     NSString *myFile = [[NSBundle mainBundle] pathForResource:@"words" ofType:@"plist"];    
     NSArray *thisArray = [[NSArray alloc] initWithContentsOfFile:myFile];
     int randomIndex = (arc4random()%[thisArray count]);
-    retWord = [thisArray objectAtIndex:randomIndex];
+    //retWord = [thisArray objectAtIndex:randomIndex];
     for (UIView *subview in [self.view subviews]) {
         if (subview.tag == 6) {
             [subview removeFromSuperview];
         }
     }
     NSLog(@"The random word: %@", retWord);
-    
+    [self viewDidLoad];
     
     //Reset number of guesses
     self.nrguesses.text = @"0";
-    
+    /*
     NSMutableArray *pArray = [[NSMutableArray alloc] init];
     
     for(int i = 0; i < [retWord length]; i++){
@@ -267,7 +268,7 @@ UILabel *placeholderNew;
         [self.textField resignFirstResponder]; //close keyboard
         
     }
-    retArr = [self returnArray:pArray];
+    retArr = [self returnArray:pArray];*/
     //TODO
     //Empty/remove placeholders that hold letters
     //New Game = evil
