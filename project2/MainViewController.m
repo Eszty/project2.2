@@ -19,6 +19,9 @@ int currentGameType = 0;
 NSMutableArray *retArr;
 NSMutableArray *wrongGuessArray;
 NSArray *allWords; 
+int sizeOfSecretWord;
+NSMutableArray *setWith;
+NSMutableArray *setWithout;
 
 NSCharacterSet *alphaset;
 
@@ -58,11 +61,26 @@ UILabel *placeholderNew;
         self.currentGame.text = @"Normal";
     }
     
+    sizeOfSecretWord = 9;
+    
+    //Put all words from plist with the same size as sizeOfSecretWord in setWith array
+    for (int i = 0; i < [allWords count]; i++) {
+        NSString *temp = [allWords objectAtIndex:i];
+        //NSLog(@"length %d", [temp length]);
+        if ([temp length] == sizeOfSecretWord) {
+            //NSLog(@"==");
+            NSLog(@"%@", temp);
+            [setWith addObject:temp];
+        }
+    }
+    NSLog(@"length setWith: %i", [setWith count]);
+    
     //Place placeholders
     NSMutableArray *pArray = [[NSMutableArray alloc] init];
     
-    for(int i = 0; i < [retWord length]; i++){
-        placeholder = [[UILabel alloc] initWithFrame: CGRectMake((10+30*i), 100, 100, 50)];
+    for(int i = 0; i < sizeOfSecretWord; i++){
+        UILabel *placeholder = [[UILabel alloc] initWithFrame: CGRectMake((10+30*i), 100, 100, 50)];
+
         
         placeholder.text = [NSString stringWithFormat:@"_"];
         placeholder.backgroundColor = [UIColor clearColor];
@@ -146,6 +164,34 @@ UILabel *placeholderNew;
     
     // Evil hangman algorithm
     if (currentGameType == 1) {
+        NSLog(@"Evil algorithm");
+        
+        //Loop through all the words
+        for (int i = 0; i < [allWords count]; i++) {
+            NSString *temp = [allWords objectAtIndex:i];
+            
+            //Size of secret word must be the same as current word from plist
+            if ([temp length] == sizeOfSecretWord) {
+                for (int j = 0; j < sizeOfSecretWord; j++) {
+                    char subTest = [retWord characterAtIndex:i];
+                    NSString *temp2 = [[NSString alloc] initWithFormat:@"%c",subTest]; 
+                    
+                    //Choosen letter fits into word from plist
+                    //Add to subset with.
+                    if ([letter isEqualToString:temp2]) {
+                        [setWith addObject:temp];
+                    }
+                    else {
+                        [setWithout addObject:temp];
+                    }
+                }
+            }
+            else continue;
+        }
+        //Which set is bigger?
+        if ([setWith count] >= [setWithout count]) {
+            //
+        }
         
     }
     //Normal hangman algorithm
@@ -217,7 +263,7 @@ UILabel *placeholderNew;
 }
 // Start a new normal hangman game
 - (IBAction)startNormalHangman:(id)sender {
-    [self newGame:0];    
+    [self newGame:0];   
 }
 
 //Start a new evil hangman game
@@ -232,6 +278,7 @@ UILabel *placeholderNew;
 - (void)newGame:(int)type {
     
     //reset nr guesses, load a new random word
+    //TODO
     NSString *myFile = [[NSBundle mainBundle] pathForResource:@"words" ofType:@"plist"];    
     NSArray *thisArray = [[NSArray alloc] initWithContentsOfFile:myFile];
     int randomIndex = (arc4random()%[thisArray count]);
@@ -270,11 +317,67 @@ UILabel *placeholderNew;
     //New Game = evil
     if (type == 1){
         currentGameType = 1;
+        self.currentGame.text = @"Evil";   
+        
+        //Reset number of guesses
+        self.nrguesses.text = @"0";
+        
+        NSMutableArray *pArray = [[NSMutableArray alloc] init];
+        
+        //TODO: MAKE WORD LENGTH RANDOM INSTEAD OF 5
+        
+        for(int i = 0; i < 5; i++){
+            UILabel *placeholder = [[UILabel alloc] initWithFrame: CGRectMake((10+30*i), 100, 100, 50)  ];
+            
+            placeholder.text = [NSString stringWithFormat:@"_"];
+            placeholder.backgroundColor = [UIColor clearColor];
+            placeholder.textColor = [UIColor redColor];
+            placeholder.font = [UIFont systemFontOfSize:30];
+            
+            [pArray addObject: placeholder.text];
+            
+            [self.view addSubview:placeholder];
+            
+            [self.textField resignFirstResponder]; //close keyboard
+            
+        }
+        retArr = [self returnArray:pArray];
+
     }
     
     //New game = normal, or if currentGameType != 0 || 1.
     else {
-        currentGameType = 1;        
+        currentGameType = 0;
+        self.currentGame.text = @"Normal";
+        
+        //Reset number of guesses
+        self.nrguesses.text = @"0";
+        
+        //Choose random word
+        NSString *myFile = [[NSBundle mainBundle] pathForResource:@"words" ofType:@"plist"];    
+        NSArray *thisArray = [[NSArray alloc] initWithContentsOfFile:myFile];
+        int randomIndex = (arc4random()%[thisArray count]);
+        retWord = [thisArray objectAtIndex:randomIndex];
+        
+        NSMutableArray *pArray = [[NSMutableArray alloc] init];
+        
+        for(int i = 0; i < [retWord length]; i++){
+            UILabel *placeholder = [[UILabel alloc] initWithFrame: CGRectMake((10+30*i), 100, 100, 50)  ];
+            
+            placeholder.text = [NSString stringWithFormat:@"_"];
+            placeholder.backgroundColor = [UIColor clearColor];
+            placeholder.textColor = [UIColor redColor];
+            placeholder.font = [UIFont systemFontOfSize:30];
+            
+            [pArray addObject: placeholder.text];
+            
+            [self.view addSubview:placeholder];
+            
+            [self.textField resignFirstResponder]; //close keyboard
+            
+        }
+        retArr = [self returnArray:pArray];
+
     }
     
 }
@@ -293,6 +396,7 @@ UILabel *placeholderNew;
 // - Put an array of placeholders and right guessed letters. Must be emptied with new game.
 // - Settings
 // - Read words.plist - DONE
+// - Evil hangman: choose random wordlength
 
 
 @end
