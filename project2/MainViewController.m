@@ -82,11 +82,7 @@ UILabel *placeholderNew;
     
 }       
 
-- (void)viewDidUnload
-{
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
-}
+
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
@@ -283,6 +279,11 @@ UILabel *placeholderNew;
     
 }
 
+- (void)viewDidUnload
+{
+    [super viewDidUnload];
+    // Release any retained subviews of the main view.
+}
 
 //TODO:
 // - Display guessed letters
