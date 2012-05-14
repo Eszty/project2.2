@@ -42,7 +42,6 @@
 						<int key="NSvFlags">265</int>
 						<string key="NSFrame">{{282, 421}, {18, 19}}</string>
 						<reference key="NSSuperview" ref="883825266"/>
-						<reference key="NSWindow"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -79,7 +78,6 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{20, 74}, {280, 31}}</string>
 						<reference key="NSSuperview" ref="883825266"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="541002960"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
@@ -116,9 +114,8 @@
 					<object class="IBUIButton" id="722688066">
 						<reference key="NSNextResponder" ref="883825266"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{20, 15}, {72, 37}}</string>
+						<string key="NSFrame">{{11, 17}, {101, 37}}</string>
 						<reference key="NSSuperview" ref="883825266"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="89977292"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
@@ -126,7 +123,7 @@
 						<int key="IBUIContentHorizontalAlignment">0</int>
 						<int key="IBUIContentVerticalAlignment">0</int>
 						<int key="IBUIButtonType">1</int>
-						<string key="IBUINormalTitle">Done</string>
+						<string key="IBUINormalTitle">New game</string>
 						<object class="NSColor" key="IBUIHighlightedTitleColor" id="45702277">
 							<int key="NSColorSpace">3</int>
 							<bytes key="NSWhite">MQA</bytes>
@@ -150,7 +147,6 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{205, 15}, {95, 37}}</string>
 						<reference key="NSSuperview" ref="883825266"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="350615543"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
@@ -173,7 +169,6 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{79, 289}, {164, 35}}</string>
 						<reference key="NSSuperview" ref="883825266"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="881585824"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
@@ -205,7 +200,6 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{139, 349}, {42, 21}}</string>
 						<reference key="NSSuperview" ref="883825266"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="558454645"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
@@ -234,7 +228,6 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{20, 242}, {82, 39}}</string>
 						<reference key="NSSuperview" ref="883825266"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="965414441"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
@@ -257,7 +250,6 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{220, 244}, {80, 37}}</string>
 						<reference key="NSSuperview" ref="883825266"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="931267766"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
@@ -278,9 +270,8 @@
 					<object class="IBUILabel" id="89977292">
 						<reference key="NSNextResponder" ref="883825266"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{100, 20}, {97, 32}}</string>
+						<string key="NSFrame">{{106, 20}, {97, 32}}</string>
 						<reference key="NSSuperview" ref="883825266"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="219268204"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
@@ -307,7 +298,6 @@
 				</array>
 				<string key="NSFrame">{{0, 20}, {320, 460}}</string>
 				<reference key="NSSuperview"/>
-				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="722688066"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
@@ -380,12 +370,12 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
-						<string key="label">buttonPressed:</string>
+						<string key="label">newGame:</string>
 						<reference key="source" ref="722688066"/>
 						<reference key="destination" ref="372490531"/>
 						<int key="IBEventType">7</int>
 					</object>
-					<int key="connectionID">45</int>
+					<int key="connectionID">86</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
@@ -439,7 +429,6 @@
 						<reference key="object" ref="883825266"/>
 						<array class="NSMutableArray" key="children">
 							<reference ref="558454645"/>
-							<reference ref="722688066"/>
 							<reference ref="219268204"/>
 							<reference ref="350615543"/>
 							<reference ref="931267766"/>
@@ -447,6 +436,7 @@
 							<reference ref="541002960"/>
 							<reference ref="965414441"/>
 							<reference ref="89977292"/>
+							<reference ref="722688066"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -518,6 +508,7 @@
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
 			<int key="maxID">86</int>
+<<<<<<< HEAD
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -608,7 +599,10 @@
 					</object>
 				</object>
 			</array>
+=======
+>>>>>>> ab67040ea9b6b004d3e2f18cccfe04efba57e4f0
 		</object>
+		<object class="IBClassDescriber" key="IBDocument.Classes"/>
 		<int key="IBDocument.localizationMode">0</int>
 		<string key="IBDocument.TargetRuntimeIdentifier">IBCocoaTouchFramework</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDependencyDefaults">
