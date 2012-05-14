@@ -17,7 +17,6 @@
 @property (nonatomic, strong) IBOutlet UIButton* newgame;
 @property (nonatomic, strong) IBOutlet UIButton* guess;
 @property (nonatomic, strong) IBOutlet UILabel* nrguesses;
-
 @property (nonatomic, strong) IBOutlet UILabel* wrongLetters;
 
 @property (nonatomic, strong) IBOutlet UILabel* currentGame;

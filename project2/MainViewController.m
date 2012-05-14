@@ -20,6 +20,8 @@ NSMutableArray *retArr;
 NSMutableArray *wrongGuessArray;
 NSArray *allWords; 
 
+NSCharacterSet *alphaset;
+
 
 @synthesize textField = _textField;
 @synthesize button = _button;
@@ -27,7 +29,8 @@ NSArray *allWords;
 @synthesize guess = _guess;
 @synthesize newgame = _newgame;
 @synthesize nrguesses = _nrguesses;
-@synthesize wrongLetters = _wrongLetters;
+
+@synthesize currentGame = _currentGame;
 
 //extern NSMutableArray *PArray; 
 
@@ -103,53 +106,45 @@ NSArray *allWords;
 //Creates placeholders for the input word
 - (IBAction)buttonPressed:(id)sender {
     
-
+    
 }
 
 /*- (NSString*)returnWord:word{
-    NSString *wrd = word;
-    return wrd;
-}*/
+ NSString *wrd = word;
+ return wrd;
+ }*/
 
 - (NSMutableArray*)returnArray:array{
     NSMutableArray *arr = array;
     return arr;
 }
 
+//Capitalize input letter, check if alphabetical and compare with word
 - (IBAction)guess:(id)sender {
-    NSString *letter = self.textField.text;
-    [self guessTestWithFirst:letter second:retArr];
+    alphaset = [NSCharacterSet uppercaseLetterCharacterSet];
+    
+    NSString *letter = [self.textField.text uppercaseString];
+    unichar temp = [letter characterAtIndex:0];
+    
+    if ([alphaset characterIsMember:temp]) {
+        [self guessTestWithFirst:letter second:retArr];
+        self.textField.text = @"";
+    }
+    else {
+        UIAlertView *notAlpha = [[UIAlertView alloc] initWithTitle:@"Wrong input" 
+                                                           message:@"You only can guess letters" 
+                                                          delegate:nil
+                                                 cancelButtonTitle:@"Quit game"
+                                                 otherButtonTitles:@"OK", nil];
+        [notAlpha show];    }
+    
+    
 }
 
 - (void)guessTestWithFirst:(NSString *)letter second:(NSMutableArray *)pArray {
     
-
-    //NSMutableArray *guessArray;
-    int cnt = [retWord length];
-    
-    for (int i = 0; i<[retWord length]; i++) {
-        char subTest = [retWord characterAtIndex:i];
-        NSString *temp = [[NSString alloc] initWithFormat:@"%c",subTest]; 
-        if ([letter isEqualToString:temp]) {
-            [pArray replaceObjectAtIndex:i withObject:letter];
-        }
-        else {
-            [wrongGuessArray addObject:temp];
-        }
-        self.wrongLetters.text = [wrongGuessArray];
-    }
-    
-    for(int i = 0; i < cnt; i++){
-        UILabel *placeholderNew = [[UILabel alloc] initWithFrame: CGRectMake((10+30*i), 100, 100, 50)];
-        
-        placeholderNew.text = [pArray objectAtIndex:i];
-        placeholderNew.backgroundColor = [UIColor clearColor];
-        placeholderNew.textColor = [UIColor redColor];
-        placeholderNew.font = [UIFont systemFontOfSize:30];
-
     // Evil hangman algorithm
     if (currentGameType == 1) {
-
         
     }
     //Normal hangman algorithm
@@ -192,26 +187,15 @@ NSArray *allWords;
         }
         wrongGuessArray = [self returnArray:guessArray];
     }
-
-    //Update number of guesses
-    int temp = [self.nrguesses.text intValue];
-    temp++;
-    if (temp == 10) {
-        [self gameOver];
-    }
-    else  {
-        self.nrguesses.text = [NSString stringWithFormat:@"%d", temp];
-    }
-    //wrongGuessArray = [self returnArray:guessArray];
-
-  
+    
+    
 }
 
 - (void) gameOver {
     UIAlertView *gameover = [[UIAlertView alloc] initWithTitle:@"Game over" 
-                                                    message:@"You lost the game. Click OK to start a new game" 
-                                                   delegate:self 
-                                          cancelButtonTitle:@"Quit game"
+                                                       message:@"You lost the game. Click OK to start a new game" 
+                                                      delegate:self 
+                                             cancelButtonTitle:@"Quit game"
                                              otherButtonTitles:@"OK", nil];
     [gameover show];
 }
@@ -282,8 +266,8 @@ NSArray *allWords;
     else {
         currentGameType = 1;        
     }
-
- }
+    
+}
 
 
 //TODO:
