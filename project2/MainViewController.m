@@ -22,6 +22,9 @@ NSArray *allWords;
 
 NSCharacterSet *alphaset;
 
+UILabel *placeholder;
+UILabel *placeholderNew;
+
 
 @synthesize textField = _textField;
 @synthesize button = _button;
@@ -32,7 +35,7 @@ NSCharacterSet *alphaset;
 
 @synthesize currentGame = _currentGame;
 
-//extern NSMutableArray *PArray; 
+
 
 - (void)viewDidLoad
 {
@@ -59,12 +62,14 @@ NSCharacterSet *alphaset;
     NSMutableArray *pArray = [[NSMutableArray alloc] init];
     
     for(int i = 0; i < [retWord length]; i++){
-        UILabel *placeholder = [[UILabel alloc] initWithFrame: CGRectMake((10+30*i), 100, 100, 50)];
+        placeholder = [[UILabel alloc] initWithFrame: CGRectMake((10+30*i), 100, 100, 50)];
         
         placeholder.text = [NSString stringWithFormat:@"_"];
         placeholder.backgroundColor = [UIColor clearColor];
         placeholder.textColor = [UIColor redColor];
         placeholder.font = [UIFont systemFontOfSize:30];
+        
+        placeholder.tag = 6;
         
         [pArray addObject: placeholder.text];
         
@@ -105,7 +110,7 @@ NSCharacterSet *alphaset;
 
 //Creates placeholders for the input word
 - (IBAction)buttonPressed:(id)sender {
-    
+    [self newGame:0];
     
 }
 
@@ -163,13 +168,14 @@ NSCharacterSet *alphaset;
         }
         
         for(int i = 0; i < [retWord length]; i++){
-            UILabel *placeholderNew = [[UILabel alloc] initWithFrame: CGRectMake((10+30*i), 100, 100, 50)];
+            placeholderNew = [[UILabel alloc] initWithFrame: CGRectMake((10+30*i), 100, 100, 50)];
             
             placeholderNew.text = [pArray objectAtIndex:i];
             placeholderNew.backgroundColor = [UIColor clearColor];
             placeholderNew.textColor = [UIColor redColor];
             placeholderNew.font = [UIFont systemFontOfSize:30];
             
+            placeholderNew.tag = 6;
             
             [self.view addSubview:placeholderNew];
             
@@ -233,6 +239,13 @@ NSCharacterSet *alphaset;
     NSArray *thisArray = [[NSArray alloc] initWithContentsOfFile:myFile];
     int randomIndex = (arc4random()%[thisArray count]);
     retWord = [thisArray objectAtIndex:randomIndex];
+    for (UIView *subview in [self.view subviews]) {
+        if (subview.tag == 6) {
+            [subview removeFromSuperview];
+        }
+    }
+    NSLog(@"The random word: %@", retWord);
+    
     
     //Reset number of guesses
     self.nrguesses.text = @"0";
@@ -240,7 +253,7 @@ NSCharacterSet *alphaset;
     NSMutableArray *pArray = [[NSMutableArray alloc] init];
     
     for(int i = 0; i < [retWord length]; i++){
-        UILabel *placeholder = [[UILabel alloc] initWithFrame: CGRectMake((10+30*i), 100, 100, 50)  ];
+        placeholder = [[UILabel alloc] initWithFrame: CGRectMake((10+30*i), 100, 100, 50)  ];
         
         placeholder.text = [NSString stringWithFormat:@"_"];
         placeholder.backgroundColor = [UIColor clearColor];
