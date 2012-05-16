@@ -69,7 +69,7 @@ UILabel *placeholderNew;
         //NSLog(@"length %d", [temp length]);
         if ([temp length] == sizeOfSecretWord) {
             //NSLog(@"==");
-            NSLog(@"%@", temp);
+            //NSLog(@"%@", temp);
             [setWith addObject:temp];
         }
     }
@@ -78,9 +78,9 @@ UILabel *placeholderNew;
     //Place placeholders
     NSMutableArray *pArray = [[NSMutableArray alloc] init];
     
-    for(int i = 0; i < sizeOfSecretWord; i++){
+    for(int i = 0; i < [retWord length]; i++){
         UILabel *placeholder = [[UILabel alloc] initWithFrame: CGRectMake((10+30*i), 100, 100, 50)];
-
+        
         
         placeholder.text = [NSString stringWithFormat:@"_"];
         placeholder.backgroundColor = [UIColor clearColor];
@@ -93,14 +93,17 @@ UILabel *placeholderNew;
         
         [self.view addSubview:placeholder];
         
-        [self.textField resignFirstResponder]; //close keyboard
-        
+        [self.textField resignFirstResponder]; //close keyboard        
     }
     retArr = [self returnArray:pArray];
     
 }       
 
-
+- (void)viewDidUnload
+{
+    [super viewDidUnload];
+    // Release any retained subviews of the main view.
+}
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
@@ -168,7 +171,9 @@ UILabel *placeholderNew;
         
         //Loop through all the words
         for (int i = 0; i < [allWords count]; i++) {
+            NSLog(@"temp1");
             NSString *temp = [allWords objectAtIndex:i];
+            NSLog(@"temp2");
             
             //Size of secret word must be the same as current word from plist
             if ([temp length] == sizeOfSecretWord) {
@@ -294,99 +299,94 @@ UILabel *placeholderNew;
     //Reset number of guesses
     self.nrguesses.text = @"0";
     /*
-    NSMutableArray *pArray = [[NSMutableArray alloc] init];
-    
-    for(int i = 0; i < [retWord length]; i++){
-        placeholder = [[UILabel alloc] initWithFrame: CGRectMake((10+30*i), 100, 100, 50)  ];
-        
-        placeholder.text = [NSString stringWithFormat:@"_"];
-        placeholder.backgroundColor = [UIColor clearColor];
-        placeholder.textColor = [UIColor redColor];
-        placeholder.font = [UIFont systemFontOfSize:30];
-        
-        [pArray addObject: placeholder.text];
-        
-        [self.view addSubview:placeholder];
-        
-        [self.textField resignFirstResponder]; //close keyboard
-        
-    }
-    retArr = [self returnArray:pArray];*/
+     NSMutableArray *pArray = [[NSMutableArray alloc] init];
+     
+     for(int i = 0; i < [retWord length]; i++){
+     placeholder = [[UILabel alloc] initWithFrame: CGRectMake((10+30*i), 100, 100, 50)  ];
+     
+     placeholder.text = [NSString stringWithFormat:@"_"];
+     placeholder.backgroundColor = [UIColor clearColor];
+     placeholder.textColor = [UIColor redColor];
+     placeholder.font = [UIFont systemFontOfSize:30];
+     
+     [pArray addObject: placeholder.text];
+     
+     [self.view addSubview:placeholder];
+     
+     [self.textField resignFirstResponder]; //close keyboard
+     
+     }
+     retArr = [self returnArray:pArray];*/
     //TODO
     //Empty/remove placeholders that hold letters
     //New Game = evil
-    if (type == 1){
-        currentGameType = 1;
-        self.currentGame.text = @"Evil";   
-        
-        //Reset number of guesses
-        self.nrguesses.text = @"0";
-        
-        NSMutableArray *pArray = [[NSMutableArray alloc] init];
-        
-        //TODO: MAKE WORD LENGTH RANDOM INSTEAD OF 5
-        
-        for(int i = 0; i < 5; i++){
-            UILabel *placeholder = [[UILabel alloc] initWithFrame: CGRectMake((10+30*i), 100, 100, 50)  ];
-            
-            placeholder.text = [NSString stringWithFormat:@"_"];
-            placeholder.backgroundColor = [UIColor clearColor];
-            placeholder.textColor = [UIColor redColor];
-            placeholder.font = [UIFont systemFontOfSize:30];
-            
-            [pArray addObject: placeholder.text];
-            
-            [self.view addSubview:placeholder];
-            
-            [self.textField resignFirstResponder]; //close keyboard
-            
-        }
-        retArr = [self returnArray:pArray];
-
-    }
-    
-    //New game = normal, or if currentGameType != 0 || 1.
-    else {
-        currentGameType = 0;
-        self.currentGame.text = @"Normal";
-        
-        //Reset number of guesses
-        self.nrguesses.text = @"0";
-        
-        //Choose random word
-        NSString *myFile = [[NSBundle mainBundle] pathForResource:@"words" ofType:@"plist"];    
-        NSArray *thisArray = [[NSArray alloc] initWithContentsOfFile:myFile];
-        int randomIndex = (arc4random()%[thisArray count]);
-        retWord = [thisArray objectAtIndex:randomIndex];
-        
-        NSMutableArray *pArray = [[NSMutableArray alloc] init];
-        
-        for(int i = 0; i < [retWord length]; i++){
-            UILabel *placeholder = [[UILabel alloc] initWithFrame: CGRectMake((10+30*i), 100, 100, 50)  ];
-            
-            placeholder.text = [NSString stringWithFormat:@"_"];
-            placeholder.backgroundColor = [UIColor clearColor];
-            placeholder.textColor = [UIColor redColor];
-            placeholder.font = [UIFont systemFontOfSize:30];
-            
-            [pArray addObject: placeholder.text];
-            
-            [self.view addSubview:placeholder];
-            
-            [self.textField resignFirstResponder]; //close keyboard
-            
-        }
-        retArr = [self returnArray:pArray];
-
-    }
+    /*if (type == 1){
+     currentGameType = 1;
+     self.currentGame.text = @"Evil";   
+     
+     //Reset number of guesses
+     self.nrguesses.text = @"0";
+     
+     NSMutableArray *pArray = [[NSMutableArray alloc] init];
+     
+     //TODO: MAKE WORD LENGTH RANDOM INSTEAD OF 5
+     
+     for(int i = 0; i < sizeOfSecretWord; i++){
+     UILabel *placeholder = [[UILabel alloc] initWithFrame: CGRectMake((10+30*i), 100, 100, 50)  ];
+     
+     placeholder.text = [NSString stringWithFormat:@"_"];
+     placeholder.backgroundColor = [UIColor clearColor];
+     placeholder.textColor = [UIColor redColor];
+     placeholder.font = [UIFont systemFontOfSize:30];
+     
+     [pArray addObject: placeholder.text];
+     
+     [self.view addSubview:placeholder];
+     
+     [self.textField resignFirstResponder]; //close keyboard
+     
+     }
+     retArr = [self returnArray:pArray];
+     
+     }
+     
+     //New game = normal, or if currentGameType != 0 || 1.
+     else {
+     currentGameType = 0;
+     self.currentGame.text = @"Normal";
+     
+     //Reset number of guesses
+     self.nrguesses.text = @"0";
+     
+     //Choose random word
+     NSString *myFile = [[NSBundle mainBundle] pathForResource:@"words" ofType:@"plist"];    
+     NSArray *thisArray = [[NSArray alloc] initWithContentsOfFile:myFile];
+     int randomIndex = (arc4random()%[thisArray count]);
+     retWord = [thisArray objectAtIndex:randomIndex];
+     
+     NSMutableArray *pArray = [[NSMutableArray alloc] init];
+     
+     for(int i = 0; i < [retWord length]; i++){
+     UILabel *placeholder = [[UILabel alloc] initWithFrame: CGRectMake((10+30*i), 100, 100, 50)  ];
+     
+     placeholder.text = [NSString stringWithFormat:@"_"];
+     placeholder.backgroundColor = [UIColor clearColor];
+     placeholder.textColor = [UIColor redColor];
+     placeholder.font = [UIFont systemFontOfSize:30];
+     
+     [pArray addObject: placeholder.text];
+     
+     [self.view addSubview:placeholder];
+     
+     [self.textField resignFirstResponder]; //close keyboard
+     
+     }
+     retArr = [self returnArray:pArray];
+     
+     }*/
     
 }
 
-- (void)viewDidUnload
-{
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
-}
 
 //TODO:
 // - Display guessed letters
