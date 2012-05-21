@@ -22,6 +22,7 @@ NSArray *allWords;
 int sizeOfSecretWord;
 NSMutableArray *setWith;
 NSMutableArray *setWithout;
+//int flag;
 
 NSCharacterSet *alphaset;
 
@@ -35,6 +36,7 @@ UILabel *placeholderNew;
 @synthesize guess = _guess;
 @synthesize newgame = _newgame;
 @synthesize nrguesses = _nrguesses;
+@synthesize wrongLetters = _wrongLetters;
 
 @synthesize currentGame = _currentGame;
 
@@ -43,6 +45,7 @@ UILabel *placeholderNew;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    wrongGuessArray = [[NSMutableArray alloc ] init];
     
     //Load plist into array and choose random word
     NSString *myFile = [[NSBundle mainBundle] pathForResource:@"words" ofType:@"plist"];    
@@ -166,8 +169,13 @@ UILabel *placeholderNew;
 
 - (void)guessTestWithFirst:(NSString *)letter second:(NSMutableArray *)pArray {
     
+    
+    
     // Evil hangman algorithm
-    NSMutableArray *guessArray;
+    NSMutableArray *guessArray = [[NSMutableArray alloc]init];
+
+    //NSMutableArray *guessArray;
+    NSMutableArray *tempSetWith = [[NSMutableArray alloc] init];
     NSMutableArray *tempSetWithout = [[NSMutableArray alloc] init];
     NSMutableArray *tempSetWith1 = [[NSMutableArray alloc] init];
     NSMutableArray *tempSetWith2 = [[NSMutableArray alloc] init];
@@ -176,6 +184,7 @@ UILabel *placeholderNew;
     NSMutableArray *tempSetWith5 = [[NSMutableArray alloc] init];
     
     int counter = 0;
+
     if (currentGameType == 1) {
         NSLog(@"Evil algorithm");
         
@@ -260,19 +269,44 @@ UILabel *placeholderNew;
     }
     //Normal hangman algorithm
     else {
+        int flag = 0;
+        for (int i = 0; i<[retWord length]; i++) {
+
         
-        for (int i = 0; i< sizeOfSecretWord; i++) {
+        //for (int i = 0; i< sizeOfSecretWord; i++) {
             char subTest = [retWord characterAtIndex:i];
             NSString *temp = [[NSString alloc] initWithFormat:@"%c",subTest]; 
             if ([letter isEqualToString:temp]) {
                 [pArray replaceObjectAtIndex:i withObject:letter];
+                flag = 1;
+                //NSLog(@"%@", wrongGuessArray);
             }
-            else {
-                [guessArray addObject:temp];
+            if(flag == 0){
+                [guessArray addObject:letter];
+                
+                //Update number of guesses
+                int temp = [self.nrguesses.text intValue];
+                temp++;
+                if (temp == 10) {
+                    [self gameOver];
+                }
+                else  {
+                    self.nrguesses.text = [NSString stringWithFormat:@"%d", temp];
+                }
+                NSLog(@"%@", guessArray);
+                break;
             }
+            
         }
+        //NSLog(@"%@", guessArray);
         
-        for(int i = 0; i < sizeOfSecretWord; i++){
+        [wrongGuessArray addObjectsFromArray:guessArray];
+        //NSLog(@"%@", wrongGuessArray);
+        
+        
+        self.wrongLetters.text = [NSString stringWithFormat:@"%@", wrongGuessArray];
+        
+        for(int i = 0; i < [retWord length]; i++){
             placeholderNew = [[UILabel alloc] initWithFrame: CGRectMake((10+30*i), 100, 100, 50)];
             
             placeholderNew.text = [pArray objectAtIndex:i];
@@ -287,16 +321,9 @@ UILabel *placeholderNew;
             [self.textField resignFirstResponder]; //close keyboard
             
         }
-        //Update number of guesses
-        int temp = [self.nrguesses.text intValue];
-        temp++;
-        if (temp == 10) {
-            [self gameOver];
-        }
-        else  {
-            self.nrguesses.text = [NSString stringWithFormat:@"%d", temp];
-        }
-        wrongGuessArray = [self returnArray:guessArray];
+        
+        //wrongGuessArray = [self returnArray:guessArray];
+        
     }
     
     
