@@ -66,7 +66,7 @@ UILabel *placeholderNew;
     
     self.nrguesses.text = @"0";
     
-    sizeOfSecretWord = 9;
+    sizeOfSecretWord = 5;
     //sizeOfSecretWord = [retWord length];
     
     setWith = [[NSMutableArray alloc] init];
@@ -177,6 +177,11 @@ UILabel *placeholderNew;
     //NSMutableArray *guessArray;
     NSMutableArray *tempSetWith = [[NSMutableArray alloc] init];
     NSMutableArray *tempSetWithout = [[NSMutableArray alloc] init];
+    NSMutableArray *tempSetWith1 = [[NSMutableArray alloc] init];
+    NSMutableArray *tempSetWith2 = [[NSMutableArray alloc] init];
+    NSMutableArray *tempSetWith3 = [[NSMutableArray alloc] init];
+    NSMutableArray *tempSetWith4 = [[NSMutableArray alloc] init];
+    NSMutableArray *tempSetWith5 = [[NSMutableArray alloc] init];
     
     int counter = 0;
 
@@ -199,8 +204,16 @@ UILabel *placeholderNew;
                     if ([letter isEqualToString:temp2]) {
                         counter++;
                         found = 1;
-                        break;
-                    }                
+                    }  
+                    else if ([letter isEqualToString:temp2] && found == 1) {
+                        
+                    }
+                    else if ([letter isEqualToString:temp2] && found == 1) {
+                        
+                    }
+                    else if ([letter isEqualToString:temp2] && found == 1) {
+                        
+                    }
                 }
                 if (found == 1) {
                     [tempSetWith addObject:temp];
@@ -211,9 +224,8 @@ UILabel *placeholderNew;
                 }
                 
             }
-            
         }
-        NSLog(@"size of is equal: %d", counter);
+        NSLog(@"setwith: %d, setWithout: %d", [tempSetWith count], [tempSetWithout count]);
         //Which set is bigger?
         if ([tempSetWith count] >= [tempSetWithout count]) {
             //The set of words that contain the guessed letter is bigger/as big 
@@ -222,37 +234,31 @@ UILabel *placeholderNew;
             NSLog(@"tempsetWith is bigger");
             setWith = tempSetWith;
             //Decide to place letter. Find places of letter.
-            NSMutableArray *possiblePositions = [[NSMutableArray alloc] init];
-            NSLog(@"1");
+            NSMutableArray *possiblePositions = [[NSMutableArray alloc] initWithCapacity:sizeOfSecretWord];
             for (int i = 0; i < sizeOfSecretWord; i++) {
-                [possiblePositions addObject:[NSNumber numberWithInteger:0]];
+                [possiblePositions insertObject:[NSNumber numberWithInteger:0] atIndex:i];
             }
-            NSLog(@"length of possiblePositions: %d", [possiblePositions count]);
-            NSLog(@"2");
             for (int j = 0; j < [setWith count]; j++) {
                 NSString *temp = [setWith objectAtIndex:j];
                 //NSLog(@"4");
+                //NSLog(@"possiblepositions value before: %d", [possiblePositions count]);
                 for (int i = 0; i < sizeOfSecretWord; i++) {
                     char subTest = [temp characterAtIndex:i];
                     //NSLog(@"5");
                     NSString *temp2 = [[NSString alloc] initWithFormat:@"%c",subTest]; 
                     //NSLog(@"7");
-                    if ([letter isEqualToString:temp2]) {
-                        //NSLog(@"6");
+                    if ([letter isEqualToString:temp2]) {                        
                         int sum = [[possiblePositions objectAtIndex:i] intValue];
                         sum++;
-                        //NSLog(@"value of i: %d", i);
-                        [possiblePositions insertObject:[NSNumber numberWithInteger:sum] atIndex:i];
-                        //NSLog(@"value of possiblePositions at %d: %d", i, [[possiblePositions objectAtIndex:i] intValue]);
+                        [possiblePositions replaceObjectAtIndex:i withObject:[NSNumber numberWithInteger:sum]];
+                        break;
                     }
                 }
-                NSLog(@"possiblepositions value: %d", [possiblePositions count]);
             }
-            //NSLog(@"3");
             NSLog(@"positions count");
             NSLog(@"size of possiblepostitions: %d", [possiblePositions count]);
             for (int i = 0; i < [possiblePositions count]; i++) {
-                //NSLog(@"at index: %d, value: %d", i, [[possiblePositions objectAtIndex:i] intValue]);
+                NSLog(@"at index: %d, value: %d", i, [[possiblePositions objectAtIndex:i] intValue]);
             }
         }
         else {
@@ -389,6 +395,7 @@ UILabel *placeholderNew;
 // - Settings
 // - Read words.plist - DONE
 // - Evil hangman: choose random wordlength
+// - Evil hangman: het is nu niet mogelijk meerdere 'dezelfde' letters in hetzelfde woord te hebben. mbv possiblePositions kiest hij 1 plek waar de geraden letter neergezet wordt. Dit moet aangepast worden.
 
 
 @end
