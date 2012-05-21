@@ -22,6 +22,7 @@ NSArray *allWords;
 int sizeOfSecretWord;
 NSMutableArray *setWith;
 NSMutableArray *setWithout;
+//int flag;
 
 NSCharacterSet *alphaset;
 
@@ -66,15 +67,17 @@ UILabel *placeholderNew;
     self.nrguesses.text = @"0";
     
     sizeOfSecretWord = 9;
+    //sizeOfSecretWord = [retWord length];
+    
     setWith = [[NSMutableArray alloc] init];
     //Put all words from plist with the same size as sizeOfSecretWord in setWith array
-    for (int i = 0; i < [retWord length]; i++) {
+    for (int i = 0; i < [allWords count]; i++) {
         NSString *temp = [allWords objectAtIndex:i];
-        if ([temp length] == [retWord length]) {
+        if ([temp length] == sizeOfSecretWord) {
             [setWith addObject:temp];
         }
     }
-    //NSLog(@"length setWith: %i", [setWith count]);
+    NSLog(@"length setWith: %i", [setWith count]);
     
     //Place placeholders
     NSMutableArray *pArray = [[NSMutableArray alloc] init];
@@ -170,74 +173,107 @@ UILabel *placeholderNew;
     
     // Evil hangman algorithm
     NSMutableArray *guessArray = [[NSMutableArray alloc]init];
+
+    //NSMutableArray *guessArray;
+    NSMutableArray *tempSetWith = [[NSMutableArray alloc] init];
+    NSMutableArray *tempSetWithout = [[NSMutableArray alloc] init];
+    
+    int counter = 0;
+
     if (currentGameType == 1) {
         NSLog(@"Evil algorithm");
         
         //Loop through all the words
-        for (int i = 0; i < [allWords count]; i++) {
-            NSString *temp = [allWords objectAtIndex:i];
+        for (int i = 0; i < [setWith count]; i++) {
+            NSString *temp = [setWith objectAtIndex:i];
             
             //Size of secret word must be the same as current word from plist
             if ([temp length] == sizeOfSecretWord) {
-                int found = 0;
-                //NSLog(@"temp = %@", temp);
-                //NSLog(@"same size");
+                int found = 0;                
                 for (int j = 0; j < sizeOfSecretWord; j++) {
-                    //NSLog(@"1");
-                    //NSLog(@"char at index: %c", [temp characterAtIndex:j]);
                     char subTest = [temp characterAtIndex:j];
-                    //NSLog(@"2");
                     NSString *temp2 = [[NSString alloc] initWithFormat:@"%c",subTest]; 
-                    //NSLog(@"3");
                     
                     //Choosen letter fits into word from plist
                     //Add to subset with.
                     if ([letter isEqualToString:temp2]) {
-                        //NSLog(@"is equal");
+                        counter++;
                         found = 1;
                         break;
                     }                
                 }
                 if (found == 1) {
-                    [setWith addObject:temp];
+                    [tempSetWith addObject:temp];
                 }
                 else {
-                    [setWithout addObject:temp];
+                    //NSLog(@"add to tempsetwithout");
+                    [tempSetWithout addObject:temp];
                 }
                 
             }
             
         }
+        NSLog(@"size of is equal: %d", counter);
         //Which set is bigger?
-        if ([setWith count] >= [setWithout count]) {
+        if ([tempSetWith count] >= [tempSetWithout count]) {
             //The set of words that contain the guessed letter is bigger/as big 
             //then the set of words that don't contain the guessed letter.
             // --> The word contains the letter
-            NSLog(@"setWith is bigger");
+            NSLog(@"tempsetWith is bigger");
+            setWith = tempSetWith;
             //Decide to place letter. Find places of letter.
+            NSMutableArray *possiblePositions = [[NSMutableArray alloc] init];
+            NSLog(@"1");
             for (int i = 0; i < sizeOfSecretWord; i++) {
-                char subTest = [retWord characterAtIndex:i];
-                NSString *temp = [[NSString alloc] initWithFormat:@"%c",subTest]; 
-                if ([letter isEqualToString:temp]) {
-                    [pArray replaceObjectAtIndex:i withObject:letter];
+                [possiblePositions addObject:[NSNumber numberWithInteger:0]];
+            }
+            NSLog(@"length of possiblePositions: %d", [possiblePositions count]);
+            NSLog(@"2");
+            for (int j = 0; j < [setWith count]; j++) {
+                NSString *temp = [setWith objectAtIndex:j];
+                //NSLog(@"4");
+                for (int i = 0; i < sizeOfSecretWord; i++) {
+                    char subTest = [temp characterAtIndex:i];
+                    //NSLog(@"5");
+                    NSString *temp2 = [[NSString alloc] initWithFormat:@"%c",subTest]; 
+                    //NSLog(@"7");
+                    if ([letter isEqualToString:temp2]) {
+                        //NSLog(@"6");
+                        int sum = [[possiblePositions objectAtIndex:i] intValue];
+                        sum++;
+                        //NSLog(@"value of i: %d", i);
+                        [possiblePositions insertObject:[NSNumber numberWithInteger:sum] atIndex:i];
+                        //NSLog(@"value of possiblePositions at %d: %d", i, [[possiblePositions objectAtIndex:i] intValue]);
+                    }
                 }
+                NSLog(@"possiblepositions value: %d", [possiblePositions count]);
+            }
+            //NSLog(@"3");
+            NSLog(@"positions count");
+            NSLog(@"size of possiblepostitions: %d", [possiblePositions count]);
+            for (int i = 0; i < [possiblePositions count]; i++) {
+                //NSLog(@"at index: %d, value: %d", i, [[possiblePositions objectAtIndex:i] intValue]);
             }
         }
         else {
-            NSLog(@"setWithout is bigger");
+            NSLog(@"tempsetWithout is bigger");
+            setWith = tempSetWithout;
         }
-        
+               
     }
     //Normal hangman algorithm
     else {
-
+        int flag = 0;
         for (int i = 0; i<[retWord length]; i++) {
-            int flag = 0;
+
+        
+        //for (int i = 0; i< sizeOfSecretWord; i++) {
             char subTest = [retWord characterAtIndex:i];
             NSString *temp = [[NSString alloc] initWithFormat:@"%c",subTest]; 
             if ([letter isEqualToString:temp]) {
                 [pArray replaceObjectAtIndex:i withObject:letter];
                 flag = 1;
+                //NSLog(@"%@", wrongGuessArray);
             }
             if(flag == 0){
                 [guessArray addObject:letter];
@@ -251,14 +287,15 @@ UILabel *placeholderNew;
                 else  {
                     self.nrguesses.text = [NSString stringWithFormat:@"%d", temp];
                 }
+                NSLog(@"%@", guessArray);
                 break;
             }
             
         }
-        NSLog(@"%@", guessArray);
+        //NSLog(@"%@", guessArray);
         
         [wrongGuessArray addObjectsFromArray:guessArray];
-        NSLog(@"%@", wrongGuessArray);
+        //NSLog(@"%@", wrongGuessArray);
         
         
         self.wrongLetters.text = [NSString stringWithFormat:@"%@", wrongGuessArray];
@@ -348,7 +385,7 @@ UILabel *placeholderNew;
 // - Only alphabetical + only 1 letter
 // - Congratulate winner
 // - Evil hangman - BUSY ON
-// - Put an array of placeholders and right guessed letters. Must be emptied with new game.
+// - Put an array of placeholders and right guessed letters. Must be emptied with new game. - IS NVM
 // - Settings
 // - Read words.plist - DONE
 // - Evil hangman: choose random wordlength
