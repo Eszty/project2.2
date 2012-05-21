@@ -265,8 +265,7 @@ UILabel *placeholderNew;
     else {
         int flag = 0;
         for (int i = 0; i<[retWord length]; i++) {
-
-        
+            
         //for (int i = 0; i< sizeOfSecretWord; i++) {
             char subTest = [retWord characterAtIndex:i];
             NSString *temp = [[NSString alloc] initWithFormat:@"%c",subTest]; 
@@ -275,23 +274,24 @@ UILabel *placeholderNew;
                 flag = 1;
                 //NSLog(@"%@", wrongGuessArray);
             }
-            if(flag == 0){
-                [guessArray addObject:letter];
-                
-                //Update number of guesses
-                int temp = [self.nrguesses.text intValue];
-                temp++;
-                if (temp == 10) {
-                    [self gameOver];
-                }
-                else  {
-                    self.nrguesses.text = [NSString stringWithFormat:@"%d", temp];
-                }
-                NSLog(@"%@", guessArray);
-                break;
-            }
-            
         }
+        
+        if(flag == 0){
+            [guessArray addObject:letter];
+            
+            //Update number of guesses
+            int temp = [self.nrguesses.text intValue];
+            temp++;
+            if (temp == 10) {
+                [self gameOver];
+            }
+            else  {
+                self.nrguesses.text = [NSString stringWithFormat:@"%d", temp];
+            }
+            NSLog(@"%@", guessArray);
+        }
+        
+        
         //NSLog(@"%@", guessArray);
         
         [wrongGuessArray addObjectsFromArray:guessArray];
