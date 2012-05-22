@@ -22,7 +22,7 @@ NSArray *allWords;
 int sizeOfSecretWord;
 NSMutableArray *setWith;
 NSMutableArray *setWithout;
-//int flag;
+int winCount = 0;
 
 NSCharacterSet *alphaset;
 
@@ -278,6 +278,7 @@ UILabel *placeholderNew;
             if ([letter isEqualToString:temp]) {
                 [pArray replaceObjectAtIndex:i withObject:letter];
                 flag = 1;
+                winCount ++;
                 //NSLog(@"%@", wrongGuessArray);
             }
         }
@@ -297,12 +298,7 @@ UILabel *placeholderNew;
             NSLog(@"%@", guessArray);
         }
         
-        
-        //NSLog(@"%@", guessArray);
-        
-        [wrongGuessArray addObjectsFromArray:guessArray];
-        //NSLog(@"%@", wrongGuessArray);
-        
+        [wrongGuessArray addObjectsFromArray:guessArray];        
         
         self.wrongLetters.text = [NSString stringWithFormat:@"%@", wrongGuessArray];
         
@@ -322,11 +318,10 @@ UILabel *placeholderNew;
             
         }
         
-        //wrongGuessArray = [self returnArray:guessArray];
-        
-    }
-    
-    
+        if (winCount == [retWord length]) {
+            [self gameWon];
+        }  
+    }    
 }
 
 - (void) gameOver {
@@ -337,6 +332,16 @@ UILabel *placeholderNew;
                                              otherButtonTitles:@"OK", nil];
     [gameover show];
 }
+
+- (void) gameWon {
+    UIAlertView *gamewon = [[UIAlertView alloc] initWithTitle:@"Game over" 
+                                                       message:@"You won! Congratulations!" 
+                                                      delegate:self 
+                                             cancelButtonTitle:@"Quit game"
+                                             otherButtonTitles:@"OK", nil];
+    [gamewon show];
+}
+
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
