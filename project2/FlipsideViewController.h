@@ -17,6 +17,11 @@
 
 @interface FlipsideViewController : UIViewController
 
+
+@property (nonatomic,retain) IBOutlet UISegmentedControl *segmentedControl;
+
+- (IBAction)choose;
+
 @property (weak, nonatomic) id <FlipsideViewControllerDelegate> delegate;
 
 - (IBAction)done:(id)sender;

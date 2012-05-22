@@ -23,7 +23,7 @@
 
 
 
-- (IBAction)startEvilHangman:(id)sender;
+
 - (IBAction)startNormalHangman:(id)sender;
 - (IBAction)buttonPressed:(id)sender;
 - (void)newGame:(int)type;

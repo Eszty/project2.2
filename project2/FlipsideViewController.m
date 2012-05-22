@@ -7,6 +7,7 @@
 //
 
 #import "FlipsideViewController.h"
+#import "MainViewController.h"
 
 @interface FlipsideViewController ()
 
@@ -15,6 +16,7 @@
 @implementation FlipsideViewController
 
 @synthesize delegate = _delegate;
+@synthesize segmentedControl = _segmentedControl;
 
 - (void)viewDidLoad
 {
@@ -39,5 +41,35 @@
 {
     [self.delegate flipsideViewControllerDidFinish:self];
 }
+
+
+// Start a new normal hangman game
+- (IBAction)startNormalHangman {
+    NSLog(@"Normal");
+    [(MainViewController*)self.delegate newGame:0];   
+}
+
+//Start a new evil hangman game
+- (IBAction)startEvilHangman {
+    NSLog(@"Evil");
+    [(MainViewController*)self.delegate newGame:1];    
+}
+
+
+- (IBAction)choose {
+    switch (self.segmentedControl.selectedSegmentIndex) {
+        case 0:
+            [self startNormalHangman];
+            break;
+        case 1:
+            [self startEvilHangman]; 
+            break;
+        default:
+            break;
+    }
+
+}
+
+
 
 @end
