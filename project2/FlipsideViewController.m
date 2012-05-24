@@ -57,7 +57,9 @@
 
 
 - (IBAction)choose {
+            NSLog(@"self.segmentedControl == %d", self.segmentedControl.selectedSegmentIndex);
     switch (self.segmentedControl.selectedSegmentIndex) {
+
         case 0:
             [self startNormalHangman];
             break;

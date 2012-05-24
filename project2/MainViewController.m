@@ -148,21 +148,34 @@ UILabel *placeholderNew;
 //Capitalize input letter, check if alphabetical and compare with word
 - (IBAction)guess:(id)sender {
     alphaset = [NSCharacterSet uppercaseLetterCharacterSet];
-    
+
     NSString *letter = [self.textField.text uppercaseString];
-    unichar temp = [letter characterAtIndex:0];
-    
-    if ([alphaset characterIsMember:temp]) {
-        [self guessTestWithFirst:letter second:retArr];
-        self.textField.text = @"";
+
+    if ([letter length] != 0 ) {
+        unichar inputChar = [letter characterAtIndex:0];
+
+        if ([alphaset characterIsMember:inputChar]) {
+            //unichar temp = [letter characterAtIndex:0];
+        
+            [self guessTestWithFirst:letter second:retArr];
+            self.textField.text = @"";
+        }
+        else {
+            UIAlertView *empty = [[UIAlertView alloc] initWithTitle:@"Wrong input" 
+                                                            message:@"You can only guess letters" 
+                                                           delegate:nil
+                                                  cancelButtonTitle:@"Quit game"
+                                                  otherButtonTitles:@"OK", nil];
+            [empty show];    }
+
     }
     else {
-        UIAlertView *notAlpha = [[UIAlertView alloc] initWithTitle:@"Wrong input" 
-                                                           message:@"You only can guess letters" 
+        UIAlertView *empty = [[UIAlertView alloc] initWithTitle:@"Wrong input" 
+                                                           message:@"You have to type a letter" 
                                                           delegate:nil
                                                  cancelButtonTitle:@"Quit game"
                                                  otherButtonTitles:@"OK", nil];
-        [notAlpha show];    }
+        [empty show];    }
     
     
 }
