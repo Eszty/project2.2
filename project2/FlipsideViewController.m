@@ -17,11 +17,22 @@
 
 @synthesize delegate = _delegate;
 @synthesize segmentedControl = _segmentedControl;
+@synthesize sliderGuessValue = _sliderGuessValue;
+@synthesize sliderWordValue = _sliderWordValue;
+
+
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
+    
+    MainViewController *main = (MainViewController*)self.delegate;
+    
+    int type = main.currentGameType;
+    NSLog(@"%d",type);
+    
+    [self.segmentedControl setEnabled:YES forSegmentAtIndex:type]; 
+	// Do any additional setup after loading the view, typically from a nib.x
 }
 
 - (void)viewDidUnload
@@ -46,20 +57,18 @@
 // Start a new normal hangman game
 - (IBAction)startNormalHangman {
     NSLog(@"Normal");
-    [(MainViewController*)self.delegate newGame:0];   
+    [(MainViewController*)self.delegate newGame:0]; 
 }
 
 //Start a new evil hangman game
 - (IBAction)startEvilHangman {
     NSLog(@"Evil");
-    [(MainViewController*)self.delegate newGame:1];    
+    [(MainViewController*)self.delegate newGame:1];  
 }
 
 
 - (IBAction)choose {
-            NSLog(@"self.segmentedControl == %d", self.segmentedControl.selectedSegmentIndex);
     switch (self.segmentedControl.selectedSegmentIndex) {
-
         case 0:
             [self startNormalHangman];
             break;
@@ -72,6 +81,19 @@
 
 }
 
+- (IBAction)sliderGuessChanged:(id)sender{
+    UISlider *slider = (UISlider *)sender; 
+    NSString *newText = [[NSString alloc] initWithFormat:@"%1.0f", 
+                         slider.value]; 
+    self.sliderGuessValue.text = newText; 
+}
+
+- (IBAction)sliderWordChanged:(id)sender{
+    UISlider *sliderWord = (UISlider *)sender; 
+    NSString *newText = [[NSString alloc] initWithFormat:@"%1.0f", 
+                         sliderWord.value]; 
+    self.sliderWordValue.text = newText; 
+}
 
 
 @end

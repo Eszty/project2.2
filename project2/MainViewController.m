@@ -15,7 +15,7 @@
 @implementation MainViewController
 
 NSString *retWord;
-int currentGameType = 0;
+//int currentGameType = 0;
 NSMutableArray *retArr;
 NSMutableArray *wrongGuessArray;
 NSArray *allWords; 
@@ -40,7 +40,7 @@ UILabel *placeholderNew;
 
 @synthesize currentGame = _currentGame;
 
-
+@synthesize currentGameType = _currentGameType;
 
 - (void)viewDidLoad
 {
@@ -55,12 +55,12 @@ UILabel *placeholderNew;
     NSLog(@"The random word: %@", retWord);
     
     //Set the game title to current game type
-    if (currentGameType == 1) {
+    if (self.currentGameType == 1) {
         self.currentGame.text = @"Evil";        
     }
     //If currentGameType != 0 || 1, set to 0.
     else {
-        currentGameType = 0;
+        self.currentGameType = 0;
         self.currentGame.text = @"Normal";
     }
     
@@ -198,7 +198,7 @@ UILabel *placeholderNew;
     
     int counter = 0;
 
-    if (currentGameType == 1) {
+    if (self.currentGameType == 1) {
         NSLog(@"Evil algorithm");
         
         //Loop through all the words
@@ -362,7 +362,7 @@ UILabel *placeholderNew;
     
     if([title isEqualToString:@"OK"])
     {
-        [self newGame:currentGameType];
+        [self newGame:self.currentGameType];
     }
     else if([title isEqualToString:@"Quit game"])
     {
@@ -385,7 +385,7 @@ UILabel *placeholderNew;
 
 - (void)newGame:(int)type {
     
-    currentGameType = type;
+    self.currentGameType = type;
 
     //delete placeholders
     for (UIView *subview in [self.view subviews]) {
@@ -398,8 +398,7 @@ UILabel *placeholderNew;
     
     //Reset number of guesses
     self.nrguesses.text = @"0";
-    
-    
+
     
 }
 

@@ -21,6 +21,8 @@
 
 @property (nonatomic, strong) IBOutlet UILabel* currentGame;
 
+@property int currentGameType;
+
 
 
 
@@ -31,6 +33,7 @@
 - (IBAction)guess:(id)sender;
 - (void)guessTest:first:(NSString *)ltr second:(NSString *)wrd third:(NSMutableArray *)pArr;
 - (void) gameOver:(id)sender;
+
 
 
 - (NSString*)getRandom;

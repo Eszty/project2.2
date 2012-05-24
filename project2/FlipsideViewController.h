@@ -19,6 +19,12 @@
 
 
 @property (nonatomic,retain) IBOutlet UISegmentedControl *segmentedControl;
+@property (nonatomic, strong) IBOutlet UILabel* sliderGuessValue;
+@property (nonatomic, strong) IBOutlet UILabel* sliderWordValue;
+
+
+- (IBAction)sliderGuessChanged:(id)sender;
+- (IBAction)sliderWordChanged:(id)sender;
 
 - (IBAction)choose;
 
