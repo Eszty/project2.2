@@ -23,6 +23,9 @@
 @property (nonatomic, strong) IBOutlet UILabel* sliderWordValue;
 
 
+@property int guessValue;
+@property int wordValue;
+
 - (IBAction)sliderGuessChanged:(id)sender;
 - (IBAction)sliderWordChanged:(id)sender;
 

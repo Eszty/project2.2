@@ -19,6 +19,8 @@
 @synthesize segmentedControl = _segmentedControl;
 @synthesize sliderGuessValue = _sliderGuessValue;
 @synthesize sliderWordValue = _sliderWordValue;
+@synthesize guessValue;
+@synthesize wordValue;
 
 
 
@@ -83,13 +85,16 @@
 
 - (IBAction)sliderGuessChanged:(id)sender{
     UISlider *slider = (UISlider *)sender; 
+    wordValue = slider.value;
     NSString *newText = [[NSString alloc] initWithFormat:@"%1.0f", 
                          slider.value]; 
     self.sliderGuessValue.text = newText; 
+    
 }
 
 - (IBAction)sliderWordChanged:(id)sender{
     UISlider *sliderWord = (UISlider *)sender; 
+    guessValue = sliderWord.value;
     NSString *newText = [[NSString alloc] initWithFormat:@"%1.0f", 
                          sliderWord.value]; 
     self.sliderWordValue.text = newText; 

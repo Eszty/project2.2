@@ -45,6 +45,7 @@ UILabel *placeholderNew;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+        
     wrongGuessArray = [[NSMutableArray alloc ] init];
     
     //Load plist into array and choose random word
