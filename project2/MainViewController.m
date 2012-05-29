@@ -8,7 +8,9 @@
 
 #import "MainViewController.h"
 
+
 @interface MainViewController ()
+
 
 @end
 
@@ -29,6 +31,8 @@ NSCharacterSet *alphaset;
 UILabel *placeholder;
 UILabel *placeholderNew;
 
+NSMutableArray *secretArray;
+
 
 @synthesize textField = _textField;
 @synthesize button = _button;
@@ -42,17 +46,43 @@ UILabel *placeholderNew;
 
 @synthesize currentGameType = _currentGameType;
 
+FlipsideViewController *flip;
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-        
+    
+    secretArray = [[NSMutableArray alloc] init ];
+            
     wrongGuessArray = [[NSMutableArray alloc ] init];
+    
+    NSLog(@"FLIP: %d", [flip wordValue]);
+    
+    
+    if ([flip wordValue] != 0) {
+        sizeOfSecretWord = [flip wordValue];
+    }
+    else {
+        sizeOfSecretWord = 5;
+    }
+    
     
     //Load plist into array and choose random word
     NSString *myFile = [[NSBundle mainBundle] pathForResource:@"words" ofType:@"plist"];    
     allWords = [[NSArray alloc] initWithContentsOfFile:myFile];
-    int randomIndex = (arc4random()%[allWords count]);
-    retWord = [allWords objectAtIndex:randomIndex];
+    
+    NSLog(@"SECRET: %d", sizeOfSecretWord);
+    
+    for (int i=0; i<[allWords count]; i++) {
+        if ([[allWords objectAtIndex:i] length] == sizeOfSecretWord) {
+            [secretArray addObject:[allWords objectAtIndex:i]];
+        }
+    }
+    
+    int randomIndex = (arc4random()%[secretArray count]);
+    
+    
+    retWord = [secretArray objectAtIndex:randomIndex];
     NSLog(@"The random word: %@", retWord);
     
     //Set the game title to current game type
@@ -67,7 +97,10 @@ UILabel *placeholderNew;
     
     self.nrguesses.text = @"0";
     
-    sizeOfSecretWord = 5;
+    //sizeOfSecretWord = [flip wordValue];
+
+    NSLog(@"word: %d", sizeOfSecretWord);
+    
     //sizeOfSecretWord = [retWord length];
     
     setWith = [[NSMutableArray alloc] init];
@@ -83,7 +116,7 @@ UILabel *placeholderNew;
     //Place placeholders
     NSMutableArray *pArray = [[NSMutableArray alloc] init];
     
-    for(int i = 0; i < [retWord length]; i++){
+    for(int i = 0; i < sizeOfSecretWord; i++){
         UILabel *placeholder = [[UILabel alloc] initWithFrame: CGRectMake((10+30*i), 100, 100, 50)];
         
         
@@ -102,7 +135,9 @@ UILabel *placeholderNew;
     }
     retArr = [self returnArray:pArray];
     
-}       
+} 
+
+
 
 - (void)viewDidUnload
 {
@@ -132,7 +167,7 @@ UILabel *placeholderNew;
 
 //Creates placeholders for the input word
 - (IBAction)buttonPressed:(id)sender {
-    [self newGame:0];
+    [self newGame:self.currentGameType guess:[flip guessValue] word:[flip wordValue]];
     
 }
 
@@ -363,7 +398,7 @@ UILabel *placeholderNew;
     
     if([title isEqualToString:@"OK"])
     {
-        [self newGame:self.currentGameType];
+        [self newGame:self.currentGameType guess:[flip guessValue] word:[flip wordValue]];
     }
     else if([title isEqualToString:@"Quit game"])
     {
@@ -372,21 +407,22 @@ UILabel *placeholderNew;
 }
 // Start a new normal hangman game
 - (IBAction)startNormalHangman:(id)sender {
-    [self newGame:0];   
+    [self newGame:0 guess:[flip guessValue] word:[flip wordValue]];   
 }
 
 //Start a new evil hangman game
 - (IBAction)startEvilHangman:(id)sender {
-    [self newGame:1];    
+    [self newGame:1 guess:[flip guessValue] word:[flip wordValue]];    
 }
 
 
 //Type = 0: normal hangman
 //Type = 1: evil hangman
 
-- (void)newGame:(int)type {
+- (void)newGame:(int)type guess:(int)guesses word:(int)wordLength{
     
     self.currentGameType = type;
+    sizeOfSecretWord = wordLength;
 
     //delete placeholders
     for (UIView *subview in [self.view subviews]) {
@@ -408,6 +444,8 @@ UILabel *placeholderNew;
 {
     [self.textField resignFirstResponder];
 }
+
+
 
 
 //TODO:

@@ -22,9 +22,14 @@
 @property (nonatomic, strong) IBOutlet UILabel* sliderGuessValue;
 @property (nonatomic, strong) IBOutlet UILabel* sliderWordValue;
 
+@property (nonatomic, retain) IBOutlet UISlider* guessSlide;
+@property (nonatomic, retain) IBOutlet UISlider* wordSlide;
+
 
 @property int guessValue;
 @property int wordValue;
+
+@property int gametype;
 
 - (IBAction)sliderGuessChanged:(id)sender;
 - (IBAction)sliderWordChanged:(id)sender;

@@ -19,8 +19,14 @@
 @synthesize segmentedControl = _segmentedControl;
 @synthesize sliderGuessValue = _sliderGuessValue;
 @synthesize sliderWordValue = _sliderWordValue;
+
+@synthesize guessSlide;
+@synthesize wordSlide;
+
 @synthesize guessValue;
 @synthesize wordValue;
+
+@synthesize gametype;
 
 
 
@@ -30,11 +36,12 @@
     
     MainViewController *main = (MainViewController*)self.delegate;
     
-    int type = main.currentGameType;
-    NSLog(@"%d",type);
+    gametype = main.currentGameType;
+    NSLog(@"%d",gametype);
     
-    [self.segmentedControl setSelectedSegmentIndex:type]; 
-	// Do any additional setup after loading the view, typically from a nib.x
+    [self.segmentedControl setSelectedSegmentIndex:gametype];
+    //[self.wordSlide setValue:8];
+    // Do any additional setup after loading the view, typically from a nib.x
 }
 
 - (void)viewDidUnload
@@ -53,29 +60,34 @@
 - (IBAction)done:(id)sender
 {
     [self.delegate flipsideViewControllerDidFinish:self];
+    NSLog(@"wordValueFlip: %d", wordValue);
+    NSLog(@"guessFlip: %d", guessValue);
+    [(MainViewController*)self.delegate newGame:gametype guess:guessValue word:wordValue];
+    
+    
 }
 
 
 // Start a new normal hangman game
 - (IBAction)startNormalHangman {
     NSLog(@"Normal");
-    [(MainViewController*)self.delegate newGame:0]; 
+    [(MainViewController*)self.delegate newGame:0 guess:guessValue word:wordValue]; 
 }
 
 //Start a new evil hangman game
 - (IBAction)startEvilHangman {
     NSLog(@"Evil");
-    [(MainViewController*)self.delegate newGame:1];  
+    [(MainViewController*)self.delegate newGame:1 guess:guessValue word:wordValue];  
 }
 
 
 - (IBAction)choose {
     switch (self.segmentedControl.selectedSegmentIndex) {
         case 0:
-            [self startNormalHangman];
+            gametype = 0;
             break;
         case 1:
-            [self startEvilHangman]; 
+            gametype = 1; 
             break;
         default:
             break;
@@ -83,21 +95,20 @@
 
 }
 
-- (IBAction)sliderGuessChanged:(id)sender{
-    UISlider *slider = (UISlider *)sender; 
-    wordValue = slider.value;
+- (IBAction)sliderGuessChanged:(UISlider *)sender{ 
+    guessValue = [sender value];
     NSString *newText = [[NSString alloc] initWithFormat:@"%1.0f", 
-                         slider.value]; 
+                         [sender value]]; 
     self.sliderGuessValue.text = newText; 
     
 }
 
-- (IBAction)sliderWordChanged:(id)sender{
-    UISlider *sliderWord = (UISlider *)sender; 
-    guessValue = sliderWord.value;
+- (IBAction)sliderWordChanged:(UISlider*)sender{
+    wordValue = [sender value];
     NSString *newText = [[NSString alloc] initWithFormat:@"%1.0f", 
-                         sliderWord.value]; 
+                         [sender value]]; 
     self.sliderWordValue.text = newText; 
+    //[(MainViewController*)self.delegate.sizeOfSecretword = sliderWord.value]; 
 }
 
 

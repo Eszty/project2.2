@@ -11,7 +11,9 @@
 
 @interface MainViewController : UIViewController <FlipsideViewControllerDelegate>
 
-@property (nonatomic, strong) IBOutlet UITextField* textField;
+
+
+@property (nonatomic, retain) IBOutlet UITextField* textField;
 @property (nonatomic, strong) IBOutlet UIButton* button;
 @property (nonatomic, strong) IBOutlet UILabel* placeholder;
 @property (nonatomic, strong) IBOutlet UIButton* newgame;
@@ -28,7 +30,7 @@
 
 - (IBAction)startNormalHangman:(id)sender;
 - (IBAction)buttonPressed:(id)sender;
-- (void)newGame:(int)type;
+- (void)newGame:(int)type guess:(int)gusses word:(int)wordLength;
 - (IBAction)showInfo:(id)sender;
 - (IBAction)guess:(id)sender;
 - (void)guessTest:first:(NSString *)ltr second:(NSString *)wrd third:(NSMutableArray *)pArr;
