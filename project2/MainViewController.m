@@ -22,6 +22,8 @@ NSArray *allWords;
 int sizeOfSecretWord;
 NSMutableArray *setWith;
 NSMutableArray *setWithout;
+NSMutableArray *regexes;
+NSMutableArray *nrOfRegexes;
 //int flag;
 
 NSCharacterSet *alphaset;
@@ -68,6 +70,14 @@ UILabel *placeholderNew;
     
     sizeOfSecretWord = 5;
     //sizeOfSecretWord = [retWord length];
+    
+    regexes = [[NSMutableArray alloc] init];
+    NSString *tempRegex = @"";
+    for (int i = 0; i < sizeOfSecretWord; i++) {
+        [tempRegex stringByAppendingString:@"-"];
+    }
+    [regexes addObject:tempRegex];
+    [nrOfRegexes addObject:0];
     
     setWith = [[NSMutableArray alloc] init];
     //Put all words from plist with the same size as sizeOfSecretWord in setWith array
@@ -177,21 +187,17 @@ UILabel *placeholderNew;
     //NSMutableArray *guessArray;
     NSMutableArray *tempSetWith = [[NSMutableArray alloc] init];
     NSMutableArray *tempSetWithout = [[NSMutableArray alloc] init];
-    NSMutableArray *tempSetWith1 = [[NSMutableArray alloc] init];
-    NSMutableArray *tempSetWith2 = [[NSMutableArray alloc] init];
-    NSMutableArray *tempSetWith3 = [[NSMutableArray alloc] init];
-    NSMutableArray *tempSetWith4 = [[NSMutableArray alloc] init];
-    NSMutableArray *tempSetWith5 = [[NSMutableArray alloc] init];
     
     int counter = 0;
-
+    NSString *regex = @"";
+    
     if (currentGameType == 1) {
         NSLog(@"Evil algorithm");
         
         //Loop through all the words
         for (int i = 0; i < [setWith count]; i++) {
             NSString *temp = [setWith objectAtIndex:i];
-            
+            regex = @"";
             //Size of secret word must be the same as current word from plist
             if ([temp length] == sizeOfSecretWord) {
                 int found = 0;                
@@ -202,19 +208,31 @@ UILabel *placeholderNew;
                     //Choosen letter fits into word from plist
                     //Add to subset with.
                     if ([letter isEqualToString:temp2]) {
-                        counter++;
+                        regex = [regex stringByAppendingString:letter];
+                        //NSLog(@"regex: %@", regex);
                         found = 1;
                     }  
-                    else if ([letter isEqualToString:temp2] && found == 1) {
-                        
-                    }
-                    else if ([letter isEqualToString:temp2] && found == 1) {
-                        
-                    }
-                    else if ([letter isEqualToString:temp2] && found == 1) {
-                        
+                    else {
+                        regex = [regex stringByAppendingString:@"-"];
+                        //NSLog(@"regex: %@", regex);
                     }
                 }
+                //Check if regex does already exist
+                int flag2 = 0;
+                for (int i = 0; i < [regexes count]; i++) {
+                    //NSLog(@"for++");
+                    if ([regex isEqualToString:[regexes objectAtIndex:i]]) {
+                        flag2 = 1;
+                        int sum = [[nrOfRegexes objectAtIndex:i] intValue];
+                        sum++;
+                        [nrOfRegexes replaceObjectAtIndex:i withObject:[NSNumber numberWithInteger:sum]];
+                    }
+                }
+                //regex didn't exist -> add.
+                if (flag2 == 0) {
+                    [regexes addObject:regex];
+                }
+                
                 if (found == 1) {
                     [tempSetWith addObject:temp];
                 }
@@ -225,13 +243,20 @@ UILabel *placeholderNew;
                 
             }
         }
+        for (int i = 0; i < [regexes count]; i++) {
+            NSLog(@"regex: %@\n", [regexes objectAtIndex:i]);
+        }
+        for (int i = 0; i < [regexes count]; i++) {
+            NSLog(@"regex: %@\n", [regexes objectAtIndex:i]);
+        }
+        
         NSLog(@"setwith: %d, setWithout: %d", [tempSetWith count], [tempSetWithout count]);
         //Which set is bigger?
         if ([tempSetWith count] >= [tempSetWithout count]) {
             //The set of words that contain the guessed letter is bigger/as big 
             //then the set of words that don't contain the guessed letter.
             // --> The word contains the letter
-            NSLog(@"tempsetWith is bigger");
+            /*NSLog(@"tempsetWith is bigger");
             setWith = tempSetWith;
             //Decide to place letter. Find places of letter.
             NSMutableArray *possiblePositions = [[NSMutableArray alloc] initWithCapacity:sizeOfSecretWord];
@@ -259,7 +284,7 @@ UILabel *placeholderNew;
             NSLog(@"size of possiblepostitions: %d", [possiblePositions count]);
             for (int i = 0; i < [possiblePositions count]; i++) {
                 NSLog(@"at index: %d, value: %d", i, [[possiblePositions objectAtIndex:i] intValue]);
-            }
+            }*/
         }
         else {
             NSLog(@"tempsetWithout is bigger");
@@ -271,8 +296,6 @@ UILabel *placeholderNew;
     else {
         int flag = 0;
         for (int i = 0; i<[retWord length]; i++) {
-
-        
         //for (int i = 0; i< sizeOfSecretWord; i++) {
             char subTest = [retWord characterAtIndex:i];
             NSString *temp = [[NSString alloc] initWithFormat:@"%c",subTest]; 
