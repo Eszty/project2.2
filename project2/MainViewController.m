@@ -403,6 +403,12 @@ UILabel *placeholderNew;
     
 }
 
+// Close keyboard if tapped somewhere else than textfield
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event 
+{
+    [self.textField resignFirstResponder];
+}
+
 
 //TODO:
 // - Display guessed letters

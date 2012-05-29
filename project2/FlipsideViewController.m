@@ -33,7 +33,7 @@
     int type = main.currentGameType;
     NSLog(@"%d",type);
     
-    [self.segmentedControl setEnabled:YES forSegmentAtIndex:type]; 
+    [self.segmentedControl setSelectedSegmentIndex:type]; 
 	// Do any additional setup after loading the view, typically from a nib.x
 }
 
