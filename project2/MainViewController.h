@@ -21,9 +21,11 @@
 
 @property (nonatomic, strong) IBOutlet UILabel* currentGame;
 
+@property int currentGameType;
 
 
-- (IBAction)startEvilHangman:(id)sender;
+
+
 - (IBAction)startNormalHangman:(id)sender;
 - (IBAction)buttonPressed:(id)sender;
 - (void)newGame:(int)type;
@@ -31,6 +33,7 @@
 - (IBAction)guess:(id)sender;
 - (void)guessTest:first:(NSString *)ltr second:(NSString *)wrd third:(NSMutableArray *)pArr;
 - (void) gameOver:(id)sender;
+
 
 
 - (NSString*)getRandom;

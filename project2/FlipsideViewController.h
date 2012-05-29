@@ -17,6 +17,20 @@
 
 @interface FlipsideViewController : UIViewController
 
+
+@property (nonatomic,retain) IBOutlet UISegmentedControl *segmentedControl;
+@property (nonatomic, strong) IBOutlet UILabel* sliderGuessValue;
+@property (nonatomic, strong) IBOutlet UILabel* sliderWordValue;
+
+
+@property int guessValue;
+@property int wordValue;
+
+- (IBAction)sliderGuessChanged:(id)sender;
+- (IBAction)sliderWordChanged:(id)sender;
+
+- (IBAction)choose;
+
 @property (weak, nonatomic) id <FlipsideViewControllerDelegate> delegate;
 
 - (IBAction)done:(id)sender;

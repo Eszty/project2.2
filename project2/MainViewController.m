@@ -15,7 +15,7 @@
 @implementation MainViewController
 
 NSString *retWord;
-int currentGameType = 0;
+//int currentGameType = 0;
 NSMutableArray *retArr;
 NSMutableArray *wrongGuessArray;
 NSArray *allWords; 
@@ -25,6 +25,7 @@ NSMutableArray *setWithout;
 NSMutableArray *regexes;
 NSMutableArray *nrOfRegexes;
 //int flag;
+int winCount = 0;
 
 NSCharacterSet *alphaset;
 
@@ -42,11 +43,12 @@ UILabel *placeholderNew;
 
 @synthesize currentGame = _currentGame;
 
-
+@synthesize currentGameType = _currentGameType;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+        
     wrongGuessArray = [[NSMutableArray alloc ] init];
     
     //Load plist into array and choose random word
@@ -57,12 +59,12 @@ UILabel *placeholderNew;
     NSLog(@"The random word: %@", retWord);
     
     //Set the game title to current game type
-    if (currentGameType == 1) {
+    if (self.currentGameType == 1) {
         self.currentGame.text = @"Evil";        
     }
     //If currentGameType != 0 || 1, set to 0.
     else {
-        currentGameType = 0;
+        self.currentGameType = 0;
         self.currentGame.text = @"Normal";
     }
     
@@ -158,21 +160,34 @@ UILabel *placeholderNew;
 //Capitalize input letter, check if alphabetical and compare with word
 - (IBAction)guess:(id)sender {
     alphaset = [NSCharacterSet uppercaseLetterCharacterSet];
-    
+
     NSString *letter = [self.textField.text uppercaseString];
-    unichar temp = [letter characterAtIndex:0];
-    
-    if ([alphaset characterIsMember:temp]) {
-        [self guessTestWithFirst:letter second:retArr];
-        self.textField.text = @"";
+
+    if ([letter length] != 0 ) {
+        unichar inputChar = [letter characterAtIndex:0];
+
+        if ([alphaset characterIsMember:inputChar]) {
+            //unichar temp = [letter characterAtIndex:0];
+        
+            [self guessTestWithFirst:letter second:retArr];
+            self.textField.text = @"";
+        }
+        else {
+            UIAlertView *empty = [[UIAlertView alloc] initWithTitle:@"Wrong input" 
+                                                            message:@"You can only guess letters" 
+                                                           delegate:nil
+                                                  cancelButtonTitle:@"Quit game"
+                                                  otherButtonTitles:@"OK", nil];
+            [empty show];    }
+
     }
     else {
-        UIAlertView *notAlpha = [[UIAlertView alloc] initWithTitle:@"Wrong input" 
-                                                           message:@"You only can guess letters" 
+        UIAlertView *empty = [[UIAlertView alloc] initWithTitle:@"Wrong input" 
+                                                           message:@"You have to type a letter" 
                                                           delegate:nil
                                                  cancelButtonTitle:@"Quit game"
                                                  otherButtonTitles:@"OK", nil];
-        [notAlpha show];    }
+        [empty show];    }
     
     
 }
@@ -190,8 +205,7 @@ UILabel *placeholderNew;
     
     int counter = 0;
     NSString *regex = @"";
-    
-    if (currentGameType == 1) {
+    if (self.currentGameType == 1) {
         NSLog(@"Evil algorithm");
         
         //Loop through all the words
@@ -296,36 +310,32 @@ UILabel *placeholderNew;
     else {
         int flag = 0;
         for (int i = 0; i<[retWord length]; i++) {
-        //for (int i = 0; i< sizeOfSecretWord; i++) {
             char subTest = [retWord characterAtIndex:i];
             NSString *temp = [[NSString alloc] initWithFormat:@"%c",subTest]; 
             if ([letter isEqualToString:temp]) {
                 [pArray replaceObjectAtIndex:i withObject:letter];
                 flag = 1;
+                winCount ++;
                 //NSLog(@"%@", wrongGuessArray);
             }
-            if(flag == 0){
-                [guessArray addObject:letter];
-                
-                //Update number of guesses
-                int temp = [self.nrguesses.text intValue];
-                temp++;
-                if (temp == 10) {
-                    [self gameOver];
-                }
-                else  {
-                    self.nrguesses.text = [NSString stringWithFormat:@"%d", temp];
-                }
-                NSLog(@"%@", guessArray);
-                break;
-            }
-            
         }
-        //NSLog(@"%@", guessArray);
         
-        [wrongGuessArray addObjectsFromArray:guessArray];
-        //NSLog(@"%@", wrongGuessArray);
+        if(flag == 0){
+            [guessArray addObject:letter];
+            
+            //Update number of guesses
+            int temp = [self.nrguesses.text intValue];
+            temp++;
+            if (temp == 10) {
+                [self gameOver];
+            }
+            else  {
+                self.nrguesses.text = [NSString stringWithFormat:@"%d", temp];
+            }
+            NSLog(@"%@", guessArray);
+        }
         
+        [wrongGuessArray addObjectsFromArray:guessArray];        
         
         self.wrongLetters.text = [NSString stringWithFormat:@"%@", wrongGuessArray];
         
@@ -345,11 +355,10 @@ UILabel *placeholderNew;
             
         }
         
-        //wrongGuessArray = [self returnArray:guessArray];
-        
-    }
-    
-    
+        if (winCount == [retWord length]) {
+            [self gameWon];
+        }  
+    }    
 }
 
 - (void) gameOver {
@@ -361,13 +370,23 @@ UILabel *placeholderNew;
     [gameover show];
 }
 
+- (void) gameWon {
+    UIAlertView *gamewon = [[UIAlertView alloc] initWithTitle:@"Game over" 
+                                                       message:@"You won! Congratulations!" 
+                                                      delegate:self 
+                                             cancelButtonTitle:@"Quit game"
+                                             otherButtonTitles:@"OK", nil];
+    [gamewon show];
+}
+
+
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     NSString *title = [alertView buttonTitleAtIndex:buttonIndex];
     
     if([title isEqualToString:@"OK"])
     {
-        [self newGame:currentGameType];
+        [self newGame:self.currentGameType];
     }
     else if([title isEqualToString:@"Quit game"])
     {
@@ -390,7 +409,7 @@ UILabel *placeholderNew;
 
 - (void)newGame:(int)type {
     
-    currentGameType = type;
+    self.currentGameType = type;
 
     //delete placeholders
     for (UIView *subview in [self.view subviews]) {
@@ -403,9 +422,14 @@ UILabel *placeholderNew;
     
     //Reset number of guesses
     self.nrguesses.text = @"0";
+
     
-    
-    
+}
+
+// Close keyboard if tapped somewhere else than textfield
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event 
+{
+    [self.textField resignFirstResponder];
 }
 
 
