@@ -65,25 +65,10 @@ AppDelegate *app;
 - (IBAction)done:(id)sender
 {
     [self.delegate flipsideViewControllerDidFinish:self];
-    NSLog(@"wordValueFlip: %d", app.wordlength);
-    NSLog(@"guessFlip: %d", app.guesses);
     [(MainViewController*)self.delegate newGame:gametype guess:app.guesses word:app.wordlength];
     
-    
 }
 
-
-// Start a new normal hangman game
-- (IBAction)startNormalHangman {
-    NSLog(@"Normal");
-    [(MainViewController*)self.delegate newGame:0 guess:guessValue word:wordValue]; 
-}
-
-//Start a new evil hangman game
-- (IBAction)startEvilHangman {
-    NSLog(@"Evil");
-    [(MainViewController*)self.delegate newGame:1 guess:guessValue word:wordValue];  
-}
 
 
 - (IBAction)choose {
