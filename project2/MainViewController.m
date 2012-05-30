@@ -29,6 +29,7 @@ NSMutableArray *regexes;
 NSMutableArray *nrOfRegexes;
 //int flag;
 int winCount = 0;
+int possibleWrongGuesses;
 
 NSCharacterSet *alphaset;
 
@@ -63,17 +64,14 @@ AppDelegate *app;
             
     wrongGuessArray = [[NSMutableArray alloc ] init];
     
-    
-    NSLog(@"FLIP: %d", app.wordlength);
-    
     if (app.wordlength != 0) {
-        NSLog(@"poep");
         sizeOfSecretWord = app.wordlength;
     }
     else {
         sizeOfSecretWord = 5;
     }
     
+    possibleWrongGuesses = app.guesses;
     
     //Load plist into array and choose random word
     NSString *myFile = [[NSBundle mainBundle] pathForResource:@"words" ofType:@"plist"];    
@@ -88,7 +86,6 @@ AppDelegate *app;
     }
     
     int randomIndex = (arc4random()%[secretArray count]);
-    
     
     retWord = [secretArray objectAtIndex:randomIndex];
     NSLog(@"The random word: %@", retWord);
@@ -183,7 +180,7 @@ AppDelegate *app;
 
 //Creates placeholders for the input word
 - (IBAction)buttonPressed:(id)sender {
-    [self newGame:self.currentGameType guess:app.wordlength word:app.wordlength];
+    [self newGame:self.currentGameType guess:app.guesses word:app.wordlength];
     
 }
 
@@ -366,7 +363,7 @@ AppDelegate *app;
             //Update number of guesses
             int temp = [self.nrguesses.text intValue];
             temp++;
-            if (temp == 10) {
+            if (temp == app.guesses) {
                 [self gameOver];
             }
             else  {
@@ -426,7 +423,7 @@ AppDelegate *app;
     
     if([title isEqualToString:@"OK"])
     {
-        [self newGame:self.currentGameType guess:app.wordlength word:app.wordlength];
+        [self newGame:self.currentGameType guess:app.guesses word:app.wordlength];
     }
     else if([title isEqualToString:@"Quit game"])
     {
@@ -435,12 +432,12 @@ AppDelegate *app;
 }
 // Start a new normal hangman game
 - (IBAction)startNormalHangman:(id)sender {
-    [self newGame:0 guess:app.wordlength word:app.wordlength];   
+    [self newGame:0 guess:app.guesses word:app.wordlength];   
 }
 
 //Start a new evil hangman game
 - (IBAction)startEvilHangman:(id)sender {
-    [self newGame:1 guess:app.wordlength word:app.wordlength];    
+    [self newGame:1 guess:app.guesses word:app.wordlength];    
 }
 
 

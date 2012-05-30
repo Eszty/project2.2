@@ -18,8 +18,8 @@
 
 @synthesize delegate = _delegate;
 @synthesize segmentedControl = _segmentedControl;
-@synthesize sliderGuessValue = _sliderGuessValue;
-@synthesize sliderWordValue = _sliderWordValue;
+@synthesize sliderGuessValue;
+@synthesize sliderWordValue;
 
 @synthesize guessSlide;
 @synthesize wordSlide;
@@ -42,8 +42,11 @@ AppDelegate *app;
     NSLog(@"%d",gametype);
     
     [self.segmentedControl setSelectedSegmentIndex:gametype];
-    //[self.wordSlide setValue:8];
-    // Do any additional setup after loading the view, typically from a nib.x
+    
+    wordSlide.value = (float)app.wordlength;
+    
+    [self.guessSlide setValue:(float)app.guesses];
+
 }
 
 - (void)viewDidUnload
@@ -62,9 +65,9 @@ AppDelegate *app;
 - (IBAction)done:(id)sender
 {
     [self.delegate flipsideViewControllerDidFinish:self];
-    NSLog(@"wordValueFlip: %d", wordValue);
-    NSLog(@"guessFlip: %d", guessValue);
-    [(MainViewController*)self.delegate newGame:gametype guess:guessValue word:wordValue];
+    NSLog(@"wordValueFlip: %d", app.wordlength);
+    NSLog(@"guessFlip: %d", app.guesses);
+    [(MainViewController*)self.delegate newGame:gametype guess:app.guesses word:app.wordlength];
     
     
 }
@@ -98,17 +101,21 @@ AppDelegate *app;
 }
 
 - (IBAction)sliderGuessChanged:(UISlider *)sender{ 
-    guessValue = [sender value];
-    NSString *newText = [[NSString alloc] initWithFormat:@"%1.0f", 
-                         [sender value]]; 
+    float floatGuess = [sender value];
+    int guessInt = (int)floatGuess;
+    app.guesses = guessInt;
+    NSString *newText = [[NSString alloc] initWithFormat:@"%d", 
+                         guessInt]; 
     self.sliderGuessValue.text = newText; 
     
 }
 
 - (IBAction)sliderWordChanged:(UISlider*)sender{
-    app.wordlength = [sender value];
-    NSString *newText = [[NSString alloc] initWithFormat:@"%1.0f", 
-                         [sender value]]; 
+    float floatWord = [sender value];
+    int wordInt = (int)floatWord;
+    app.wordlength = wordInt;
+    NSString *newText = [[NSString alloc] initWithFormat:@"%d", 
+                         wordInt]; 
     self.sliderWordValue.text = newText; 
     //[(MainViewController*)self.delegate.sizeOfSecretword = sliderWord.value]; 
 }
