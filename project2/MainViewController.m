@@ -7,6 +7,7 @@
 //
 
 #import "MainViewController.h"
+#import "AppDelegate.h"
 
 
 @interface MainViewController ()
@@ -49,21 +50,25 @@ NSMutableArray *secretArray;
 
 @synthesize currentGameType = _currentGameType;
 
-FlipsideViewController *flip;
+AppDelegate *app;
+
 
 - (void)viewDidLoad
 {
-    [super viewDidLoad];
+    app = (AppDelegate*)[[UIApplication sharedApplication] delegate];
     
-    secretArray = [[NSMutableArray alloc] init ];
+    [super viewDidLoad];    
+        
+    secretArray = [[NSMutableArray alloc] init];
             
     wrongGuessArray = [[NSMutableArray alloc ] init];
     
-    NSLog(@"FLIP: %d", [flip wordValue]);
     
+    NSLog(@"FLIP: %d", app.wordlength);
     
-    if ([flip wordValue] != 0) {
-        sizeOfSecretWord = [flip wordValue];
+    if (app.wordlength != 0) {
+        NSLog(@"poep");
+        sizeOfSecretWord = app.wordlength;
     }
     else {
         sizeOfSecretWord = 5;
@@ -178,7 +183,7 @@ FlipsideViewController *flip;
 
 //Creates placeholders for the input word
 - (IBAction)buttonPressed:(id)sender {
-    [self newGame:self.currentGameType guess:[flip guessValue] word:[flip wordValue]];
+    [self newGame:self.currentGameType guess:app.wordlength word:app.wordlength];
     
 }
 
@@ -195,7 +200,7 @@ FlipsideViewController *flip;
 //Capitalize input letter, check if alphabetical and compare with word
 - (IBAction)guess:(id)sender {
     alphaset = [NSCharacterSet uppercaseLetterCharacterSet];
-
+    
     NSString *letter = [self.textField.text uppercaseString];
 
     if ([letter length] != 0 ) {
@@ -421,7 +426,7 @@ FlipsideViewController *flip;
     
     if([title isEqualToString:@"OK"])
     {
-        [self newGame:self.currentGameType guess:[flip guessValue] word:[flip wordValue]];
+        [self newGame:self.currentGameType guess:app.wordlength word:app.wordlength];
     }
     else if([title isEqualToString:@"Quit game"])
     {
@@ -430,12 +435,12 @@ FlipsideViewController *flip;
 }
 // Start a new normal hangman game
 - (IBAction)startNormalHangman:(id)sender {
-    [self newGame:0 guess:[flip guessValue] word:[flip wordValue]];   
+    [self newGame:0 guess:app.wordlength word:app.wordlength];   
 }
 
 //Start a new evil hangman game
 - (IBAction)startEvilHangman:(id)sender {
-    [self newGame:1 guess:[flip guessValue] word:[flip wordValue]];    
+    [self newGame:1 guess:app.wordlength word:app.wordlength];    
 }
 
 

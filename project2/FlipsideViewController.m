@@ -8,6 +8,7 @@
 
 #import "FlipsideViewController.h"
 #import "MainViewController.h"
+#import "AppDelegate.h"
 
 @interface FlipsideViewController ()
 
@@ -28,6 +29,7 @@
 
 @synthesize gametype;
 
+AppDelegate *app;
 
 
 - (void)viewDidLoad
@@ -104,7 +106,7 @@
 }
 
 - (IBAction)sliderWordChanged:(UISlider*)sender{
-    wordValue = [sender value];
+    app.wordlength = [sender value];
     NSString *newText = [[NSString alloc] initWithFormat:@"%1.0f", 
                          [sender value]]; 
     self.sliderWordValue.text = newText; 
