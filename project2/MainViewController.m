@@ -25,8 +25,7 @@ NSArray *allWords;
 int sizeOfSecretWord;
 NSMutableArray *setWith;
 NSMutableArray *setWithout;
-NSMutableArray *regexes;
-NSMutableArray *nrOfRegexes;
+
 //int flag;
 int winCount = 0;
 int possibleWrongGuesses;
@@ -37,6 +36,9 @@ UILabel *placeholder;
 UILabel *placeholderNew;
 
 NSMutableArray *secretArray;
+
+NSMutableArray *regexes;
+NSMutableArray *nrOfRegexes;
 
 
 @synthesize textField = _textField;
@@ -56,6 +58,16 @@ AppDelegate *app;
 
 - (void)viewDidLoad
 {
+    regexes = [[NSMutableArray alloc] init];
+    nrOfRegexes = [[NSMutableArray alloc] init];
+    
+    NSString *tempRegex = @"";
+    for (int i = 0; i < sizeOfSecretWord; i++) {
+        [tempRegex stringByAppendingString:@"-"];
+    }
+    [regexes addObject:tempRegex];
+    [nrOfRegexes addObject:[NSNumber numberWithInt:0]];
+    
     app = (AppDelegate*)[[UIApplication sharedApplication] delegate];
     
     [super viewDidLoad];    
@@ -108,13 +120,6 @@ AppDelegate *app;
     
     //sizeOfSecretWord = [retWord length];
     
-    regexes = [[NSMutableArray alloc] init];
-    NSString *tempRegex = @"";
-    for (int i = 0; i < sizeOfSecretWord; i++) {
-        [tempRegex stringByAppendingString:@"-"];
-    }
-    [regexes addObject:tempRegex];
-    [nrOfRegexes addObject:0];
     
     setWith = [[NSMutableArray alloc] init];
     //Put all words from plist with the same size as sizeOfSecretWord in setWith array
@@ -235,15 +240,25 @@ AppDelegate *app;
     
     // Evil hangman algorithm
     NSMutableArray *guessArray = [[NSMutableArray alloc]init];
-
+    
     //NSMutableArray *guessArray;
-    NSMutableArray *tempSetWith = [[NSMutableArray alloc] init];
-    NSMutableArray *tempSetWithout = [[NSMutableArray alloc] init];
     
     int counter = 0;
     NSString *regex = @"";
     if (self.currentGameType == 1) {
         NSLog(@"Evil algorithm");
+        
+        int rightGuess = 0;
+        
+        [regexes removeAllObjects];
+        [nrOfRegexes removeAllObjects];
+        
+        NSString *tempRegex = @"";
+        for (int i = 0; i < sizeOfSecretWord - 1; i++) {
+            [tempRegex stringByAppendingString:@"-"];
+        }
+        [regexes addObject:tempRegex];
+        [nrOfRegexes addObject:[NSNumber numberWithInt:0]];
         
         //Loop through all the words
         for (int i = 0; i < [setWith count]; i++) {
@@ -260,88 +275,154 @@ AppDelegate *app;
                     //Add to subset with.
                     if ([letter isEqualToString:temp2]) {
                         regex = [regex stringByAppendingString:letter];
-                        //NSLog(@"regex: %@", regex);
                         found = 1;
                     }  
                     else {
                         regex = [regex stringByAppendingString:@"-"];
-                        //NSLog(@"regex: %@", regex);
                     }
                 }
                 //Check if regex does already exist
                 int flag2 = 0;
                 for (int i = 0; i < [regexes count]; i++) {
-                    //NSLog(@"for++");
                     if ([regex isEqualToString:[regexes objectAtIndex:i]]) {
                         flag2 = 1;
-                        int sum = [[nrOfRegexes objectAtIndex:i] intValue];
-                        sum++;
-                        [nrOfRegexes replaceObjectAtIndex:i withObject:[NSNumber numberWithInteger:sum]];
+                        if (i > [nrOfRegexes count] - 1) {
+                            [nrOfRegexes addObject:[NSNumber numberWithInteger:1]];
+                        }
+                        else {
+                            int sum = [[nrOfRegexes objectAtIndex:i] intValue];
+                            sum++;
+                            [nrOfRegexes replaceObjectAtIndex:i withObject:[NSNumber numberWithInteger:sum]];
+                        }
                     }
                 }
                 //regex didn't exist -> add.
                 if (flag2 == 0) {
                     [regexes addObject:regex];
-                }
-                
-                if (found == 1) {
-                    [tempSetWith addObject:temp];
-                }
-                else {
-                    //NSLog(@"add to tempsetwithout");
-                    [tempSetWithout addObject:temp];
+                    [nrOfRegexes addObject:[NSNumber numberWithInteger:1]];
                 }
                 
             }
-        }
-        for (int i = 0; i < [regexes count]; i++) {
-            NSLog(@"regex: %@\n", [regexes objectAtIndex:i]);
-        }
-        for (int i = 0; i < [regexes count]; i++) {
-            NSLog(@"regex: %@\n", [regexes objectAtIndex:i]);
         }
         
-        NSLog(@"setwith: %d, setWithout: %d", [tempSetWith count], [tempSetWithout count]);
-        //Which set is bigger?
-        if ([tempSetWith count] >= [tempSetWithout count]) {
-            //The set of words that contain the guessed letter is bigger/as big 
-            //then the set of words that don't contain the guessed letter.
-            // --> The word contains the letter
-            /*NSLog(@"tempsetWith is bigger");
-            setWith = tempSetWith;
-            //Decide to place letter. Find places of letter.
-            NSMutableArray *possiblePositions = [[NSMutableArray alloc] initWithCapacity:sizeOfSecretWord];
-            for (int i = 0; i < sizeOfSecretWord; i++) {
-                [possiblePositions insertObject:[NSNumber numberWithInteger:0] atIndex:i];
-            }
-            for (int j = 0; j < [setWith count]; j++) {
-                NSString *temp = [setWith objectAtIndex:j];
-                //NSLog(@"4");
-                //NSLog(@"possiblepositions value before: %d", [possiblePositions count]);
-                for (int i = 0; i < sizeOfSecretWord; i++) {
-                    char subTest = [temp characterAtIndex:i];
-                    //NSLog(@"5");
-                    NSString *temp2 = [[NSString alloc] initWithFormat:@"%c",subTest]; 
-                    //NSLog(@"7");
-                    if ([letter isEqualToString:temp2]) {                        
-                        int sum = [[possiblePositions objectAtIndex:i] intValue];
-                        sum++;
-                        [possiblePositions replaceObjectAtIndex:i withObject:[NSNumber numberWithInteger:sum]];
-                        break;
-                    }
+        //find the biggest value in nrOfRegex
+        NSString *emptyRegex = @"";
+        for (int i = 0; i <sizeOfSecretWord; i++) {
+            emptyRegex = [emptyRegex stringByAppendingString:@"-"];
+        }
+        int max = 0;
+        int maxAtIndex = 0;
+        NSString *bestRegex = @"";
+        if ([nrOfRegexes count] > 2) {
+            for (int i = 0; i < [nrOfRegexes count]; i++) {
+                if ([[nrOfRegexes objectAtIndex:i] intValue] > max && ![[regexes objectAtIndex:i] isEqualToString:emptyRegex]) {
+                    max = [[nrOfRegexes objectAtIndex:i] intValue];
+                    maxAtIndex = i;
+                    NSLog(@"max: %d, maxAtIndex: %d", max, maxAtIndex);
                 }
             }
-            NSLog(@"positions count");
-            NSLog(@"size of possiblepostitions: %d", [possiblePositions count]);
-            for (int i = 0; i < [possiblePositions count]; i++) {
-                NSLog(@"at index: %d, value: %d", i, [[possiblePositions objectAtIndex:i] intValue]);
-            }*/
+            bestRegex = [regexes objectAtIndex:maxAtIndex];
+            rightGuess = 1;
         }
+        //There is but one regex: the empty one. The letter doesn't exist in the word. Wrong guess
         else {
-            NSLog(@"tempsetWithout is bigger");
-            setWith = tempSetWithout;
+            bestRegex = emptyRegex;
+            
         }
-               
+        for (int i = 0; i < [nrOfRegexes count]; i++) {
+            NSLog(@"nrRegex on %d: %d with regex: %@", i, [[nrOfRegexes objectAtIndex:i] intValue], [regexes objectAtIndex:i]);
+        }
+        NSLog(@"bestRegex: %@", bestRegex);
+        //NSLog(@"max: %d", max);
+        //NSLog(@"regex op %d met %@ komt het vaakst voor", max, [regexes objectAtIndex:maxAtIndex]);
+        
+        
+        int noLetter = 0;
+        
+        if ([bestRegex isEqualToString:emptyRegex]) {
+            noLetter = 1;
+        }
+        
+        //the words that fit the regex, must become the new setWith
+        int noFit;
+        NSMutableArray *setWithTemp = [[NSMutableArray alloc] init];
+        if (noLetter != 1) {
+            for (int i = 0; i < [setWith count]; i++) {
+                noFit = 0;
+                NSString *temp = [setWith objectAtIndex:i];
+                for (int j = 0; j < [temp length]; j++) {
+                    //split letters into individual chars
+                    char subTestTemp = [temp characterAtIndex:j];
+                    NSString *tempChar = [[NSString alloc] initWithFormat:@"%c",subTestTemp];
+                    char subTestRegex = [bestRegex characterAtIndex:j];
+                    NSString *regexChar = [[NSString alloc] initWithFormat:@"%c",subTestRegex];
+                    //compare chars
+                    if (![tempChar isEqualToString:regexChar] && ![regexChar isEqualToString:@"-"]) {
+                        //NSLog(@"no fit. word: %@", temp);
+                        noFit = 1;
+                    }
+                }
+                if (noFit == 0) {
+                    //NSLog(@"fit: word: %@", temp);
+                    [setWithTemp addObject:temp];
+                }
+            }
+            setWith = setWithTemp;
+        }
+        
+        /*for (int i = 0; i < [setWithTemp count]; i++) {
+         NSLog(@"%@", [setWithTemp objectAtIndex:i]);
+         } */
+        
+        
+        NSLog(@"new setwith length %d", [setWith count]);
+        
+        
+        //place placeholders with letters on right places
+        for (int i = 0; i < sizeOfSecretWord; i++) {
+            char subTest = [bestRegex characterAtIndex:i];
+            NSString *temp = [[NSString alloc] initWithFormat:@"%c",subTest]; 
+            if (![temp isEqualToString:@"-"]) {
+                [pArray replaceObjectAtIndex:i withObject:temp];                
+            }
+        }
+        
+        if(rightGuess == 0){
+            [guessArray addObject:letter];
+            
+            //Update number of guesses
+            int temp = [self.nrguesses.text intValue];
+            temp++;
+            if (temp == 10) {
+                [self gameOver];
+            }
+            else  {
+                self.nrguesses.text = [NSString stringWithFormat:@"%d", temp];
+            }
+            NSLog(@"%@", guessArray);
+        }        
+        [wrongGuessArray addObjectsFromArray:guessArray];        
+        
+        self.wrongLetters.text = [NSString stringWithFormat:@"%@", wrongGuessArray];
+        
+        for(int i = 0; i < sizeOfSecretWord; i++){
+            placeholderNew = [[UILabel alloc] initWithFrame: CGRectMake((10+30*i), 100, 100, 50)];
+            
+            placeholderNew.text = [pArray objectAtIndex:i];
+            placeholderNew.backgroundColor = [UIColor clearColor];
+            placeholderNew.textColor = [UIColor redColor];
+            placeholderNew.font = [UIFont systemFontOfSize:30];
+            
+            placeholderNew.tag = 6;
+            
+            [self.view addSubview:placeholderNew];
+            
+            [self.textField resignFirstResponder]; //close keyboard
+            
+        }
+        if (winCount == [retWord length]) {
+            [self gameWon];
+        }  
     }
     //Normal hangman algorithm
     else {
