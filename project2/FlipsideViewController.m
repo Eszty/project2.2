@@ -69,8 +69,6 @@ AppDelegate *app;
     
 }
 
-
-
 - (IBAction)choose {
     switch (self.segmentedControl.selectedSegmentIndex) {
         case 0:

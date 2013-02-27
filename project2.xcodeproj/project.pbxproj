@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A569B5AE16DE24BF0076FB62 /* game.m in Sources */ = {isa = PBXBuildFile; fileRef = A569B5AD16DE24BF0076FB62 /* game.m */; };
 		A58768141546BC780040A48D /* words.plist in Resources */ = {isa = PBXBuildFile; fileRef = A58768131546BC780040A48D /* words.plist */; };
 		C93FE8841540019600A61683 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C93FE8831540019600A61683 /* UIKit.framework */; };
 		C93FE8861540019600A61683 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C93FE8851540019600A61683 /* Foundation.framework */; };
@@ -36,6 +37,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A569B5AC16DE24BF0076FB62 /* game.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = game.h; sourceTree = "<group>"; };
+		A569B5AD16DE24BF0076FB62 /* game.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = game.m; sourceTree = "<group>"; };
 		A58768131546BC780040A48D /* words.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = words.plist; sourceTree = SOURCE_ROOT; };
 		C93FE87F1540019600A61683 /* project2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = project2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C93FE8831540019600A61683 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -122,6 +125,8 @@
 				C93FE8931540019600A61683 /* AppDelegate.m */,
 				C93FE8951540019600A61683 /* MainViewController.h */,
 				C93FE8961540019600A61683 /* MainViewController.m */,
+				A569B5AC16DE24BF0076FB62 /* game.h */,
+				A569B5AD16DE24BF0076FB62 /* game.m */,
 				C93FE8981540019600A61683 /* FlipsideViewController.h */,
 				C93FE8991540019600A61683 /* FlipsideViewController.m */,
 				C93FE89B1540019600A61683 /* MainViewController.xib */,
@@ -274,6 +279,7 @@
 				C93FE8941540019600A61683 /* AppDelegate.m in Sources */,
 				C93FE8971540019600A61683 /* MainViewController.m in Sources */,
 				C93FE89A1540019600A61683 /* FlipsideViewController.m in Sources */,
+				A569B5AE16DE24BF0076FB62 /* game.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

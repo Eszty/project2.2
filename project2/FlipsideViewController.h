@@ -15,9 +15,8 @@
 - (void)flipsideViewControllerDidFinish:(FlipsideViewController *)controller;
 @end
 
-@interface FlipsideViewController : UIViewController
-
-
+@interface FlipsideViewController : UIViewController 
+    
 @property (nonatomic,retain) IBOutlet UISegmentedControl *segmentedControl;
 @property (nonatomic, strong) IBOutlet UILabel* sliderGuessValue;
 @property (nonatomic, strong) IBOutlet UILabel* sliderWordValue;
