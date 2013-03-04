@@ -24,6 +24,21 @@
     self.mainViewController = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];
     self.window.rootViewController = self.mainViewController;
     [self.window makeKeyAndVisible];
+    
+    /* Check if app is launched for the first time. Used for (default) settings */
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    if (![defaults objectForKey:@"firstRun"]) {
+        [defaults setObject:[NSDate date] forKey:@"firstRun"];
+        
+        /* Set a few game settings as NSUserDefaults */
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        [userDefaults setInteger:0 forKey:@"game_type"];
+        [userDefaults setInteger:10 forKey:@"max_guesses"];
+        [userDefaults setInteger:5 forKey:@"word_length"];
+        [userDefaults synchronize];
+    }    
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
     return YES;
 }
 

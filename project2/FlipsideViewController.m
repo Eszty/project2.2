@@ -36,16 +36,12 @@ AppDelegate *app;
 {
     [super viewDidLoad];
     
-    MainViewController *main = (MainViewController*)self.delegate;
-    
-    gametype = main.currentGameType;
-    NSLog(@"%d",gametype);
-    
-    [self.segmentedControl setSelectedSegmentIndex:gametype];
-    
-    wordSlide.value = (float)app.wordlength;
-    
-    [self.guessSlide setValue:(float)app.guesses];
+    /* Set settings to settings stored in NSUserDefaults */
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    [self.segmentedControl setSelectedSegmentIndex:[[userDefaults valueForKey:@"game_type"] intValue]];
+    wordSlide.value = [[userDefaults valueForKey:@"word_length"]floatValue];
+    [self.guessSlide setValue:[[userDefaults valueForKey:@"max_guesses"]intValue]];
+    NSLog(@"FlipsideViewController game_type %d word_length %f max_guesses %d", [[userDefaults valueForKey:@"game_type"] intValue], [[userDefaults valueForKey:@"word_length"] floatValue],[[userDefaults valueForKey:@"max_guesses"]intValue]);
 
 }
 
@@ -70,12 +66,15 @@ AppDelegate *app;
 }
 
 - (IBAction)choose {
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     switch (self.segmentedControl.selectedSegmentIndex) {
         case 0:
-            gametype = 0;
+            [userDefaults setInteger:0 forKey:@"game_type"];
+            game_type_setting = 0;
             break;
         case 1:
-            gametype = 1; 
+            game_type_setting = 1;
+            [userDefaults setInteger:1 forKey:@"game_type"];
             break;
         default:
             break;
@@ -83,24 +82,54 @@ AppDelegate *app;
 
 }
 
-- (IBAction)sliderGuessChanged:(UISlider *)sender{ 
-    float floatGuess = [sender value];
+- (int) get_game_type_setting {
+    return game_type_setting;
+}
+
+- (IBAction)sliderGuessChanged:(UISlider *)sender{
+    /* Get the value on the slider */
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    float floatGuess = [sender value];   
     int guessInt = (int)floatGuess;
-    app.guesses = guessInt;
-    NSString *newText = [[NSString alloc] initWithFormat:@"%d", 
-                         guessInt]; 
-    self.sliderGuessValue.text = newText; 
     
+    /* Set instance variable */
+    max_guesses_setting = guessInt;
+    
+    /* Store value in NSUserDefaults */
+    [userDefaults setInteger:guessInt forKey:@"max_guesses"];
+    [userDefaults synchronize];
+
+    /* Show the value on the slider as a string above the slider */
+    NSString *newText = [[NSString alloc] initWithFormat:@"%d",
+                         guessInt]; 
+    self.sliderGuessValue.text = newText;     
+}
+
+-(int) get_max_guesses_setting {
+    return max_guesses_setting;
 }
 
 - (IBAction)sliderWordChanged:(UISlider*)sender{
+    /* Get the value on the slider */
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     float floatWord = [sender value];
-    int wordInt = (int)floatWord;
-    app.wordlength = wordInt;
-    NSString *newText = [[NSString alloc] initWithFormat:@"%d", 
+    int wordInt = (int)floatWord;    
+    
+    /* Set instance variable */
+    word_length_setting = wordInt;
+    
+    /* Store value in NSUserDefaults */
+    [userDefaults setInteger:wordInt forKey:@"word_length"];
+    [userDefaults synchronize];
+
+    /* Show the value on the slider as a string above the slider */
+    NSString *newText = [[NSString alloc] initWithFormat:@"%d",
                          wordInt]; 
-    self.sliderWordValue.text = newText; 
-    //[(MainViewController*)self.delegate.sizeOfSecretword = sliderWord.value]; 
+    self.sliderWordValue.text = newText;
+}
+
+-(int) get_word_length_setting {
+    return word_length_setting;
 }
 
 

@@ -15,7 +15,11 @@
 - (void)flipsideViewControllerDidFinish:(FlipsideViewController *)controller;
 @end
 
-@interface FlipsideViewController : UIViewController 
+@interface FlipsideViewController : UIViewController {
+    int game_type_setting;
+    int max_guesses_setting;
+    int word_length_setting;
+}
     
 @property (nonatomic,retain) IBOutlet UISegmentedControl *segmentedControl;
 @property (nonatomic, strong) IBOutlet UILabel* sliderGuessValue;
