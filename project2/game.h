@@ -17,8 +17,10 @@
     int word_length;
     /* Current number of wrong guesses */
     int curr_guesses;
+    /* Current number of right guesses */
+    int right_guesses;
     /* Array that holds the letters that were guessed wrong */
-    char *wrong_letters;
+    NSMutableArray *wrong_letters;
     
     /* -- Normal hangman variables -- */
     /* The secret word */
@@ -31,17 +33,21 @@
     NSMutableArray *regexes;
     /* Number of letters in the regex */
     NSMutableArray *nrOfRegexes;
-    NSMutableArray *wrongGuessArray;
 
 }
 
 -(id)init;
 -(game*) newGame;
--(void) guessLetter: (char)letter;
+-(NSMutableArray*) guessLetterNormal: (NSString*)letter;
+-(NSMutableArray*) guessLetterEvil: (NSString*)letter;
 -(int) get_game_type;
 -(int) get_max_guesses;
 -(int) get_word_length;
 -(int) get_curr_guesses;
--(char*) get_wrong_letters;
+-(void) set_curr_guesses:(int)value;
+-(int) get_right_guesses;
+-(void) set_right_guesses:(int)value;
+-(NSMutableArray*) get_wrong_letters;
+-(void) set_wrong_letters:(NSString*)letter;
 
 @end

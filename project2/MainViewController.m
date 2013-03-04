@@ -21,7 +21,6 @@ NSString *retWord;
 //int currentGameType = 0;
 NSMutableArray *retArr;
 NSArray *allWords; 
-int sizeOfSecretWord;
 NSMutableArray *setWithout;
 
 int winCount = 0;
@@ -57,7 +56,7 @@ game *current_game;
     /* New game class */
     current_game = [[game alloc] init];
     
-    NSLog(@"newgame after init type %d, max_guesses %d, word_length %d, curr_guesses %d, wrong_letters %s", [current_game get_game_type], [current_game get_max_guesses], [current_game get_word_length], [current_game get_curr_guesses], [current_game get_wrong_letters]);
+    NSLog(@"newgame after init type %d, max_guesses %d, word_length %d, curr_guesses %d", [current_game get_game_type], [current_game get_max_guesses], [current_game get_word_length], [current_game get_curr_guesses]);
 
     
     [super viewDidLoad];    
@@ -73,8 +72,8 @@ game *current_game;
     
     self.nrguesses.text = [NSString stringWithFormat:@"%d", [current_game get_curr_guesses]];
     
-    //Place placeholders
-    NSMutableArray *pArray = [[NSMutableArray alloc] init];
+    /* Temp array holding the placeholder characters */
+    NSMutableArray *temp_placeholders = [[NSMutableArray alloc] init];
     
     for(int i = 0; i < [current_game get_word_length]; i++){
         UILabel *placeholder = [[UILabel alloc] initWithFrame: CGRectMake((10+30*i), 100, 100, 50)];
@@ -85,7 +84,7 @@ game *current_game;
         
         placeholder.tag = 6;
         
-        [pArray addObject: placeholder.text];
+        [temp_placeholders addObject: placeholder.text];
         
         [self.view addSubview:placeholder];
         
@@ -124,34 +123,25 @@ game *current_game;
     [self newGame];
 }
 
-/*- (NSString*)returnWord:word{
- NSString *wrd = word;
- return wrd;
- }*/
-
 - (NSMutableArray*)returnArray:array{
     NSMutableArray *arr = array;
     return arr;
 }
 
-//Capitalize input letter, check if alphabetical and compare with word
-- (IBAction)guess:(id)sender {
-    alphaset = [NSCharacterSet uppercaseLetterCharacterSet];
-    
+/* Method that is called once a letter has been guessed. Letters will be capitalized. Non-alphabetical symbols are not allowed. After that the letter is compared to the secret word using the compare_secret_word function */
+- (IBAction)guess:(id)sender {    
     NSString *letter = [self.textField.text uppercaseString];
 
     if ([letter length] != 0 ) {
         unichar inputChar = [letter characterAtIndex:0];
-
-        if ([alphaset characterIsMember:inputChar]) {
-            //unichar temp = [letter characterAtIndex:0];
-        
-            [self guessTestWithFirst:letter second:retArr];
+        alphaset = [NSCharacterSet uppercaseLetterCharacterSet];
+        if ([alphaset characterIsMember:inputChar]) {        
+            [self compare_secret_word:letter second:retArr];
             self.textField.text = @"";
         }
         else {
             UIAlertView *empty = [[UIAlertView alloc] initWithTitle:@"Wrong input" 
-                                                            message:@"You can only guess letters"
+                                                            message:@"You can only guess letters."
                                                            delegate:nil
                                                   cancelButtonTitle:@"OK"
                                                   otherButtonTitles:nil];
@@ -160,7 +150,7 @@ game *current_game;
     }
     else {
         UIAlertView *empty = [[UIAlertView alloc] initWithTitle:@"Wrong input" 
-                                                           message:@"You have to type a letter" 
+                                                           message:@"You have to type a letter." 
                                                           delegate:nil
                                               cancelButtonTitle:@"OK"
                                               otherButtonTitles:nil];
@@ -169,201 +159,102 @@ game *current_game;
     
 }
 
-- (void)guessTestWithFirst:(NSString *)letter second:(NSMutableArray *)pArray {
-    // Evil hangman algorithm
-    NSMutableArray *guessArray = [[NSMutableArray alloc]init];
-    NSString *regex = @"";
-    if (self.currentGameType == 0) {
+- (void)compare_secret_word:(NSString *)letter second:(NSMutableArray *)pArray {
+    
+    /* In the case of an evil hangman game */
+    
+    if ([current_game get_game_type] == 0) {
         NSLog(@"Evil algorithm");
+        /* Check if the letter is in the secret word */
+        NSMutableArray *result = [current_game guessLetterEvil:letter];
+        bool letter_in_word = [result objectAtIndex:0];
+        NSString* best_regex = [result objectAtIndex:1];
+        NSLog(@"result %@", best_regex);
         
-        int rightGuess = 0;
-        
-        [regexes removeAllObjects];
-        [nrOfRegexes removeAllObjects];
-        
-        NSString *tempRegex = @"";
-        for (int i = 0; i < sizeOfSecretWord - 1; i++) {
-            [tempRegex stringByAppendingString:@"-"];
-        }
-        [regexes addObject:tempRegex];
-        [nrOfRegexes addObject:[NSNumber numberWithInt:0]];
-        
-        //Loop through all the words
-        for (int i = 0; i < [setWith count]; i++) {
-            NSString *temp = [setWith objectAtIndex:i];
-            regex = @"";
-            //Size of secret word must be the same as current word from plist
-            if ([temp length] == sizeOfSecretWord) {
-                int found = 0;                
-                for (int j = 0; j < sizeOfSecretWord; j++) {
-                    char subTest = [temp characterAtIndex:j];
-                    NSString *temp2 = [[NSString alloc] initWithFormat:@"%c",subTest]; 
-                    
-                    //Choosen letter fits into word from plist
-                    //Add to subset with.
-                    if ([letter isEqualToString:temp2]) {
-                        regex = [regex stringByAppendingString:letter];
-                        found = 1;
-                    }  
-                    else {
-                        regex = [regex stringByAppendingString:@"-"];
-                    }
-                }
-                //Check if regex does already exist
-                int flag2 = 0;
-                for (int i = 0; i < [regexes count]; i++) {
-                    if ([regex isEqualToString:[regexes objectAtIndex:i]]) {
-                        flag2 = 1;
-                        if (i > [nrOfRegexes count] - 1) {
-                            [nrOfRegexes addObject:[NSNumber numberWithInteger:1]];
-                        }
-                        else {
-                            int sum = [[nrOfRegexes objectAtIndex:i] intValue];
-                            sum++;
-                            [nrOfRegexes replaceObjectAtIndex:i withObject:[NSNumber numberWithInteger:sum]];
-                        }
-                    }
-                }
-                //regex didn't exist -> add.
-                if (flag2 == 0) {
-                    [regexes addObject:regex];
-                    [nrOfRegexes addObject:[NSNumber numberWithInteger:1]];
-                }
+        /* The letter is in the word */
+        if (letter_in_word) {
+            NSLog(@"letter is in the word");
+            NSLog(@"and the best_regex is %@", best_regex);
+            
+            /* Update the current guessed word */
+            /* Temporary array holding the placeholder characters */
+            NSMutableArray *temp_placeholders =[[NSMutableArray alloc]init];
+            for (int i = 0; i < [current_game get_word_length]; i++) {
+                char subTest = [best_regex characterAtIndex:i];
+                NSString *temp = [[NSString alloc] initWithFormat:@"%c",subTest];
+                [temp_placeholders addObject:temp];
+            }
+            
+            for (NSString* item in temp_placeholders) NSLog(@"temp_placeholders %@", item);
+            
+            /* Update the number of right guesses */
+            int temp = [current_game get_right_guesses];
+            [current_game set_right_guesses:temp++];
+            
+            /* Place placeholders with letters on right places */            
+            for(int i = 0; i < [current_game get_word_length]; i++){
+                placeholderNew = [[UILabel alloc] initWithFrame: CGRectMake((10+30*i), 100, 100, 50)];
+                
+                placeholderNew.text = [temp_placeholders objectAtIndex:i];
+                placeholderNew.backgroundColor = [UIColor clearColor];
+                placeholderNew.textColor = [UIColor redColor];
+                placeholderNew.font = [UIFont systemFontOfSize:30];
+                
+                placeholderNew.tag = 6;
+                
+                [self.view addSubview:placeholderNew];
+                
+                [self.textField becomeFirstResponder]; //close keyboard
                 
             }
+
         }
-        
-        //find the biggest value in nrOfRegex
-        NSString *emptyRegex = @"";
-        for (int i = 0; i <sizeOfSecretWord; i++) {
-            emptyRegex = [emptyRegex stringByAppendingString:@"-"];
-        }
-        int max = 0;
-        int maxAtIndex = 0;
-        NSString *bestRegex = @"";
-        if ([nrOfRegexes count] > 2) {
-            for (int i = 0; i < [nrOfRegexes count]; i++) {
-                if ([[nrOfRegexes objectAtIndex:i] intValue] > max && ![[regexes objectAtIndex:i] isEqualToString:emptyRegex]) {
-                    max = [[nrOfRegexes objectAtIndex:i] intValue];
-                    maxAtIndex = i;
-                    NSLog(@"max: %d, maxAtIndex: %d", max, maxAtIndex);
-                }
-            }
-            bestRegex = [regexes objectAtIndex:maxAtIndex];
-            rightGuess = 1;
-        }
-        //There is but one regex: the empty one. The letter doesn't exist in the word. Wrong guess
+        /* The letter isn't in the word */
         else {
-            bestRegex = emptyRegex;
+            NSLog(@"letter isn't in the word");
+            NSLog(@"TODO add letter to wrong guessed array");
+            /* Add the wrongly guessed letter into the array of wrong guesses */
+            [current_game set_wrong_letters:letter];
             
-        }
-        for (int i = 0; i < [nrOfRegexes count]; i++) {
-            NSLog(@"nrRegex on %d: %d with regex: %@", i, [[nrOfRegexes objectAtIndex:i] intValue], [regexes objectAtIndex:i]);
-        }
-        NSLog(@"bestRegex: %@", bestRegex);
-        
-        int noLetter = 0;
-        
-        if ([bestRegex isEqualToString:emptyRegex]) {
-            noLetter = 1;
-        }
-        
-        //the words that fit the regex, must become the new setWith
-        int noFit;
-        NSMutableArray *setWithTemp = [[NSMutableArray alloc] init];
-        if (noLetter != 1) {
-            for (int i = 0; i < [setWith count]; i++) {
-                noFit = 0;
-                NSString *temp = [setWith objectAtIndex:i];
-                for (int j = 0; j < [temp length]; j++) {
-                    //split letters into individual chars
-                    char subTestTemp = [temp characterAtIndex:j];
-                    NSString *tempChar = [[NSString alloc] initWithFormat:@"%c",subTestTemp];
-                    char subTestRegex = [bestRegex characterAtIndex:j];
-                    NSString *regexChar = [[NSString alloc] initWithFormat:@"%c",subTestRegex];
-                    //compare chars
-                    if (![tempChar isEqualToString:regexChar] && ![regexChar isEqualToString:@"-"]) {
-                        //NSLog(@"no fit. word: %@", temp);
-                        noFit = 1;
-                    }
-                }
-                if (noFit == 0) {
-                    //NSLog(@"fit: word: %@", temp);
-                    [setWithTemp addObject:temp];
-                }
-            }
-            setWith = setWithTemp;
-        }
-        
-        /*for (int i = 0; i < [setWithTemp count]; i++) {
-         NSLog(@"%@", [setWithTemp objectAtIndex:i]);
-         } */
-        
-        
-        NSLog(@"new setwith length %d", [setWith count]);
-        
-        
-        //place placeholders with letters on right places
-        for (int i = 0; i < sizeOfSecretWord; i++) {
-            char subTest = [bestRegex characterAtIndex:i];
-            NSString *temp = [[NSString alloc] initWithFormat:@"%c",subTest]; 
-            if (![temp isEqualToString:@"-"]) {
-                [pArray replaceObjectAtIndex:i withObject:temp];                
-            }
-        }
-        
-        if(rightGuess == 0){
-            [guessArray addObject:letter];
-            
-            //Update number of guesses
-            int temp = [self.nrguesses.text intValue];
-            temp++;
-            if (temp == 10) {
+            /* Update number of guesses */
+            int temp = [current_game get_curr_guesses];
+            [current_game set_curr_guesses:temp++];
+            if (temp == [current_game get_max_guesses]) {
                 [self gameOver];
             }
             else  {
-                self.nrguesses.text = [NSString stringWithFormat:@"%d", temp];
+                /* Update the number of guessed */
+                self.nrguesses.text = [NSString stringWithFormat:@"%d", [current_game get_curr_guesses]];
+                
+                /* Update the wrongly guessed letters */
+                NSString *wrong_guesses = @"";
+                for (NSString* item in [current_game get_wrong_letters]) {
+                    wrong_guesses = [wrong_guesses stringByAppendingString:item];
+                }
+                NSLog(@"wrong_guesses %@", wrong_guesses);
+                self.wrongLetters.text = wrong_guesses;
             }
-            NSLog(@"%@", guessArray);
-        }        
-        [wrongGuessArray addObjectsFromArray:guessArray];        
-        
-        NSString *wrong_guesses = @"";
-        for (NSString *item in wrongGuessArray) {
-            //wrong_guesses = [wrong_guesses stringByAppendingString:item];
         }
-        
-        self.wrongLetters.text = wrong_guesses;
-        
-        for(int i = 0; i < sizeOfSecretWord; i++){
-            placeholderNew = [[UILabel alloc] initWithFrame: CGRectMake((10+30*i), 100, 100, 50)];
-            
-            placeholderNew.text = [pArray objectAtIndex:i];
-            placeholderNew.backgroundColor = [UIColor clearColor];
-            placeholderNew.textColor = [UIColor redColor];
-            placeholderNew.font = [UIFont systemFontOfSize:30];
-            
-            placeholderNew.tag = 6;
-            
-            [self.view addSubview:placeholderNew];
-            
-            [self.textField becomeFirstResponder]; //close keyboard
-            
-        }
-        if (winCount == [retWord length]) {
+        if ([current_game get_right_guesses] == [current_game get_word_length]) {
             [self gameWon];
-        }  
+        }
+
     }
-    //Normal hangman algorithm
+    
+    /* In the case of a normal hangman game */
     else {
         NSLog(@"Normal hangman");
         int flag = 0;
         
-        // Check if letter has already been guessed
-        for (NSString *item in wrongGuessArray) {
-            NSLog(@"item in wrongGuessArray %@", item);
-            if ([letter isEqualToString:item]) return;
-        }
+        /* Check if letter has already been guessed */
+        if([current_game get_wrong_letters] containsObject:letter) return;
+        
+        /* Check if the word contains the letter */
+    }
+    
+    //Normal hangman algorithm
+    else {
+
         
         for (int i = 0; i<[retWord length]; i++) {
             char subTest = [retWord characterAtIndex:i];
@@ -419,8 +310,10 @@ game *current_game;
             [self gameWon];
         }  
     }    
+ */
 }
 
+/* Alert that is showed when the game is won */
 - (void) gameOver {
     UIAlertView *gameover = [[UIAlertView alloc] initWithTitle:@"Game over" 
                                                        message:@"You lost the game. Click OK to start a new game" 
@@ -430,6 +323,7 @@ game *current_game;
     [gameover show];
 }
 
+/* Alert that is shown when the game is lost */
 - (void) gameWon {
     UIAlertView *gamewon = [[UIAlertView alloc] initWithTitle:@"Game over" 
                                                        message:@"You won! Congratulations!" 
@@ -439,32 +333,22 @@ game *current_game;
     [gamewon show];
 }
 
-
+/* Method that is called once one of the win/lost game alert buttons has been pressed. Used to close the app once 'Quit game' has been pressed. */
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     NSString *title = [alertView buttonTitleAtIndex:buttonIndex];
     
     if([title isEqualToString:@"OK"])
     {
-        [self newGame:self.currentGameType guess:app.guesses word:app.wordlength];
+        [self newGame];
     }
     else if([title isEqualToString:@"Quit game"])
     {
         exit(0);
     }
 }
-// Start a new normal hangman game
-- (IBAction)startNormalHangman:(id)sender {
-    [self newGame:0 guess:app.guesses word:app.wordlength];   
-}
 
-//Start a new evil hangman game
-- (IBAction)startEvilHangman:(id)sender {
-    [self newGame:1 guess:app.guesses word:app.wordlength];    
-}
-
-
-- (void)newGame:(int)type guess:(int)guesses word:(int)wordLength {
+- (void)newGame {
     /* Delete placeholders */
     for (UIView *subview in [self.view subviews]) {
         if (subview.tag == 6) {

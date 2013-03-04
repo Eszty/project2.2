@@ -30,7 +30,7 @@
 
 - (IBAction)startNormalHangman:(id)sender;
 - (IBAction)buttonPressed:(id)sender;
-- (void)newGame:(int)type guess:(int)gusses word:(int)wordLength;
+- (void)newGame;
 - (IBAction)showInfo:(id)sender;
 - (IBAction)guess:(id)sender;
 - (void)guessTest:first:(NSString *)ltr second:(NSString *)wrd third:(NSMutableArray *)pArr;

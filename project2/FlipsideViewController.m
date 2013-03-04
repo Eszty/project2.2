@@ -61,7 +61,6 @@ AppDelegate *app;
 - (IBAction)done:(id)sender
 {
     [self.delegate flipsideViewControllerDidFinish:self];
-    [(MainViewController*)self.delegate newGame:gametype guess:app.guesses word:app.wordlength];
     
 }
 
