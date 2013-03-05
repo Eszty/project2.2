@@ -20,26 +20,26 @@
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "project2/FlipsideViewController.m"
-         timestampString = "384097790.394557"
+         filePath = "project2/MainViewController.m"
+         timestampString = "384182556.948507"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "44"
-         endingLineNumber = "44"
-         landmarkName = "-viewDidLoad"
+         startingLineNumber = "143"
+         endingLineNumber = "143"
+         landmarkName = "-buttonPressed:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "project2/MainViewController.m"
-         timestampString = "384106922.382315"
+         filePath = "project2/FlipsideViewController.m"
+         timestampString = "384189967.658174"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "123"
-         endingLineNumber = "123"
-         landmarkName = "-buttonPressed:"
+         startingLineNumber = "44"
+         endingLineNumber = "44"
+         landmarkName = "-viewDidLoad"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

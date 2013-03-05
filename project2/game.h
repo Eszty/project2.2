@@ -21,6 +21,8 @@
     int right_guesses;
     /* Array that holds the letters that were guessed wrong */
     NSMutableArray *wrong_letters;
+    /* Array that holds the lettesr that were guessed correctly */
+    NSMutableArray *right_letters;
     
     /* -- Normal hangman variables -- */
     /* The secret word */
@@ -49,5 +51,7 @@
 -(void) set_right_guesses:(int)value;
 -(NSMutableArray*) get_wrong_letters;
 -(void) set_wrong_letters:(NSString*)letter;
+-(NSMutableArray*) get_right_letters;
+-(void) set_right_letters:(NSString*)letter;
 
 @end

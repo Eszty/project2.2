@@ -36,23 +36,23 @@
     /* Read the word.plist file into an array */
     NSString *myFile = [[NSBundle mainBundle] pathForResource:@"words" ofType:@"plist"];
     NSArray *allWords = [[NSArray alloc] initWithContentsOfFile:myFile];
+    //NSArray *allWords = [[NSArray alloc] initWithObjects:@"BOAR", @"DUCK", @"BEAR", @"DEER", @"HARE", nil];
     
     /* If this is a normal hangman game, choose a secret word */
     if (game_type == 1) {
         /* Load plist into array and choose random word */
-        NSMutableArray *array_with_word_size;
-        int randomIndex = (arc4random()%[allWords count]);
+        NSMutableArray *array_with_word_size = [[NSMutableArray alloc]init];
         
-        NSLog(@"1");
         /* Find all words with a length that is the same as the word_length setting */
         for (int i=0; i<[allWords count]; i++) {
+            //NSLog(@"item length %d word length %d", [[allWords objectAtIndex:i]length], word_length);
             if ([[allWords objectAtIndex:i] length] == word_length) {
                 [array_with_word_size addObject:[allWords objectAtIndex:i]];
             }
         }
-        NSLog(@"2");
-        secret_word = [array_with_word_size objectAtIndex:randomIndex];
-        NSLog(@"3");
+        int randomIndex = (arc4random()%[array_with_word_size count]);
+        NSLog(@"random_index %d length of allWords %d random word %@", randomIndex, [array_with_word_size count], [array_with_word_size objectAtIndex:randomIndex]);
+        secret_word = [NSString stringWithFormat:@"%@", [array_with_word_size objectAtIndex:randomIndex]];
         NSLog(@"The secret word is %@", secret_word);
     }
     /* This is an evil hangman game */
@@ -102,7 +102,6 @@
     curr_guesses = value;
 }
 
-
 -(NSMutableArray*) get_wrong_letters {
     return wrong_letters;
 }
@@ -114,18 +113,52 @@
 -(int) get_right_guesses {
     return right_guesses;
 }
+
 -(void) set_right_guesses:(int)value {
     right_guesses = value;
 }
 
+-(NSMutableArray*) get_right_letters {
+    return right_letters;
+}
+
+-(void) set_right_letters:(NSString*)letter {
+    [right_letters addObject:letter];
+}
+
+
 /* Guess a letter for a normal hangman game: check if the letter is in the word that needs to be guessed */
 -(NSMutableArray*) guessLetterNormal: (NSString*)letter {
+	NSMutableArray *returning = [[NSMutableArray alloc] init];
+    NSString *guessed_word = @"";
+    int guessed_bool = 0;
     
+    for (int i = 0; i < [secret_word length]; i++) {
+        char subTest = [secret_word characterAtIndex:i];
+        NSString *temp = [[NSString alloc] initWithFormat:@"%c",subTest];
+        if ([letter isEqualToString:temp]) {
+            guessed_word = [guessed_word stringByAppendingString:letter];
+            guessed_bool = 1;
+        }
+        else {
+            guessed_word = [guessed_word stringByAppendingString:@"-"];
+        }
+    }
+    
+    /* Return a boolean stating that the letter was right guessed and if so, return a regex with the guessed letters on the right places */
+    if (guessed_bool) {
+        [returning addObject:[NSNumber numberWithBool:YES]];
+        [returning addObject:guessed_word];
+    }
+    else {
+        [returning addObject:[NSNumber numberWithBool:NO]];
+    }
+    return returning;    
 }
 
 /* Guess a letter for an evil hangman game: check if the letter is in the word that needs to be guessed */
 -(NSMutableArray*) guessLetterEvil: (NSString*)letter {
-    NSMutableArray *guessArray = [[NSMutableArray alloc]init];
+    NSMutableArray *returning = [[NSMutableArray alloc] init];
     
     NSString *regex = @"";
     int rightGuess = 0;
@@ -193,24 +226,29 @@
     int max = 0;
     int maxAtIndex = 0;
     NSString *bestRegex = @"";
-    if ([nrOfRegexes count] > 2) {
+    if ([nrOfRegexes count] > 1) {
         for (int i = 0; i < [nrOfRegexes count]; i++) {
-            if ([[nrOfRegexes objectAtIndex:i] intValue] > max && ![[regexes objectAtIndex:i] isEqualToString:emptyRegex]) {
+            NSLog(@"intvalue nrOfRegexes %d", [[nrOfRegexes objectAtIndex:i]intValue]);
+            if ([[nrOfRegexes objectAtIndex:i] intValue] > max /*&& ![[regexes objectAtIndex:i] isEqualToString:emptyRegex]*/) {
+                NSLog(@"intvalue nrOfRegexes %d > max %d", [[nrOfRegexes objectAtIndex:i] intValue], max);
                 max = [[nrOfRegexes objectAtIndex:i] intValue];
                 maxAtIndex = i;
             }
         }
         bestRegex = [regexes objectAtIndex:maxAtIndex];
-        rightGuess = 1;
+        if (![bestRegex isEqualToString:emptyRegex]) {
+            rightGuess = 1;
+            NSLog(@"rightGuess set to 1");
+        }
     }
     /* There is but one regex: the empty one. The letter doesn't exist in the word. Wrong guess. */
     else {
-        bestRegex = emptyRegex;
-        
+        bestRegex = emptyRegex;       
     }
     for (int i = 0; i < [nrOfRegexes count]; i++) {
         NSLog(@"nrRegex on %d: %d with regex: %@", i, [[nrOfRegexes objectAtIndex:i] intValue], [regexes objectAtIndex:i]);
     }
+    NSLog(@"bestRegex found: %@ maxRegex %@ at index %d", bestRegex, [regexes objectAtIndex:maxAtIndex], maxAtIndex);
     
     int noLetter = 0;
     
@@ -240,16 +278,29 @@
                 [setWithTemp addObject:temp];
             }
         }
-        setWith = setWithTemp;
     }
+    /* The empty regex was the most found one */
+    else {
+        for (int i = 0; i < [setWith count]; i++) {
+            NSString *temp = [setWith objectAtIndex:i];
+            /* The word in setWith doesn't contain the letter, so add it */
+            if ([temp rangeOfString:letter].location == NSNotFound) {
+                [setWithTemp addObject:temp];
+            }
+        }
+    }   
     
-	NSMutableArray *returning = [[NSMutableArray alloc] init];
-    
+    setWith = setWithTemp;
+    for (NSString *item in setWith) NSLog(@"setWith item %@", item);
+    NSLog(@"size of new setWith: %d", [setWith count]);
+        
     if (rightGuess == 0) {
-        [returning addObject:[NSNumber numberWithBool:NO]];
+        NSLog(@"returning O");
+        [returning addObject:[NSNumber numberWithInt:0]];
     }
     else {
-        [returning addObject:[NSNumber numberWithBool:YES]];
+        NSLog(@"returning 1");
+        [returning addObject:[NSNumber numberWithInt:1]];
         [returning addObject:bestRegex];
     }
     return returning;
