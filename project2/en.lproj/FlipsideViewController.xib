@@ -241,7 +241,7 @@
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<int key="IBUIContentHorizontalAlignment">0</int>
 						<int key="IBUIContentVerticalAlignment">0</int>
-						<float key="IBUIValue">15</float>
+						<float key="IBUIValue">5</float>
 						<float key="IBUIMaxValue">20</float>
 					</object>
 					<object class="IBUILabel" id="1049427937">
@@ -396,11 +396,11 @@
 							<reference ref="375640328"/>
 							<reference ref="854917722"/>
 							<reference ref="274159405"/>
-							<reference ref="647781522"/>
 							<reference ref="1049427937"/>
 							<reference ref="604354158"/>
 							<reference ref="378564156"/>
 							<reference ref="926665070"/>
+							<reference ref="647781522"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>

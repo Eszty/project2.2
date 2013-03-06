@@ -83,28 +83,28 @@ AppDelegate *app;
 - (IBAction)done:(id)sender
 {
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    
-    /* Store game type value in NSUserDefaults */
-    [userDefaults setInteger:game_type_setting forKey:@"game_type"];
-    
-    /* Store max guesses value in NSUserDefaults */
-    [userDefaults setInteger:max_guesses_setting forKey:@"max_guesses"];
-    [userDefaults synchronize];
-        
-    /* Store value in NSUserDefaults */
-    [userDefaults setInteger:word_length_setting forKey:@"word_length"];
-    [userDefaults synchronize];
+    NSLog(@"in done");
+    NSLog(@"game_type %f", [[userDefaults valueForKey:@"game_type"]floatValue]);
+    NSLog(@"max_guesses %f", [[userDefaults valueForKey:@"max_guesses"]floatValue]);
+    NSLog(@"word_length %f", [[userDefaults valueForKey:@"word_length"]floatValue]);
 
     [self.delegate flipsideViewControllerDidFinish:self];
     
 }
 
 - (IBAction)choose {
+    /* Store max guesses value in NSUserDefaults */
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    
     switch (self.segmentedControl.selectedSegmentIndex) {
-        case 0:
+        case 0:            
+            /* Store game type value in NSUserDefaults */
+            [userDefaults setFloat:0 forKey:@"game_type"];
             game_type_setting = 0;
             break;
         case 1:
+            /* Store game type value in NSUserDefaults */
+            [userDefaults setFloat:1 forKey:@"game_type"];
             game_type_setting = 1;
             break;
         default:
@@ -126,6 +126,11 @@ AppDelegate *app;
     /* Set instance variable */
     max_guesses_setting = guessInt;
     
+    /* Store max guesses value in NSUserDefaults */
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults setFloat:max_guesses_setting forKey:@"max_guesses"];
+    [userDefaults synchronize];
+    
     /* Show the value on the slider as a string above the slider */
     NSString *newText = [[NSString alloc] initWithFormat:@"%d",
                          guessInt];
@@ -144,6 +149,12 @@ AppDelegate *app;
     
     /* Set instance variable */
     word_length_setting = wordInt;
+    
+    /* Store word length value in NSUserDefaults */
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults setFloat:word_length_setting forKey:@"word_length"];
+    [userDefaults synchronize];
+    
 
     /* Show the value on the slider as a string above the slider */
     NSString *newText = [[NSString alloc] initWithFormat:@"%d",

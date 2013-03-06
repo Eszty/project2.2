@@ -18,13 +18,7 @@
 @synthesize guesses;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-{
-    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    // Override point for customization after application launch.
-    self.mainViewController = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];
-    self.window.rootViewController = self.mainViewController;
-    [self.window makeKeyAndVisible];
-    
+{    
     /* Check if app is launched for the first time. Used for (default) settings */
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     if (![defaults objectForKey:@"firstRun"]) {
@@ -32,12 +26,33 @@
         
         /* Set a few game settings as NSUserDefaults */
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-        [userDefaults setInteger:0 forKey:@"game_type"];
-        [userDefaults setInteger:10 forKey:@"max_guesses"];
-        [userDefaults setInteger:5 forKey:@"word_length"];
+        [userDefaults setFloat:0.0 forKey:@"game_type"];
+        [userDefaults setFloat:10.0 forKey:@"max_guesses"];
+        [userDefaults setFloat:5.0 forKey:@"word_length"];
+        
+        /* Set highscores */        
+        NSArray *localPathsTemp   = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *localDocPathTemp    = [localPathsTemp objectAtIndex:0];
+        NSString *localFilePathTemp   = [localDocPathTemp stringByAppendingPathComponent:@"highscores.plist"];
+        NSMutableDictionary *localDictreadTemp  = [[NSMutableDictionary alloc] initWithContentsOfFile:localFilePathTemp];
+        [localDictreadTemp setObject:[NSString stringWithFormat:@"%@", @"Not set"] forKey:@"first_place"];
+        [localDictreadTemp setObject:[NSString stringWithFormat:@"%@", @"Not set"] forKey:@"first_place_time"];
+        
+        [localDictreadTemp setObject:[NSString stringWithFormat:@"%@", @"Not set"] forKey:@"second_place"];
+        [localDictreadTemp setObject:[NSString stringWithFormat:@"%@", @"Not set"] forKey:@"second_place_time"];
+        
+        [localDictreadTemp setObject:[NSString stringWithFormat:@"%@", @"Not set"] forKey:@"third_place"];
+        [localDictreadTemp setObject:[NSString stringWithFormat:@"%@", @"Not set"] forKey:@"third_place_time"];
         [userDefaults synchronize];
-    }    
+    }
     [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    // Override point for customization after application launch.
+    self.mainViewController = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];
+    self.window.rootViewController = self.mainViewController;
+    [self.window makeKeyAndVisible];
     
     return YES;
 }

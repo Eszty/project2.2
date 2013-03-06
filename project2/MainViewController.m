@@ -95,7 +95,7 @@ game *current_game;
     }
     
     for(int i = 0; i < [current_game get_word_length]; i++){
-        UILabel *placeholder = [[UILabel alloc] initWithFrame: CGRectMake((10+30*i), 100, 100, 50)];
+        UILabel *placeholder = [[UILabel alloc] initWithFrame: CGRectMake((10+30*i), 85, 100, 50)];
 
         placeholder.text = [NSString stringWithFormat:@"_"];
         placeholder.backgroundColor = [UIColor clearColor];
@@ -131,7 +131,8 @@ game *current_game;
 }
 
 - (IBAction)showInfo:(id)sender
-{    
+{
+    NSLog(@"showInfo");
     FlipsideViewController *controller = [[FlipsideViewController alloc] initWithNibName:@"FlipsideViewController" bundle:nil];
     controller.delegate = self;
     controller.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
@@ -170,7 +171,7 @@ game *current_game;
     }
     else {
         UIAlertView *empty = [[UIAlertView alloc] initWithTitle:@"Wrong input" 
-                                                           message:@"You have to type a letter." 
+                                                        message:@"You can only guess single letters."
                                                           delegate:nil
                                               cancelButtonTitle:@"OK"
                                               otherButtonTitles:nil];
@@ -233,6 +234,7 @@ game *current_game;
         int temp = [current_game get_right_guesses];
         [current_game set_right_guesses:++temp];
         [current_game set_right_letters:letter];
+
         
         /* Place placeholders with letters on right places */
         for(int i = 0; i < [current_game get_word_length]; i++){
@@ -254,7 +256,6 @@ game *current_game;
     /* The letter isn't in the word */
     else {
         NSLog(@"letter isn't in the word");
-        NSLog(@"TODO add letter to wrong guessed array");
         /* Add the wrongly guessed letter into the array of wrong guesses */
         [current_game set_wrong_letters:letter];
         
@@ -269,11 +270,10 @@ game *current_game;
             self.nrguesses.text = [NSString stringWithFormat:@"%d", [current_game get_curr_guesses]];
             
             /* Update the wrongly guessed letters */
-            NSString *wrong_guesses = @"";
+            NSString *wrong_guesses= @"";
             for (NSString* item in [current_game get_wrong_letters]) {
                 wrong_guesses = [wrong_guesses stringByAppendingString:item];
             }
-            NSLog(@"wrong_guesses %@", wrong_guesses);
             self.wrongLetters.text = wrong_guesses;
         }
     }
@@ -344,6 +344,41 @@ game *current_game;
 
 /* Alert that is showed when the game is won */
 - (void) gameOver {
+    /* Add and show highscore data */
+    
+    NSArray *localPathsTemp   = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *localDocPathTemp    = [localPathsTemp objectAtIndex:0];
+    NSString *localFilePathTemp   = [localDocPathTemp stringByAppendingPathComponent:@"highscores.plist"];
+    NSMutableDictionary *localDictreadTemp  = [[NSMutableDictionary alloc] initWithContentsOfFile:localFilePathTemp];
+    NSLog(@"highscores %@", localDictreadTemp);
+    
+    int current_score = [current_game get_curr_guesses];
+    int first_place = [[localDictreadTemp objectForKey:@"first_place"]intValue];
+    int second_place = [[localDictreadTemp objectForKey:@"second_place"]intValue];
+    int third_place = [[localDictreadTemp objectForKey:@"third_place"]intValue];
+    
+    if (current_score > first_place) {
+        first_place = current_score;
+        [localDictreadTemp setObject:[NSString stringWithFormat:@"%d", current_score] forKey:@"first_place"];
+        [localDictreadTemp setObject:[NSString stringWithFormat:@"%@", [NSDate date]] forKey:@"first_place_time"];
+    }
+    else if (current_score > second_place){
+        second_place = current_score;
+        [localDictreadTemp setObject:[NSString stringWithFormat:@"%d", current_score] forKey:@"second_place"];
+        [localDictreadTemp setObject:[NSString stringWithFormat:@"%@", [NSDate date]] forKey:@"second_place_time"];
+    }
+    else if (current_score > third_place) {
+        third_place = current_score;
+        [localDictreadTemp setObject:[NSString stringWithFormat:@"%d", current_score] forKey:@"third_place"];
+        [localDictreadTemp setObject:[NSString stringWithFormat:@"%@", [NSDate date]] forKey:@"third_place_time"];
+    }    
+    NSLog(@"succes? %@", [NSNumber numberWithBool:[localDictreadTemp writeToFile:localFilePathTemp atomically:YES]]);
+    
+    localDictreadTemp  = [[NSMutableDictionary alloc] initWithContentsOfFile:localFilePathTemp];
+    
+    NSLog(@"First place: %@ at %@\nSecond place %@ %@\nThird place %@ at %@", [localDictreadTemp objectForKey:@"first_place"], [localDictreadTemp objectForKey:@"first_place_time"],[localDictreadTemp objectForKey:@"second_place"], [localDictreadTemp objectForKey:@"second_place_time"],[localDictreadTemp objectForKey:@"third_place"], [localDictreadTemp objectForKey:@"third_place_time"]);
+    
+    
     UIAlertView *gameover = [[UIAlertView alloc] initWithTitle:@"Game over" 
                                                        message:@"You lost the game. Click OK to start a new game" 
                                                       delegate:self 

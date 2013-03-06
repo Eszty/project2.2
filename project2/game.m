@@ -27,11 +27,17 @@
     
     /* Initialize the game using the settings, stored in NSUserDefaults */
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSLog(@"in game init");
+    NSLog(@"game_type %f", [[userDefaults valueForKey:@"game_type"]floatValue]);
+    NSLog(@"max_guesses %f", [[userDefaults valueForKey:@"max_guesses"]floatValue]);
+    NSLog(@"word_length %f", [[userDefaults valueForKey:@"word_length"]floatValue]);
+    
     game_type = [[userDefaults objectForKey:@"game_type"] intValue];
     max_guesses = [[userDefaults objectForKey:@"max_guesses"] intValue];
     word_length = [[userDefaults objectForKey:@"word_length"] intValue];
     curr_guesses = 0;
     wrong_letters = [[NSMutableArray alloc]init];
+    right_letters = [[NSMutableArray alloc]init];
     
     /* Read the word.plist file into an array */
     NSString *myFile = [[NSBundle mainBundle] pathForResource:@"words" ofType:@"plist"];
@@ -50,6 +56,7 @@
                 [array_with_word_size addObject:[allWords objectAtIndex:i]];
             }
         }
+        NSLog(@"allWords size %d, array_with_word_size %d", [allWords count], [array_with_word_size count]);
         int randomIndex = (arc4random()%[array_with_word_size count]);
         NSLog(@"random_index %d length of allWords %d random word %@", randomIndex, [array_with_word_size count], [array_with_word_size objectAtIndex:randomIndex]);
         secret_word = [NSString stringWithFormat:@"%@", [array_with_word_size objectAtIndex:randomIndex]];
@@ -124,6 +131,7 @@
 
 -(void) set_right_letters:(NSString*)letter {
     [right_letters addObject:letter];
+
 }
 
 
@@ -228,9 +236,7 @@
     NSString *bestRegex = @"";
     if ([nrOfRegexes count] > 1) {
         for (int i = 0; i < [nrOfRegexes count]; i++) {
-            NSLog(@"intvalue nrOfRegexes %d", [[nrOfRegexes objectAtIndex:i]intValue]);
-            if ([[nrOfRegexes objectAtIndex:i] intValue] > max /*&& ![[regexes objectAtIndex:i] isEqualToString:emptyRegex]*/) {
-                NSLog(@"intvalue nrOfRegexes %d > max %d", [[nrOfRegexes objectAtIndex:i] intValue], max);
+            if ([[nrOfRegexes objectAtIndex:i] intValue] > max) {
                 max = [[nrOfRegexes objectAtIndex:i] intValue];
                 maxAtIndex = i;
             }
@@ -238,17 +244,12 @@
         bestRegex = [regexes objectAtIndex:maxAtIndex];
         if (![bestRegex isEqualToString:emptyRegex]) {
             rightGuess = 1;
-            NSLog(@"rightGuess set to 1");
         }
     }
     /* There is but one regex: the empty one. The letter doesn't exist in the word. Wrong guess. */
     else {
         bestRegex = emptyRegex;       
     }
-    for (int i = 0; i < [nrOfRegexes count]; i++) {
-        NSLog(@"nrRegex on %d: %d with regex: %@", i, [[nrOfRegexes objectAtIndex:i] intValue], [regexes objectAtIndex:i]);
-    }
-    NSLog(@"bestRegex found: %@ maxRegex %@ at index %d", bestRegex, [regexes objectAtIndex:maxAtIndex], maxAtIndex);
     
     int noLetter = 0;
     
@@ -291,15 +292,11 @@
     }   
     
     setWith = setWithTemp;
-    for (NSString *item in setWith) NSLog(@"setWith item %@", item);
-    NSLog(@"size of new setWith: %d", [setWith count]);
         
     if (rightGuess == 0) {
-        NSLog(@"returning O");
         [returning addObject:[NSNumber numberWithInt:0]];
     }
     else {
-        NSLog(@"returning 1");
         [returning addObject:[NSNumber numberWithInt:1]];
         [returning addObject:bestRegex];
     }
