@@ -31,26 +31,30 @@
     /* -- Evil hangman variables -- */
     /* Array with all words of word_length length */
     NSMutableArray *setWith;
-    /* Regex to match the guessed letters with */
-    NSMutableArray *regexes;
-    /* Number of letters in the regex */
-    NSMutableArray *nrOfRegexes;
 
 }
 
 -(id)init;
--(game*) newGame;
--(NSMutableArray*) guessLetterNormal: (NSString*)letter;
--(NSMutableArray*) guessLetterEvil: (NSString*)letter;
 -(int) get_game_type;
+
 -(int) get_max_guesses;
+
 -(int) get_word_length;
+
+-(NSString*) get_secret_word;
+
+-(NSMutableArray*) get_setWords;
+-(void) set_setWords:(NSMutableArray*)setWords;
+
 -(int) get_curr_guesses;
 -(void) set_curr_guesses:(int)value;
+
 -(int) get_right_guesses;
 -(void) set_right_guesses:(int)value;
+
 -(NSMutableArray*) get_wrong_letters;
 -(void) set_wrong_letters:(NSString*)letter;
+
 -(NSMutableArray*) get_right_letters;
 -(void) set_right_letters:(NSString*)letter;
 

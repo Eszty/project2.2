@@ -9,6 +9,8 @@
 #import "MainViewController.h"
 #import "AppDelegate.h"
 #import "game.h"
+#import "goodGamePlay.h"
+#import "evilGamePlay.h"
 
 @interface MainViewController ()
 
@@ -74,29 +76,9 @@ game *current_game;
     self.nrguesses.text = [NSString stringWithFormat:@"%d", [current_game get_curr_guesses]];
     self.wrongLetters.text = @"";
     
-    /* Temp array holding the placeholder characters */
-    NSMutableArray *temp_placeholders = [[NSMutableArray alloc] init];
-    
-    
-    CGRect screenRect = [[UIScreen mainScreen] bounds];
-    CGFloat screenWidth = screenRect.size.width;
-    CGFloat screenHeight = screenRect.size.height;
-    
-    int begin_coord_x = 10;
-    int nr_placeholders = [current_game get_word_length];
-    
-    /* Check if number of placeholders is even */
-    if ((nr_placeholders % 2) == 0) {
-        begin_coord_x = (screenWidth / 2) - (nr_placeholders/2)*30;
-    }
-    /* Uneven */
-    else {
-        begin_coord_x = (screenWidth / 2) - 15 - ((nr_placeholders/2)-1)*30;
-    }
-    
+    /* Place placeholders with letters on right places */
     for(int i = 0; i < [current_game get_word_length]; i++){
-        UILabel *placeholder = [[UILabel alloc] initWithFrame: CGRectMake((10+30*i), 85, 100, 50)];
-
+        placeholder = [[UILabel alloc] initWithFrame: CGRectMake((10+30*i), 100, 100, 50)];
         placeholder.text = [NSString stringWithFormat:@"_"];
         placeholder.backgroundColor = [UIColor clearColor];
         placeholder.textColor = [UIColor redColor];
@@ -104,12 +86,10 @@ game *current_game;
         
         placeholder.tag = 6;
         
-        [temp_placeholders addObject: placeholder.text];
-        
         [self.view addSubview:placeholder];
         
-        [self.textField becomeFirstResponder]; //close keyboard
-    }    
+    }
+
 } 
 
 - (void)viewDidUnload
@@ -182,7 +162,8 @@ game *current_game;
 
 - (void)compare_secret_word:(NSString *)letter second:(NSMutableArray *)pArray {
     NSMutableArray *result = [[NSMutableArray alloc]init];
-    int new_letter = 0;
+    goodGamePlay *goodPlay = [[goodGamePlay alloc]init];
+    evilGamePlay *evilPlay = [[evilGamePlay alloc]init];
     
     /* Check if letter has already been guessed */
     if([[current_game get_wrong_letters] containsObject:letter] || [[current_game get_right_letters] containsObject:letter]) {
@@ -194,21 +175,36 @@ game *current_game;
     if ([current_game get_game_type] == 0) {
         NSLog(@"Evil algorithm");
         /* Check if the letter is in the secret word */
-        result = [current_game guessLetterEvil:letter];
-        
+        NSMutableArray *setWords = [current_game get_setWords];
+        NSLog(@"get_setWords %d", [setWords count]);
+        int word_length = [current_game get_word_length];
+        result = [evilPlay gamePlayDelegate:letter inWords:setWords wordLength:word_length];
     }
     /* In the case of a normal hangman game */
     else {
         NSLog(@"Normal hangman");
         /* Check if the letter is in the secret word */
-        result = [current_game guessLetterNormal:letter];
+        result = [goodPlay gamePlayDelegate:letter inWord:[current_game get_secret_word]];
     }
     
     NSString* best_regex = [[NSString alloc]init];
+    int double_letter = 0;
     int letter_in_word = [[result objectAtIndex:0]intValue];
     if (letter_in_word == 1) {
         best_regex = [result objectAtIndex:1];
         NSLog(@"result %@", best_regex);
+        /* The double letter value was set in a normal game type, so a double letter was found */
+        if ([current_game get_game_type] == 1 && [result count] == 3) {
+            double_letter = 1;
+        }
+        else if ([current_game get_game_type] == 0) {
+            NSMutableArray *new_setWith = [result objectAtIndex:2];
+            [current_game set_setWords:new_setWith];
+            /* The double letter value was set in a evil game type */
+            if ([result count] == 4) {
+                double_letter = 1;
+            }
+        }
     }
     
     /* The letter is in the word */
@@ -234,21 +230,24 @@ game *current_game;
         int temp = [current_game get_right_guesses];
         [current_game set_right_guesses:++temp];
         [current_game set_right_letters:letter];
+        if (double_letter == 1) {
+            NSLog(@"double letter, double double increment");
+            temp = [current_game get_right_guesses];
+            [current_game set_right_guesses:++temp];
+        }
 
         
         /* Place placeholders with letters on right places */
         for(int i = 0; i < [current_game get_word_length]; i++){
-            placeholderNew = [[UILabel alloc] initWithFrame: CGRectMake((10+30*i), 100, 100, 50)];
-            placeholderNew.text = [temp_placeholders objectAtIndex:i];
-            placeholderNew.backgroundColor = [UIColor clearColor];
-            placeholderNew.textColor = [UIColor redColor];
-            placeholderNew.font = [UIFont systemFontOfSize:30];
+            placeholder = [[UILabel alloc] initWithFrame: CGRectMake((10+30*i), 100, 100, 50)];
+            placeholder.text = [temp_placeholders objectAtIndex:i];
+            placeholder.backgroundColor = [UIColor clearColor];
+            placeholder.textColor = [UIColor redColor];
+            placeholder.font = [UIFont systemFontOfSize:30];
             
-            placeholderNew.tag = 6;
+            placeholder.tag = 6;
             
-            [self.view addSubview:placeholderNew];
-            
-            [self.textField becomeFirstResponder]; //close keyboard
+            [self.view addSubview:placeholder];
             
         }
         
@@ -259,9 +258,16 @@ game *current_game;
         /* Add the wrongly guessed letter into the array of wrong guesses */
         [current_game set_wrong_letters:letter];
         
+        /* Set the new set of words */
+        if ([current_game get_game_type] == 0) {
+            NSMutableArray *new_setWith = [result objectAtIndex:1];
+            [current_game set_setWords:new_setWith];
+        }
+        
         /* Update number of guesses */
         int temp = [current_game get_curr_guesses];
         [current_game set_curr_guesses:++temp];
+        NSLog(@"curr_guesses %d, max_guesses %d", temp, [current_game get_max_guesses]);
         if (temp == [current_game get_max_guesses]) {
             [self gameOver];
         }
@@ -280,107 +286,21 @@ game *current_game;
     if ([current_game get_right_guesses] == [current_game get_word_length]) {
         [self gameWon];
     }
-    
-    //Normal hangman algorithm
-   /* else {
-
-        
-        for (int i = 0; i<[retWord length]; i++) {
-            char subTest = [retWord characterAtIndex:i];
-            NSString *temp = [[NSString alloc] initWithFormat:@"%c",subTest]; 
-            if ([letter isEqualToString:temp]) {
-                [pArray replaceObjectAtIndex:i withObject:letter];
-                flag = 1;
-                winCount ++;
-                //NSLog(@"%@", wrongGuessArray);
-            }
-        }
-        
-        if(flag == 0){
-            [guessArray addObject:letter];
-            
-            //Update number of guesses
-            int temp = [self.nrguesses.text intValue];
-            temp++;
-            if (temp == app.guesses) {
-                [self gameOver];
-            }
-            else  {
-                self.nrguesses.text = [NSString stringWithFormat:@"%d", temp];
-            }
-            NSLog(@"%@", guessArray);
-        }        
-        [wrongGuessArray addObjectsFromArray:guessArray];
-        
-        NSString *wrong_guesses = @"";
-        for (NSString *item in wrongGuessArray) {
-            wrong_guesses = [wrong_guesses stringByAppendingString:item];
-        }
-        
-        self.wrongLetters.text = wrong_guesses;
-        
-        for(int i = 0; i < [retWord length]; i++){
-            placeholderNew = [[UILabel alloc] initWithFrame: CGRectMake((10+30*i), 100, 100, 50)];
-            
-            placeholderNew.text = [pArray objectAtIndex:i];
-            placeholderNew.backgroundColor = [UIColor clearColor];
-            placeholderNew.textColor = [UIColor redColor];
-            placeholderNew.font = [UIFont systemFontOfSize:30];
-            
-            placeholderNew.tag = 6;
-            
-            [self.view addSubview:placeholderNew];
-            
-            [self.textField becomeFirstResponder]; //close keyboard
-            
-        }
-        
-        if (winCount == [retWord length]) {
-            [self gameWon];
-        }  
-    }    
- */
 }
 
 /* Alert that is showed when the game is won */
 - (void) gameOver {
-    /* Add and show highscore data */
+    /* Show highscore data */
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    int first = [[userDefaults valueForKey:@"first_place"] intValue];
+    int second = [[userDefaults valueForKey:@"second_place"] intValue];
+    int third = [[userDefaults valueForKey:@"third_place"] intValue];
     
-    NSArray *localPathsTemp   = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *localDocPathTemp    = [localPathsTemp objectAtIndex:0];
-    NSString *localFilePathTemp   = [localDocPathTemp stringByAppendingPathComponent:@"highscores.plist"];
-    NSMutableDictionary *localDictreadTemp  = [[NSMutableDictionary alloc] initWithContentsOfFile:localFilePathTemp];
-    NSLog(@"highscores %@", localDictreadTemp);
-    
-    int current_score = [current_game get_curr_guesses];
-    int first_place = [[localDictreadTemp objectForKey:@"first_place"]intValue];
-    int second_place = [[localDictreadTemp objectForKey:@"second_place"]intValue];
-    int third_place = [[localDictreadTemp objectForKey:@"third_place"]intValue];
-    
-    if (current_score > first_place) {
-        first_place = current_score;
-        [localDictreadTemp setObject:[NSString stringWithFormat:@"%d", current_score] forKey:@"first_place"];
-        [localDictreadTemp setObject:[NSString stringWithFormat:@"%@", [NSDate date]] forKey:@"first_place_time"];
-    }
-    else if (current_score > second_place){
-        second_place = current_score;
-        [localDictreadTemp setObject:[NSString stringWithFormat:@"%d", current_score] forKey:@"second_place"];
-        [localDictreadTemp setObject:[NSString stringWithFormat:@"%@", [NSDate date]] forKey:@"second_place_time"];
-    }
-    else if (current_score > third_place) {
-        third_place = current_score;
-        [localDictreadTemp setObject:[NSString stringWithFormat:@"%d", current_score] forKey:@"third_place"];
-        [localDictreadTemp setObject:[NSString stringWithFormat:@"%@", [NSDate date]] forKey:@"third_place_time"];
-    }    
-    NSLog(@"succes? %@", [NSNumber numberWithBool:[localDictreadTemp writeToFile:localFilePathTemp atomically:YES]]);
-    
-    localDictreadTemp  = [[NSMutableDictionary alloc] initWithContentsOfFile:localFilePathTemp];
-    
-    NSLog(@"First place: %@ at %@\nSecond place %@ %@\nThird place %@ at %@", [localDictreadTemp objectForKey:@"first_place"], [localDictreadTemp objectForKey:@"first_place_time"],[localDictreadTemp objectForKey:@"second_place"], [localDictreadTemp objectForKey:@"second_place_time"],[localDictreadTemp objectForKey:@"third_place"], [localDictreadTemp objectForKey:@"third_place_time"]);
-    
+    NSLog(@"before first place %d\nsecond place %d\nthird place %d", first, second, third);
+
     
     UIAlertView *gameover = [[UIAlertView alloc] initWithTitle:@"Game over" 
-                                                       message:@"You lost the game. Click OK to start a new game" 
+                                                       message:[NSString stringWithFormat:@"You lost the game.\n First: %d\nSecond: %d\nThird: %d\nClick OK to start a new game", first, second, third]
                                                       delegate:self 
                                              cancelButtonTitle:@"OK"
                                              otherButtonTitles:@"Quit game", nil];
@@ -389,8 +309,33 @@ game *current_game;
 
 /* Alert that is shown when the game is lost */
 - (void) gameWon {
+    /* Add and show highscore data */
+    int current = [current_game get_right_guesses];
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    int first = [[userDefaults valueForKey:@"first_place"] intValue];
+    int second = [[userDefaults valueForKey:@"second_place"] intValue];
+    int third = [[userDefaults valueForKey:@"third_place"] intValue];
+    
+    NSLog(@"before first place %d\nsecond place %d\nthird place %d", first, second, third);
+    
+    if (current < first) {
+        first = current;
+        [userDefaults setValue:[NSNumber numberWithInt:first] forKey:@"first_place"];
+    }
+    else if (current < second ) {
+        second = current;
+        [userDefaults setValue:[NSNumber numberWithInt:second] forKey:@"first_place"];
+    }
+    else if (current < third ) {
+        third = current;
+        [userDefaults setValue:[NSNumber numberWithInt:third] forKey:@"first_place"];
+    }
+    
+    NSLog(@"after first place %d\nsecond place %d\nthird place %d", first, second, third);
+    
+
     UIAlertView *gamewon = [[UIAlertView alloc] initWithTitle:@"Game over" 
-                                                       message:@"You won! Congratulations!" 
+                                                       message:[NSString stringWithFormat:@"You won! Congratulations!\n First: %d\nSecond: %d\nThird: %d\nClick OK to start a new game", first, second, third]
                                                       delegate:self 
                                              cancelButtonTitle:@"OK"
                                              otherButtonTitles:@"Quit game", nil];

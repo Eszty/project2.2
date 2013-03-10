@@ -30,19 +30,10 @@
         [userDefaults setFloat:10.0 forKey:@"max_guesses"];
         [userDefaults setFloat:5.0 forKey:@"word_length"];
         
-        /* Set highscores */        
-        NSArray *localPathsTemp   = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-        NSString *localDocPathTemp    = [localPathsTemp objectAtIndex:0];
-        NSString *localFilePathTemp   = [localDocPathTemp stringByAppendingPathComponent:@"highscores.plist"];
-        NSMutableDictionary *localDictreadTemp  = [[NSMutableDictionary alloc] initWithContentsOfFile:localFilePathTemp];
-        [localDictreadTemp setObject:[NSString stringWithFormat:@"%@", @"Not set"] forKey:@"first_place"];
-        [localDictreadTemp setObject:[NSString stringWithFormat:@"%@", @"Not set"] forKey:@"first_place_time"];
-        
-        [localDictreadTemp setObject:[NSString stringWithFormat:@"%@", @"Not set"] forKey:@"second_place"];
-        [localDictreadTemp setObject:[NSString stringWithFormat:@"%@", @"Not set"] forKey:@"second_place_time"];
-        
-        [localDictreadTemp setObject:[NSString stringWithFormat:@"%@", @"Not set"] forKey:@"third_place"];
-        [localDictreadTemp setObject:[NSString stringWithFormat:@"%@", @"Not set"] forKey:@"third_place_time"];
+        /* Set highscores */
+        [userDefaults setInteger:100 forKey:@"first_place"];
+        [userDefaults setInteger:100 forKey:@"second_place"];
+        [userDefaults setInteger:100 forKey:@"third_place"];
         [userDefaults synchronize];
     }
     [[NSUserDefaults standardUserDefaults] synchronize];
