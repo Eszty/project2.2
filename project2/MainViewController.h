@@ -7,9 +7,11 @@
 //
 
 #import "FlipsideViewController.h"
+#import "game.h"
 
-
-@interface MainViewController : UIViewController <FlipsideViewControllerDelegate>
+@interface MainViewController : UIViewController <FlipsideViewControllerDelegate> {
+    game *current_game;
+}
 
 
 
@@ -27,7 +29,6 @@
 
 
 
-
 - (IBAction)startNormalHangman:(id)sender;
 - (IBAction)buttonPressed:(id)sender;
 - (void)newGame;
@@ -35,7 +36,8 @@
 - (IBAction)guess:(id)sender;
 - (void)guessTest:first:(NSString *)ltr second:(NSString *)wrd third:(NSMutableArray *)pArr;
 - (void) gameOver:(id)sender;
-
+- (void) set_game_sate:(game*)game_state;
+- (game*) get_game_state;
 
 
 - (NSString*)getRandom;

@@ -23,6 +23,7 @@
     NSMutableArray *wrong_letters;
     /* Array that holds the lettesr that were guessed correctly */
     NSMutableArray *right_letters;
+    NSString *bestRegex;
     
     /* -- Normal hangman variables -- */
     /* The secret word */
@@ -31,6 +32,8 @@
     /* -- Evil hangman variables -- */
     /* Array with all words of word_length length */
     NSMutableArray *setWith;
+    
+    
 
 }
 
@@ -57,5 +60,11 @@
 
 -(NSMutableArray*) get_right_letters;
 -(void) set_right_letters:(NSString*)letter;
+
+-(NSString*) get_bestRegex;
+-(void) set_bestRegex:(NSString*)regex;
+
+-(void) save_game_data;
+-(game*) load_game_data;
 
 @end

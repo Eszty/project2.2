@@ -33,6 +33,7 @@
     curr_guesses = 0;
     wrong_letters = [[NSMutableArray alloc]init];
     right_letters = [[NSMutableArray alloc]init];
+    bestRegex = @"";
     
     /* Read the word.plist file into an array */
     NSString *myFile = [[NSBundle mainBundle] pathForResource:@"words" ofType:@"plist"];
@@ -135,6 +136,42 @@
 -(void) set_setWords:(NSMutableArray*)setWords {
     setWith = setWords;
     NSLog(@"lenght of new setWith %d", [setWith count]);
+}
+
+-(NSString*) get_bestRegex {
+    return bestRegex;
+}
+
+-(void) set_bestRegex:(NSString*)regex {
+    bestRegex = regex;
+}
+
+-(void) save_game_data {
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults setInteger:game_type forKey:@"saved_game_type"];
+    [userDefaults setInteger:max_guesses forKey:@"saved_max_guesses"];
+    [userDefaults setInteger:word_length forKey:@"saved_word_length"];
+    [userDefaults setInteger:curr_guesses forKey:@"saved_curr_guesses"];
+    [userDefaults setInteger:right_guesses forKey:@"saved_right_guesses"];
+    [userDefaults setObject:wrong_letters forKey:@"saved_wrong_letters"];
+    [userDefaults setObject:right_letters forKey:@"saved_right_letters"];
+    [userDefaults setObject:secret_word forKey:@"saved_secret_word"];
+    [userDefaults setObject:setWith forKey:@"saved_setWith"];
+}
+
+-(game*) load_game_data {
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    game *newGame = [game alloc];
+    newGame->game_type = [[userDefaults objectForKey:@"saved_game_type"]intValue];
+    newGame->max_guesses = [[userDefaults objectForKey:@"saved_max_guesses"]intValue];
+    newGame->word_length = [[userDefaults objectForKey:@"saved_word_length"]intValue];
+    newGame->curr_guesses = [[userDefaults objectForKey:@"saved_curr_guesses"]intValue];
+    newGame->right_guesses = [[userDefaults objectForKey:@"saved_right_guesses"]intValue];
+    newGame->wrong_letters = [userDefaults objectForKey:@"saved_wrong_letters"];
+    newGame->right_letters = [userDefaults objectForKey:@"saved_right_letters"];
+    newGame->secret_word = [userDefaults objectForKey:@"saved_secret_word"];
+    newGame->setWith = [userDefaults objectForKey:@"saved_setWith"];    
+    return newGame;
 }
 
 @end

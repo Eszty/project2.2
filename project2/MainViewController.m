@@ -8,7 +8,6 @@
 
 #import "MainViewController.h"
 #import "AppDelegate.h"
-#import "game.h"
 #import "goodGamePlay.h"
 #import "evilGamePlay.h"
 
@@ -54,7 +53,8 @@ game *current_game;
 
 
 - (void)viewDidLoad
-{    
+{
+    NSLog(@"viewDidLoad");
     /* New game class */
     current_game = [[game alloc] init];
     
@@ -369,10 +369,96 @@ game *current_game;
     [self viewDidLoad];
 }
 
+- (void)applicationDidBecomeActive:(UIApplication *)application {
+    NSLog(@"applicationDidBecomeActive in Mainviewcontroller");
+    game *newGame = [current_game load_game_data];
+    NSLog(@"newGame from load_game_data\ngame_type %d\n max_guesses %d\n word_length %d \n curr_guesses %d \n right_guesses %d \n wrong_letters %@ \n right_letters %@ \n secret_word %@ \n setWith %@", [newGame get_game_type], [newGame get_max_guesses], [newGame get_word_length], [newGame get_curr_guesses], [newGame get_right_guesses], [newGame get_wrong_letters], [newGame get_right_letters], [newGame get_secret_word], [newGame get_setWords]);
+    
+    /* Set the current guessed letters in the word */
+    NSMutableArray *regex = [[NSMutableArray alloc]init];
+    for (int i = 0; i < [newGame get_word_length]; i++) {
+        [regex addObject:@"_"];
+    }
+    if ([newGame get_game_type] == 1) {
+        for (NSString *item in [newGame get_right_letters]) {
+            for (int j = 0; j < [regex count]; j++) {
+                char subTest = [[newGame get_secret_word] characterAtIndex:j];
+                NSString *temp = [[NSString alloc] initWithFormat:@"%c",subTest];
+                if ([item isEqualToString:temp]) {
+                    [regex replaceObjectAtIndex:j withObject:temp];
+                }
+            }
+        }
+    }
+    else {
+        for (NSString *item in [newGame get_right_letters]) {
+            for (int j = 0; j < [regex count]; j++) {
+                char subTest = [[[newGame get_setWords] objectAtIndex:0] characterAtIndex:j];
+                NSString *temp = [[NSString alloc] initWithFormat:@"%c",subTest];
+                if ([item isEqualToString:temp]) {
+                    [regex replaceObjectAtIndex:j withObject:temp];
+                }
+            }
+        }
+
+    }    
+    current_game = newGame;
+    
+    //Set the game title to current game type
+    if ([current_game get_game_type] == 0) {
+        self.currentGame.text = @"Evil";
+    }
+    else {
+        self.currentGameType = 1;
+        self.currentGame.text = @"Normal";
+    }
+    
+    /* Update the number of guessed */
+    self.nrguesses.text = [NSString stringWithFormat:@"%d", [current_game get_curr_guesses]];
+    
+    /* Update the wrongly guessed letters */
+    NSString *wrong_guesses= @"";
+    for (NSString* item in [current_game get_wrong_letters]) {
+        wrong_guesses = [wrong_guesses stringByAppendingString:item];
+    }
+    self.wrongLetters.text = wrong_guesses;
+    
+    /* Place placeholders with letters on right places */
+    for(int i = 0; i < [current_game get_word_length]; i++){
+        placeholder = [[UILabel alloc] initWithFrame: CGRectMake((10+30*i), 100, 100, 50)];
+        placeholder.text = [regex objectAtIndex:i];
+        placeholder.backgroundColor = [UIColor clearColor];
+        placeholder.textColor = [UIColor redColor];
+        placeholder.font = [UIFont systemFontOfSize:30];
+        
+        placeholder.tag = 6;
+        
+        [self.view addSubview:placeholder];
+        
+    }
+}
+
+- (void)applicationWillResignActive:(UIApplication *)application {
+    NSLog(@"applicationWillResignActive in Mainviewcontroller");
+    [current_game save_game_data];
+    /* Save current game object to disk */
+    /*NSData *encodedGame = [NSKeyedArchiver archivedDataWithRootObject:current_game];
+    NSLog(@"1");
+    [[NSUserDefaults standardUserDefaults] setObject:encodedGame forKey:@"game_state"];*/
+
+}
+
 // Close keyboard if tapped somewhere else than textfield
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event 
 {
     [self.textField resignFirstResponder];
+}
+
+- (void) set_game_sate:(game*)game_state {
+    current_game = game_state;
+}
+- (game*) get_game_state {
+    return current_game;
 }
 
 
