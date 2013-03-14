@@ -63,21 +63,17 @@
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
-    NSLog(@"applicationDidEnterBackground");
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
-    NSLog(@"applicationWillEnterForeground");
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
-    NSLog(@"applicationDidBecomeActive");
-    
     /* Restore game state */
     /*NSData *encodedGame = [[NSUserDefaults standardUserDefaults] objectForKey:@"game_state"];
     Person *person = (Person *)[NSKeyedUnarchiver unarchiveObjectWithData:encodedPerson];*/
@@ -87,7 +83,6 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
-    NSLog(@"applicationWillTerminate");
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 

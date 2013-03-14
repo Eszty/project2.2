@@ -11,7 +11,6 @@
 @implementation evilGamePlay
 
 -(NSMutableArray*) gamePlayDelegate: (NSString*)letter inWords: (NSMutableArray*)setWith wordLength:(int)word_length{
-    NSLog(@"setWith before %d", [setWith count]);
     NSMutableArray *returning = [[NSMutableArray alloc] init];
     NSMutableArray *new_setWith = [[NSMutableArray alloc]init];
     

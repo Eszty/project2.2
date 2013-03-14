@@ -36,10 +36,8 @@
 - (IBAction)guess:(id)sender;
 - (void)guessTest:first:(NSString *)ltr second:(NSString *)wrd third:(NSMutableArray *)pArr;
 - (void) gameOver:(id)sender;
-- (void) set_game_sate:(game*)game_state;
-- (game*) get_game_state;
 
-
-- (NSString*)getRandom;
-
+-(void) set_game_type:(int)type;
+-(void) set_curr_guesses:(int)number;
+-(void) set_wrong_letters:(NSMutableArray*)letters;
 @end

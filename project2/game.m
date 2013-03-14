@@ -31,14 +31,13 @@
     max_guesses = [[userDefaults objectForKey:@"max_guesses"] intValue];
     word_length = [[userDefaults objectForKey:@"word_length"] intValue];
     curr_guesses = 0;
+    right_guesses = 0;
     wrong_letters = [[NSMutableArray alloc]init];
     right_letters = [[NSMutableArray alloc]init];
-    bestRegex = @"";
-    
+
     /* Read the word.plist file into an array */
     NSString *myFile = [[NSBundle mainBundle] pathForResource:@"words" ofType:@"plist"];
-    //NSArray *allWords = [[NSArray alloc] initWithContentsOfFile:myFile];
-    NSArray *allWords = [[NSArray alloc] initWithObjects:@"BOAR", @"DUCK", @"BEAR", @"DEER", @"HARE", nil];
+    NSArray *allWords = [[NSArray alloc] initWithContentsOfFile:myFile];
     
     /* If this is a normal hangman game, choose a secret word */
     if (game_type == 1) {
@@ -54,7 +53,6 @@
         }
         int randomIndex = (arc4random()%[array_with_word_size count]);
         secret_word = [NSString stringWithFormat:@"%@", [array_with_word_size objectAtIndex:randomIndex]];
-        NSLog(@"The secret word is %@", secret_word);
     }
     /* This is an evil hangman game */
     else {
@@ -66,17 +64,6 @@
                 [setWith addObject:temp];
             }
         }
-        NSLog(@"setWith after init %d", [setWith count]);
-        
-        /* Create an empty regex, used for the evil hangman algorithm */
-        /*egexes = [[NSMutableArray alloc] init];
-        nrOfRegexes = [[NSMutableArray alloc] init];        
-        NSString *tempRegex = @"";
-        for (int i = 0; i < word_length; i++) {
-            [tempRegex stringByAppendingString:@"-"];
-        }
-        [regexes addObject:tempRegex];
-        [nrOfRegexes addObject:[NSNumber numberWithInt:0]];*/
     }
     
     return self;
@@ -135,7 +122,6 @@
 }
 -(void) set_setWords:(NSMutableArray*)setWords {
     setWith = setWords;
-    NSLog(@"lenght of new setWith %d", [setWith count]);
 }
 
 -(NSString*) get_bestRegex {
